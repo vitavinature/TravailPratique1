@@ -10,7 +10,7 @@ namespace Preparation_1
     {
         public TP(string titre, string ponderation, string dateHeure) : base(titre, ponderation, dateHeure)
         {
-                       
+
         }
 
         public double DemanderNote()
@@ -30,19 +30,32 @@ namespace Preparation_1
                     string s2 = Console.ReadLine();
                     DateTime dateRemise = DateTime.Parse(s2);
 
-                    //                    La méthode static Parse de la classe DateTime retourne un objet DateTime contenant la conversion de la valeur textuelle
+                    // La méthode static Parse de la classe DateTime retourne un objet DateTime contenant la conversion de la valeur textuelle
 
                     DateTime date = _dateHeure;
 
+                    // La classe TimeSpan contient une durée, obtenue en faisant la soustraction de 2 dates
+                    TimeSpan retard = dateRemise - date;
+                    //Console.WriteLine("Nombre de jours: " + retard.Days);
+                    //Console.WriteLine("Nombre de jours total: " + retard.TotalDays);
+                    int retardJour = (int)Math.Ceiling(retard.TotalDays);
+                    //Console.WriteLine("retard jour: " + retardJour);
 
+                    double penalite = 0;
+                    if (retardJour > 0)
+                    {
+                        noteTP -= retardJour * 10;
+                        if (noteTP < 0)
+                        {
+                            noteTP = 0;
+                        }
+                    }
 
-  //                  La classe TimeSpan contient une durée, obtenue en faisant la soustraction de 2 dates
-                                TimeSpan retard = dateRemise - date;
-                    Console.WriteLine("Nombre de jours: " + retard.Days);
-                    Console.WriteLine("Nombre de jours total: " + retard.TotalDays);
-
+                    Console.WriteLine($"Note avec pénalité de {retardJour} jours de retard: " + noteTP);
+                    Console.WriteLine($"Portion de la finale: " + noteTP * _ponderation / 100);
                     return noteTP;
                 }
+
                 catch (Exception e)
                 {
                     Console.Write("Mauvaise entrée: ");

@@ -107,7 +107,10 @@ namespace Preparation_1
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("Erreur:" + e);
+                            Console.WriteLine("Erreur:" + e.Message);
+                            Console.WriteLine("Appuyez sur une touche pour continuer");
+                            Console.ReadKey(true);
+
                         }
                         ligne = fichier.ReadLine();
                         // Affiche les détails de l'étudiant
