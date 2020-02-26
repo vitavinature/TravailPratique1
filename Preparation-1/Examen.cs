@@ -22,19 +22,27 @@ namespace Preparation_1
                 try
                 {
                     Console.Write("Veuillez entrer la note obtenue: ");
-                    double noteExamen = Convert.ToDouble(Console.ReadLine());
-                    if (noteExamen < 0 || noteExamen > 100)
+                    double note = Convert.ToDouble(Console.ReadLine());
+                    if (note < 0 || note > 100)
                     {
                         throw new Exception("La note doit être comprise entre 0 et 100");
                     }
-                    return noteExamen;
+                    _note = note;
+                    return note;
                 }
                 catch (Exception e)
                 {
                     Console.Write("Mauvaise entrée: ");
                 }
+
             }
         }
+        public void Afficher()
+        {
+            Console.WriteLine($"{_titre}, {_ponderation}, {_dateHeure}");
+        }
+
+        private double _note;
         private string _titre;
         private double _ponderation;
         private DateTime _dateHeure;

@@ -14,7 +14,7 @@ namespace Preparation_1
         }
         public void AjouterNote()
         {
-_noteTotale += _
+_noteTotale += 
         }
 
         public double ajouterNote;

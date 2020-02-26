@@ -48,10 +48,12 @@ namespace Preparation_1
 
                     while (ligne != null)
                     {
+                        char type = 'z';
+                        string[] valeurs;
                         try
                         {
-                            string[] valeurs = ligne.Split(';');
-                            char type = Convert.ToChar(valeurs[0]);
+                            valeurs = ligne.Split(';');
+                            type = Convert.ToChar(valeurs[0]);
                         }
                         catch (Exception e)
                         {
