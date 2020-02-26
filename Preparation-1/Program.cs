@@ -23,7 +23,11 @@ namespace Preparation_1
                     {
                         // Extrait les valeurs individuelles de la ligne, et construit un objet Etudiant
                         string[] valeurs2 = ligne.Split(';');
-                        etudiant = new Etudiant(valeurs2[2], valeurs2[1], valeurs2[0]);
+
+                        if (valeurs2[0].StartsWith("#") || valeurs2[0].StartsWith(" "))
+                        {
+                            throw new Exception("Erreur le fichier n'est pas valide; la première ligne n'est pas conforme.");
+                        }
                         if (Convert.ToInt32(valeurs2[0]) < 1000000 || Convert.ToInt32(valeurs2[0]) > 9999999)
                         {
                             throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
@@ -36,6 +40,8 @@ namespace Preparation_1
                         {
                             throw new Exception("Erreur, le prénom est invalide.");
                         }
+
+                        etudiant = new Etudiant(valeurs2[2], valeurs2[1], valeurs2[0]);
 
                     }
                     else
@@ -54,59 +60,73 @@ namespace Preparation_1
 
                         try
                         {
-                            type = Convert.ToChar(valeurs[0]);
+                            if (valeurs[0].Length == 1)
+                            {
+                                //    etudiant.Afficher();
+
+                                type = valeurs[0][0];
+
+                                // Si le type est E pour examen
+                                switch (type)
+                                {
+                                    case 'E':
+                                        {
+                                            // Construit un nouvel examen avec les valeurs lues
+                                            Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
+                                            // Affiche les détails de l'examen
+                                            examen.Afficher();
+                                            // Demande à l'utilisateur la note de l'examen
+                                            double note = examen.DemanderNote();
+                                            // Ajoute la note à la note totale de l'étudiant
+                                            etudiant.AjouterNote(note);
+                                        }
+                                        break;
+
+                                    case 'T':
+                                        {
+                                            // Construit un nouveau tp avec les valeurs lues
+                                            TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
+                                            // Affiche les détails du tp
+                                            tp.Afficher();
+                                            // Demande à l'utilisateur la note du tp
+                                            double note = tp.DemanderNote();
+
+                                            // Demande la date que la remise a été faite
+
+                                            Console.WriteLine();
+
+                                            // Ajoute la note à la note totale de l'étudiant
+                                            etudiant.AjouterNote(note);
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("Erreur:");
+                            Console.WriteLine("Erreur:" + e);
                         }
-
-                        // Si le type est E pour examen
-                        switch (type)
-                        {
-                            case 'E':
-                                {
-                                    // Construit un nouvel examen avec les valeurs lues
-                                    Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
-                                    // Affiche les détails de l'examen
-                                    examen.Afficher();
-                                    // Demande à l'utilisateur la note de l'examen
-                                    double note = examen.DemanderNote();
-                                    // Ajoute la note à la note totale de l'étudiant
-                                    etudiant.AjouterNote(note);
-                                }
-                                break;
-
-                            case 'T':
-                                {
-                                    // Construit un nouveau tp avec les valeurs lues
-                                    TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
-                                    // Affiche les détails du tp
-                                    tp.Afficher();
-                                    // Demande à l'utilisateur la note du tp
-                                    double note = tp.DemanderNote();
-
-                                    // Demande la date que la remise a été faite
-
-                                    Console.WriteLine();
-
-                                    // Ajoute la note à la note totale de l'étudiant
-                                    etudiant.AjouterNote(note);
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-
-                        Console.WriteLine("\n\n------------------------------");
+                        ligne = fichier.ReadLine();
                         // Affiche les détails de l'étudiant
-                        etudiant.Afficher();
                     }
+                    Console.WriteLine("\n\n------------------------------");
+                    etudiant.Afficher();
+
+
                     Console.WriteLine("Appuyez sur une touche pour continuer");
                     Console.ReadKey(true);
                 }
             }
+            finally
+            {
+                Console.WriteLine("Clause finale");
+            }
+        }
     }
+}
 
 
 /*

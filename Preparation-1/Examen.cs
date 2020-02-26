@@ -43,8 +43,6 @@ namespace Preparation_1
         }
 
         private double _note;
-        private string _titre;
-        private double _ponderation;
-        private DateTime _dateHeure;
+
     }
 }

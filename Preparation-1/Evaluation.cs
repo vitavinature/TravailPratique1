@@ -22,8 +22,8 @@ namespace Preparation_1
 
         }
 
-        private string _titre;
-        private int _ponderation;
-        private DateTime _dateHeure;
+        protected string _titre;
+        protected int _ponderation;
+        protected DateTime _dateHeure;
     }
 }
