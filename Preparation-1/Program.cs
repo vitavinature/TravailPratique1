@@ -65,30 +65,34 @@ namespace Preparation_1
                         switch (type)
                         {
                             case 'E':
-
-                                // Construit un nouvel examen avec les valeurs lues
-                                Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
-                                // Affiche les détails de l'examen
-                                examen.Afficher();
-                                // Demande à l'utilisateur la note de l'examen
-                                double note = examen.DemanderNote();
-                                // Ajoute la note à la note totale de l'étudiant
-                                etudiant.AjouterNote(note);
+                                {
+                                    // Construit un nouvel examen avec les valeurs lues
+                                    Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
+                                    // Affiche les détails de l'examen
+                                    examen.Afficher();
+                                    // Demande à l'utilisateur la note de l'examen
+                                    double note = examen.DemanderNote();
+                                    // Ajoute la note à la note totale de l'étudiant
+                                    etudiant.AjouterNote(note);
+                                }
                                 break;
 
                             case 'T':
+                                {
+                                    // Construit un nouveau tp avec les valeurs lues
+                                    TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
+                                    // Affiche les détails du tp
+                                    tp.Afficher();
+                                    // Demande à l'utilisateur la note du tp
+                                    double note = tp.DemanderNote();
 
-                                // Construit un nouveau tp avec les valeurs lues
-                                TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
-                                // Affiche les détails du tp
-                                tp.Afficher();
-                                // Demande à l'utilisateur la note du tp
-                                double note = tp.DemanderNote();
+                                    // Demande la date que la remise a été faite
 
-                                // Demande la date que la remise a été faite
+                                    Console.WriteLine();
 
-                                // Ajoute la note à la note totale de l'étudiant
-                                etudiant.AjouterNote(note);
+                                    // Ajoute la note à la note totale de l'étudiant
+                                    etudiant.AjouterNote(note);
+                                }
                                 break;
                             default:
                                 break;

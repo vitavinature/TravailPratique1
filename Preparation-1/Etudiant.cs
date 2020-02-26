@@ -17,7 +17,10 @@ namespace Preparation_1
             _noteTotale += note;
         }
 
-        public double ajouterNote;
+        public void Afficher()
+        {
+            Console.WriteLine($"{_prenom} {_nom} matricule {_matricule} a une note totale de {_noteTotale}");
+        }
 
         private int _matricule;
         private double _noteTotale;
