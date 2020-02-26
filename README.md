@@ -1,5 +1,5 @@
 ﻿# Exercice formatif pour Examen 1
-Renommez le fichier `Exemple` en `Exemple.exe`, il correspond au résultat attendu que vous devez reproduire. Il a été renommé pour ne pas être ignoré par Git.
+Le fichier `Exemple.exe` correspond au résultat attendu que vous devez reproduire.
 
 Le fichier `Program.cs` contient une implémentation partielle du programme que vous devez compléter.
 
@@ -36,7 +36,7 @@ La note est alors ajoutée à la note totale de l'étudiant.
 Lorsque la fin du fichier est atteinte, le programme affiche la note totale de l'étudiant et se termine.
 
 ## Classes à définir
-Votre programme doit définir les classes suivantes:
+En plus de modifier la classe `Program` et la méthode `Main` pour compléter la fonctionnalité, votre programme doit définir les classes suivantes (chaque classe dans son propre fichier .cs):
 #### Personne
 Une classe qui représente une personne et qui contient un *prénom* et un *nom*. Ces deux valeurs ne peuvent pas être modifiées après la création de la personne.  
 Le constructeur reçoit en paramètre les valeurs du prénom et du nom.
