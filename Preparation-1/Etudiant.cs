@@ -12,9 +12,9 @@ namespace Preparation_1
         {
             _matricule = Convert.ToInt32(matricule);
         }
-        public void AjouterNote()
+        public void AjouterNote(double note)
         {
-_noteTotale += 
+            _noteTotale += note;
         }
 
         public double ajouterNote;

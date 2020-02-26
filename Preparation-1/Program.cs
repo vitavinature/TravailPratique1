@@ -50,9 +50,10 @@ namespace Preparation_1
                     {
                         char type = 'z';
                         string[] valeurs;
+                        valeurs = ligne.Split(';');
+
                         try
                         {
-                            valeurs = ligne.Split(';');
                             type = Convert.ToChar(valeurs[0]);
                         }
                         catch (Exception e)
@@ -83,6 +84,9 @@ namespace Preparation_1
                                 tp.Afficher();
                                 // Demande à l'utilisateur la note du tp
                                 double note = tp.DemanderNote();
+
+                                // Demande la date que la remise a été faite
+
                                 // Ajoute la note à la note totale de l'étudiant
                                 etudiant.AjouterNote(note);
                                 break;

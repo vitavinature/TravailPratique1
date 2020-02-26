@@ -27,7 +27,7 @@ namespace Preparation_1
                     {
                         throw new Exception("La note doit être comprise entre 0 et 100");
                     }
-                    _note = note;
+                    _note = note * _ponderation/100;
                     return note;
                 }
                 catch (Exception e)
