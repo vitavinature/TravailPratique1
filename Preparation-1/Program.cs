@@ -54,6 +54,15 @@ namespace Preparation_1
                         // Si le type est E pour examen
                         if (type == 'E')
                         {
+                            if (!valeurs[1].StartsWith("Examen"))
+                            {
+                                throw new Exception("Erreur: Ligne d'examen non compatible");
+                            }
+                            if (Convert.ToInt32(valeurs[2])<0|| Convert.ToInt32(valeurs[2]) >100)
+                            {
+                                throw new Exception("Erreur: Pondération incorrecte");
+                            }
+
                             // Construit un nouvel examen avec les valeurs lues
                             Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
                             // Affiche les détails de l'examen

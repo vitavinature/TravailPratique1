@@ -10,7 +10,7 @@ namespace Preparation_1
     {
         public Examen(string titre, string ponderation, string dateHeure)
         {
-            if 
+            
 
 
         }

@@ -8,5 +8,9 @@ namespace Preparation_1
 {
     class Evaluation
     {
+        public Evaluation(string titre, string ponderation, string dateHeure)
+        {
+
+        }
     }
 }
