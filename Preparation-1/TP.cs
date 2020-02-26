@@ -58,7 +58,7 @@ namespace Preparation_1
 
                 catch (Exception e)
                 {
-                    Console.Write("Mauvaise entrée: ");
+                    Console.Write("Mauvaise entrée: "+ e.Message);
                 }
 
             }
