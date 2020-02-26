@@ -12,8 +12,15 @@ namespace Preparation_1
         {
             _matricule = Convert.ToInt32(matricule);
         }
+        public void AjouterNote()
+        {
+_noteTotale += _
+        }
+
+        public double ajouterNote;
 
         private int _matricule;
         private double _noteTotale;
     }
+
 }

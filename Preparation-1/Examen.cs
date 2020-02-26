@@ -8,7 +8,7 @@ namespace Preparation_1
 {
     class Examen : Evaluation
     {
-        public Examen(string titre, string ponderation, string dateHeure)
+        public Examen(string titre, string ponderation, string dateHeure) : base (titre, ponderation,dateHeure)
         {
             
 

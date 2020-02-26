@@ -48,25 +48,20 @@ namespace Preparation_1
 
                     while (ligne != null)
                     {
-                        string[] valeurs = ligne.Split(';');
-                        char type = Convert.ToChar(valeurs[0]);
-
-
+                        try
+                        {
+                            string[] valeurs = ligne.Split(';');
+                            char type = Convert.ToChar(valeurs[0]);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Erreur:");
+                        }
 
                         // Si le type est E pour examen
                         switch (type)
                         {
                             case 'E':
-
-                                // if (type == 'E')
-                                if (!valeurs[1].StartsWith("Examen"))
-                                {
-                                    throw new Exception("Erreur: Ligne d'examen non compatible");
-                                }
-                                if (Convert.ToInt32(valeurs[2]) < 0 || Convert.ToInt32(valeurs[2]) > 100)
-                                {
-                                    throw new Exception("Erreur: Pondération incorrecte");
-                                }
 
                                 // Construit un nouvel examen avec les valeurs lues
                                 Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
@@ -79,20 +74,18 @@ namespace Preparation_1
                                 break;
 
                             case 'T':
-                                case 
-                       
 
-                        else // Sinon le type est T pour TP
-                              
-                                    // Construit un nouveau tp avec les valeurs lues
-                                    TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
-                                    // Affiche les détails du tp
-                                    tp.Afficher();
-                                    // Demande à l'utilisateur la note du tp
-                                    double note = tp.DemanderNote();
-                                    // Ajoute la note à la note totale de l'étudiant
-                                    etudiant.AjouterNote(note);
-                                }
+                                // Construit un nouveau tp avec les valeurs lues
+                                TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
+                                // Affiche les détails du tp
+                                tp.Afficher();
+                                // Demande à l'utilisateur la note du tp
+                                double note = tp.DemanderNote();
+                                // Ajoute la note à la note totale de l'étudiant
+                                etudiant.AjouterNote(note);
+                                break;
+                            default:
+                                break;
                         }
 
                         Console.WriteLine("\n\n------------------------------");
