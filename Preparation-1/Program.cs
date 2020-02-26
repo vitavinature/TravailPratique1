@@ -51,48 +51,58 @@ namespace Preparation_1
                         string[] valeurs = ligne.Split(';');
                         char type = Convert.ToChar(valeurs[0]);
 
+
+
                         // Si le type est E pour examen
-                        if (type == 'E')
+                        switch (type)
                         {
-                            if (!valeurs[1].StartsWith("Examen"))
-                            {
-                                throw new Exception("Erreur: Ligne d'examen non compatible");
-                            }
-                            if (Convert.ToInt32(valeurs[2])<0|| Convert.ToInt32(valeurs[2]) >100)
-                            {
-                                throw new Exception("Erreur: Pondération incorrecte");
-                            }
+                            case 'E':
 
-                            // Construit un nouvel examen avec les valeurs lues
-                            Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
-                            // Affiche les détails de l'examen
-                            examen.Afficher();
-                            // Demande à l'utilisateur la note de l'examen
-                            double note = examen.DemanderNote();
-                            // Ajoute la note à la note totale de l'étudiant
-                            etudiant.AjouterNote(note);
-                        }
+                                // if (type == 'E')
+                                if (!valeurs[1].StartsWith("Examen"))
+                                {
+                                    throw new Exception("Erreur: Ligne d'examen non compatible");
+                                }
+                                if (Convert.ToInt32(valeurs[2]) < 0 || Convert.ToInt32(valeurs[2]) > 100)
+                                {
+                                    throw new Exception("Erreur: Pondération incorrecte");
+                                }
+
+                                // Construit un nouvel examen avec les valeurs lues
+                                Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
+                                // Affiche les détails de l'examen
+                                examen.Afficher();
+                                // Demande à l'utilisateur la note de l'examen
+                                double note = examen.DemanderNote();
+                                // Ajoute la note à la note totale de l'étudiant
+                                etudiant.AjouterNote(note);
+                                break;
+
+                            case 'T':
+                                case 
+                       
+
                         else // Sinon le type est T pour TP
-                        {
-                            // Construit un nouveau tp avec les valeurs lues
-                            TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
-                            // Affiche les détails du tp
-                            tp.Afficher();
-                            // Demande à l'utilisateur la note du tp
-                            double note = tp.DemanderNote();
-                            // Ajoute la note à la note totale de l'étudiant
-                            etudiant.AjouterNote(note);
+                              
+                                    // Construit un nouveau tp avec les valeurs lues
+                                    TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
+                                    // Affiche les détails du tp
+                                    tp.Afficher();
+                                    // Demande à l'utilisateur la note du tp
+                                    double note = tp.DemanderNote();
+                                    // Ajoute la note à la note totale de l'étudiant
+                                    etudiant.AjouterNote(note);
+                                }
                         }
-                    }
 
-                    Console.WriteLine("\n\n------------------------------");
-                    // Affiche les détails de l'étudiant
-                    etudiant.Afficher();
+                        Console.WriteLine("\n\n------------------------------");
+                        // Affiche les détails de l'étudiant
+                        etudiant.Afficher();
+                    }
+                    Console.WriteLine("Appuyez sur une touche pour continuer");
+                    Console.ReadKey(true);
                 }
-                Console.WriteLine("Appuyez sur une touche pour continuer");
-                Console.ReadKey(true);
             }
-    }
     }
 
 

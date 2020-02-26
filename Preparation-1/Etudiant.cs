@@ -14,5 +14,6 @@ namespace Preparation_1
         }
 
         private int _matricule;
+        private double _noteTotale;
     }
 }
