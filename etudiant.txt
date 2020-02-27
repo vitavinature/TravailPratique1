@@ -1,4 +1,4 @@
-E1234567;Clairoux;Charlemagne
+1234567;Clairoux;Charlemagne
 
 # Une ligne débutant par # est un commentaire
 

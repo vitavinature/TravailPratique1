@@ -14,19 +14,19 @@ namespace Preparation_1
             {
                 throw new Exception("Pondération invalide, doit être entre 0 et 100");
             }
-
             _titre = titre;
-            _ponderation = Convert.ToInt32(ponderation);
-            _dateHeure = DateTime.Parse(dateHeure);
 
+            _ponderation = Convert.ToInt32(ponderation);
+
+            _dateHeure = DateTime.Parse(dateHeure);
         }
         public void Afficher()
         {
             Console.WriteLine($"{_titre} ({_ponderation}%) {_dateHeure}");
         }
 
-        private string _titre;
-        protected int _ponderation;
-        protected DateTime _dateHeure;
+        private readonly string _titre;
+        protected readonly int _ponderation;
+        protected readonly DateTime _dateHeure;
     }
 }

@@ -14,14 +14,15 @@ namespace Preparation_1
             Etudiant etudiant = null;
             try
             {
+                // Ouverture du fichier
                 using (StreamReader fichier = new StreamReader("etudiant.txt"))
                 {
-                    // Lit la première ligne qui indique l'étudiant
+                    // Lit la première ligne qui identifie l'étudiant
                     string ligne = fichier.ReadLine();
 
                     if (ligne != null)
                     {
-                        // Extrait les valeurs individuelles de la ligne, et construit un objet Etudiant
+                        // Extrait les valeurs individuelles de la ligne
                         string[] valeurs2 = ligne.Split(';');
 
                         if (valeurs2[0].StartsWith("#") || valeurs2[0].StartsWith(" "))
@@ -29,10 +30,6 @@ namespace Preparation_1
                             throw new Exception("Erreur le fichier n'est pas valide; la première ligne n'est pas conforme.");
                         }
                                                 
-                        if (Convert.ToInt32(valeurs2[0]) < 1000000 || Convert.ToInt32(valeurs2[0]) > 9999999)
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
-                        }
                         if (valeurs2[1].Length < 2)
                         {
                             throw new Exception("Erreur, le nom est invalide.");
@@ -42,27 +39,32 @@ namespace Preparation_1
                             throw new Exception("Erreur, le prénom est invalide.");
                         }
 
+                        // Construction d'un objet étudiant
                         etudiant = new Etudiant(valeurs2[2], valeurs2[1], valeurs2[0]);
                     }
                     else
                     {
                         throw new Exception("Erreur le fichier n'est pas valide.");
                     }
-
+//----------------------------------------------------------------------------------------------------------------------------------
                     // Lit la prochaine ligne
                     ligne = fichier.ReadLine();
                     Console.WriteLine("");
 
+                    // Pour chaque lignwe lue (si elle contient quelque chose)
                     while (ligne != null)
                     {
                         string[] valeurs;
-                        valeurs = ligne.Split(';');
+                        valeurs = ligne.Split(';'); // Séparation de la ligne en segments délimité par (;)
 
                         try
                         {
+                            // Si la ligne ne commence pas par # ou si elle n'est pas vide
+                            // Ce qui a pour effet d'ignorer les lignes de commentaires et les lignes vides
+                            // Les lignes qui correspondent aux évaluations entrent dans le if
                             if (!(ligne.StartsWith("#") || ligne.Length == 0))
                             {
-                                // Selon la valeur du (ou des) premier(s) caractère(s)
+                                // Selon la valeur du (ou des) premier(s) caractère(s) 
                                 switch (valeurs[0])
                                 {
                                     case "E":
@@ -102,6 +104,14 @@ namespace Preparation_1
                                 }
                             }
                         }
+                        catch (IndexOutOfRangeException)
+                        {
+                            Console.WriteLine("Il manque des valeurs.");
+                            Console.WriteLine("Appuyez sur une touche pour continuer");
+                            Console.ReadKey(true);
+
+                        }
+
                         catch (Exception e)
                         {
                             Console.WriteLine(e.Message);
