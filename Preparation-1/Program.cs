@@ -55,7 +55,6 @@ namespace Preparation_1
 
                     while (ligne != null)
                     {
-                        char type = 'z';
                         string[] valeurs;
                         valeurs = ligne.Split(';');
 
