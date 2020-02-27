@@ -12,7 +12,7 @@ namespace Preparation_1
         {
             if (Convert.ToInt32(ponderation) < 0 || Convert.ToInt32(ponderation) > 100)
             {
-                throw new Exception("Pondération incorrecte");
+                throw new Exception("Pondération invalide, doit être entre 0 et 100");
             }
 
             _titre = titre;

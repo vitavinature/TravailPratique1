@@ -28,6 +28,7 @@ namespace Preparation_1
                         {
                             throw new Exception("Erreur le fichier n'est pas valide; la première ligne n'est pas conforme.");
                         }
+                                                
                         if (Convert.ToInt32(valeurs2[0]) < 1000000 || Convert.ToInt32(valeurs2[0]) > 9999999)
                         {
                             throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
@@ -105,8 +106,10 @@ namespace Preparation_1
                         catch (Exception e)
                         {
                             Console.WriteLine(e.Message);
+
                             Console.WriteLine("Appuyez sur une touche pour continuer");
                             Console.ReadKey(true);
+                            Console.WriteLine("");
                         }
                         ligne = fichier.ReadLine();
                     }

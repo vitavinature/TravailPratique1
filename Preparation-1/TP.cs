@@ -52,19 +52,12 @@ namespace Preparation_1
                     Console.WriteLine("");
                     return _note;
                 }
-
                 catch (Exception e)
                 {
-                    Console.Write("Mauvaise entrée: " + e.Message);
+                    Console.WriteLine(e.Message);
                 }
-
             }
         }
-
-
-
-
         private double _note;
-
     }
 }

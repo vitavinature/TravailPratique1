@@ -11,6 +11,7 @@ namespace Preparation_1
         public Etudiant(string prenom, string nom, string matricule) : base (prenom, nom)
         {
             _matricule = Convert.ToInt32(matricule);
+        
         }
 
         public void AjouterNote(double note)
@@ -20,7 +21,7 @@ namespace Preparation_1
 
         public void Afficher()
         {
-            Console.WriteLine($"{_prenom} {_nom} matricule {_matricule} a une note totale de {_noteTotale}");
+            Console.WriteLine($"{_prenom} {_nom} ({_matricule}), Note =  {_noteTotale}");
         }
 
         private int _matricule;

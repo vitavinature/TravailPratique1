@@ -23,7 +23,7 @@ namespace Preparation_1
                     double note = Convert.ToDouble(Console.ReadLine());
                     if (note < 0 || note > 100)
                     {
-                        throw new Exception("La note doit être comprise entre 0 et 100");
+                        throw new Exception("Note invalide, doit être entre 0 et 100");
                     }
                     _note = note * _ponderation/100;
                     Console.WriteLine($"Portion de la note finale: " + _note);
@@ -33,7 +33,7 @@ namespace Preparation_1
                 }
                 catch (Exception e)
                 {
-                    Console.Write("Mauvaise entrée: "+e.Message);
+                    Console.WriteLine(e.Message);
                 }
             }
         }
