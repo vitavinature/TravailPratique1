@@ -10,10 +10,9 @@ namespace Preparation_1
     {
         public Evaluation(string titre, string ponderation, string dateHeure)
         {
-
             if (Convert.ToInt32(ponderation) < 0 || Convert.ToInt32(ponderation) > 100)
             {
-                throw new Exception("Erreur: Pondération incorrecte");
+                throw new Exception("Pondération incorrecte");
             }
 
             _titre = titre;
@@ -25,7 +24,6 @@ namespace Preparation_1
         {
             Console.WriteLine($"{_titre} ({_ponderation}%) {_dateHeure}");
         }
-
 
         private string _titre;
         protected int _ponderation;

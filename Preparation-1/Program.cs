@@ -42,7 +42,6 @@ namespace Preparation_1
                         }
 
                         etudiant = new Etudiant(valeurs2[2], valeurs2[1], valeurs2[0]);
-
                     }
                     else
                     {
@@ -63,19 +62,20 @@ namespace Preparation_1
                         {
                             if (!(ligne.StartsWith("#") || ligne.Length == 0))
                             {
-
-
-                                // Si le type est E pour examen
+                                // Selon la valeur du (ou des) premier(s) caractère(s)
                                 switch (valeurs[0])
                                 {
                                     case "E":
                                         {
                                             // Construit un nouvel examen avec les valeurs lues
                                             Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
+
                                             // Affiche les détails de l'examen
                                             examen.Afficher();
+
                                             // Demande à l'utilisateur la note de l'examen
                                             double note = examen.DemanderNote();
+
                                             // Ajoute la note à la note totale de l'étudiant
                                             etudiant.AjouterNote(note);
                                         }
@@ -85,8 +85,10 @@ namespace Preparation_1
                                         {
                                             // Construit un nouveau tp avec les valeurs lues
                                             TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
+
                                             // Affiche les détails du tp
                                             tp.Afficher();
+
                                             // Demande à l'utilisateur la note du tp
                                             double note = tp.DemanderNote();
 
@@ -99,7 +101,6 @@ namespace Preparation_1
                                         throw new Exception("Type " + valeurs[0] + " non valide");
                                 }
                             }
-
                         }
                         catch (Exception e)
                         {
@@ -108,12 +109,13 @@ namespace Preparation_1
                             Console.ReadKey(true);
                         }
                         ligne = fichier.ReadLine();
-                        // Affiche les détails de l'étudiant
                     }
+                    
+                    // Affiche les détails de l'étudiant
                     Console.WriteLine("\n\n------------------------------");
                     etudiant.Afficher();
 
-
+                    // Le programme est terminé rendu ici.*************************
                     Console.WriteLine("Appuyez sur une touche pour continuer");
                     Console.ReadKey(true);
                 }

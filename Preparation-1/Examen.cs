@@ -10,9 +10,7 @@ namespace Preparation_1
     {
         public Examen(string titre, string ponderation, string dateHeure) : base (titre, ponderation,dateHeure)
         {
-            
-
-
+      
         }
 
         public double DemanderNote()
@@ -35,14 +33,10 @@ namespace Preparation_1
                 }
                 catch (Exception e)
                 {
-                    Console.Write("Mauvaise entrée: ");
+                    Console.Write("Mauvaise entrée: "+e.Message);
                 }
-
             }
         }
-
-
         private double _note;
-
     }
 }
