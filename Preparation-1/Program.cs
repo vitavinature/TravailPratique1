@@ -118,15 +118,16 @@ namespace Preparation_1
                     Console.WriteLine("\n\n------------------------------");
                     etudiant.Afficher();
 
-                    // Le programme est terminé rendu ici.*************************
-                    Console.WriteLine("Appuyez sur une touche pour continuer");
-                    Console.ReadKey(true);
                 }
             }
-            finally
+            catch (Exception e)
             {
-                Console.WriteLine("Clause finale");
+                Console.WriteLine(e.Message);
             }
+            // Le programme est terminé rendu ici.*************************
+            Console.WriteLine("Appuyez sur une touche pour continuer");
+            Console.ReadKey(true);
+
         }
     }
 }
