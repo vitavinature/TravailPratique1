@@ -10,11 +10,9 @@ namespace Preparation_1
     {
         public Personne(string prenom, string nom)
         {
-            
             _prenom = prenom;
             _nom = nom;
         }
-
         protected string _prenom;
         protected string _nom;
     }

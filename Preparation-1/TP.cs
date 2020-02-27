@@ -19,7 +19,7 @@ namespace Preparation_1
             {
                 try
                 {
-                    Console.Write("Veuillez entrer la note obtenue: ");
+                    Console.Write("Note: ");
                     double noteTP = Convert.ToDouble(Console.ReadLine());
                     if (noteTP < 0 || noteTP > 100)
                     {
@@ -36,12 +36,8 @@ namespace Preparation_1
 
                     // La classe TimeSpan contient une durée, obtenue en faisant la soustraction de 2 dates
                     TimeSpan retard = dateRemise - date;
-                    //Console.WriteLine("Nombre de jours: " + retard.Days);
-                    //Console.WriteLine("Nombre de jours total: " + retard.TotalDays);
                     int retardJour = (int)Math.Ceiling(retard.TotalDays);
-                    //Console.WriteLine("retard jour: " + retardJour);
 
-                    double penalite = 0;
                     if (retardJour > 0)
                     {
                         noteTP -= retardJour * 10;
@@ -49,26 +45,24 @@ namespace Preparation_1
                         {
                             noteTP = 0;
                         }
+                        Console.WriteLine($"Note avec pénalité de {retardJour} jours de retard: " + noteTP);
                     }
-
-                    Console.WriteLine($"Note avec pénalité de {retardJour} jours de retard: " + noteTP);
-                    Console.WriteLine($"Portion de la finale: " + noteTP * _ponderation / 100);
-                    return noteTP;
+                    _note = noteTP * _ponderation / 100;
+                    Console.WriteLine($"Portion de la note finale: " + _note);
+                    Console.WriteLine("");
+                    return _note;
                 }
 
                 catch (Exception e)
                 {
-                    Console.Write("Mauvaise entrée: "+ e.Message);
+                    Console.Write("Mauvaise entrée: " + e.Message);
                 }
 
             }
         }
 
 
-        public void Afficher()
-        {
-            Console.WriteLine($"{_titre}, {_ponderation}, {_dateHeure}");
-        }
+
 
         private double _note;
 

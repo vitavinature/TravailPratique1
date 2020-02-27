@@ -21,14 +21,17 @@ namespace Preparation_1
             {
                 try
                 {
-                    Console.Write("Veuillez entrer la note obtenue: ");
+                    Console.Write("Note: ");
                     double note = Convert.ToDouble(Console.ReadLine());
                     if (note < 0 || note > 100)
                     {
                         throw new Exception("La note doit être comprise entre 0 et 100");
                     }
                     _note = note * _ponderation/100;
-                    return note;
+                    Console.WriteLine($"Portion de la note finale: " + _note);
+                    Console.WriteLine("");
+
+                    return _note;
                 }
                 catch (Exception e)
                 {
@@ -37,10 +40,7 @@ namespace Preparation_1
 
             }
         }
-        public void Afficher()
-        {
-            Console.WriteLine($"{_titre}, {_ponderation}, {_dateHeure}");
-        }
+
 
         private double _note;
 

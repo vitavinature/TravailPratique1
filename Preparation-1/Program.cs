@@ -51,6 +51,7 @@ namespace Preparation_1
 
                     // Lit la prochaine ligne
                     ligne = fichier.ReadLine();
+                    Console.WriteLine("");
 
                     while (ligne != null)
                     {
@@ -60,16 +61,14 @@ namespace Preparation_1
 
                         try
                         {
-                            if (valeurs[0].Length == 1)
+                            if (!(ligne.StartsWith("#") || ligne.Length == 0))
                             {
-                                //    etudiant.Afficher();
 
-                                type = valeurs[0][0];
 
                                 // Si le type est E pour examen
-                                switch (type)
+                                switch (valeurs[0])
                                 {
-                                    case 'E':
+                                    case "E":
                                         {
                                             // Construit un nouvel examen avec les valeurs lues
                                             Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
@@ -82,7 +81,7 @@ namespace Preparation_1
                                         }
                                         break;
 
-                                    case 'T':
+                                    case "T":
                                         {
                                             // Construit un nouveau tp avec les valeurs lues
                                             TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
@@ -91,26 +90,22 @@ namespace Preparation_1
                                             // Demande à l'utilisateur la note du tp
                                             double note = tp.DemanderNote();
 
-                                            // Demande la date que la remise a été faite
-
-                                            Console.WriteLine();
-
                                             // Ajoute la note à la note totale de l'étudiant
                                             etudiant.AjouterNote(note);
                                         }
                                         break;
+
                                     default:
-                                        break;
+                                        throw new Exception("Type " + valeurs[0] + " non valide");
                                 }
                             }
 
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("Erreur:" + e.Message);
+                            Console.WriteLine(e.Message);
                             Console.WriteLine("Appuyez sur une touche pour continuer");
                             Console.ReadKey(true);
-
                         }
                         ligne = fichier.ReadLine();
                         // Affiche les détails de l'étudiant

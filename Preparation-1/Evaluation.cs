@@ -21,8 +21,13 @@ namespace Preparation_1
             _dateHeure = DateTime.Parse(dateHeure);
 
         }
+        public void Afficher()
+        {
+            Console.WriteLine($"{_titre} ({_ponderation}%) {_dateHeure}");
+        }
 
-        protected string _titre;
+
+        private string _titre;
         protected int _ponderation;
         protected DateTime _dateHeure;
     }
