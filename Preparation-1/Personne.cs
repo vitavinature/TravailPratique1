@@ -14,8 +14,6 @@ namespace Preparation_1
             _nom = nom;
         }
 
-
-
         protected readonly string _prenom;
         protected readonly string _nom;
     }

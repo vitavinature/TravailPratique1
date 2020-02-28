@@ -10,12 +10,14 @@ namespace Preparation_1
     {
         public Etudiant(string prenom, string nom, string matricule) : base (prenom, nom)
         {
-            _matricule = Convert.ToInt32(matricule);
+            int numeroDeLetudiant = Convert.ToInt32(matricule);
 
-            if (_matricule < 1000000 || _matricule > 9999999)
+            if (numeroDeLetudiant < 1000000 || numeroDeLetudiant > 9999999)
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
             }
+
+            _matricule = numeroDeLetudiant;
         }
 
         public void AjouterNote(double note)
