@@ -10,22 +10,18 @@ namespace Preparation_2
     {
         public Etudiant(string prenom, string nom, string matricule) : base(prenom, nom)
         {
+            _matricule = Convert.ToInt32(matricule);
 
-    
-                _matricule = Convert.ToInt32(matricule);
-                if (_matricule < 1000000 || _matricule > 9999999)
-                {
-                    throw new Exception("Le matricule ne contient pas 7 chiffres.");
-                }
-
-  
-
+            if (_matricule < 1000000 || _matricule > 9999999)
+            {
+                throw new Exception("Le matricule ne contient pas 7 chiffres.");
+            }
         }
 
         public void AjouterNote(double note)
         {
             _noteTotale += note;
-            if (_noteTotale>100)
+            if (_noteTotale > 100)
             {
                 _noteTotale = 100;
             }

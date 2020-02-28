@@ -16,7 +16,6 @@ namespace Preparation_1
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
             }
-        
         }
 
         public void AjouterNote(double note)

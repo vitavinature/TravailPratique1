@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace Preparation_1
@@ -24,12 +20,14 @@ namespace Preparation_1
                     {
                         // Extrait les valeurs individuelles de la ligne
                         string[] valeurs2 = ligne.Split(';');
-
+                        if (valeurs2.Length < 3)
+                        {
+                            throw new Exception("Erreur: Il manque une information.");
+                        }
                         if (valeurs2[0].StartsWith("#") || valeurs2[0].StartsWith(" "))
                         {
                             throw new Exception("Erreur le fichier n'est pas valide; la première ligne n'est pas conforme.");
                         }
-                                                
                         if (valeurs2[1].Length < 2)
                         {
                             throw new Exception("Erreur, le nom est invalide.");

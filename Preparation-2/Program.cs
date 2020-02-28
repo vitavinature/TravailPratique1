@@ -13,18 +13,19 @@ namespace Preparation_2
                 string fichierEtudiant = "etudiant.txt";
                 using (StreamReader fichier = new StreamReader(fichierEtudiant))
                 {
-
-
                     // Lit la première ligne qui indique l'étudiant
                     string ligne = fichier.ReadLine();
+
                     if (ligne != null)
                     {
-                        // Extrait les valeurs individuelles de la ligne, et construit un objet Etudiant
+                        // Extrait les valeurs individuelles de la ligne
                         string[] valeurs2 = ligne.Split(';');
                         if (valeurs2.Length < 3)
                         {
                             throw new Exception("Erreur: Il manque une information.");
                         }
+
+                        // Construction d'un objet étudiant
                         etudiant = new Etudiant(valeurs2[2], valeurs2[1], valeurs2[0]);
                     }
                     // Lit la prochaine ligne
