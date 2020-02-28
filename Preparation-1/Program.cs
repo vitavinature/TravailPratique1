@@ -10,11 +10,11 @@ namespace Preparation_1
             Etudiant etudiant = null;
             try
             {
-                // Ouverture du fichier
-                using (StreamReader fichier = new StreamReader("etudiant.txt"))
+                // Ouverture du canalLecture pour l'accès au fichier "etudiant.txt"
+                using (StreamReader canalLecture = new StreamReader("etudiant.txt"))
                 {
                     // Lit la première ligne qui identifie l'étudiant
-                    string ligne = fichier.ReadLine();
+                    string ligne = canalLecture.ReadLine();
 
                     if (ligne != null)
                     {
@@ -46,7 +46,7 @@ namespace Preparation_1
                     }
 //----------------------------------------------------------------------------------------------------------------------------------
                     // Lit la prochaine ligne
-                    ligne = fichier.ReadLine();
+                    ligne = canalLecture.ReadLine();
                     Console.WriteLine("");
 
                     // Pour chaque lignwe lue (si elle contient quelque chose)
@@ -118,7 +118,7 @@ namespace Preparation_1
                             Console.ReadKey(true);
                             Console.WriteLine("");
                         }
-                        ligne = fichier.ReadLine();
+                        ligne = canalLecture.ReadLine();
                     }
                     
                     // Affiche les détails de l'étudiant
