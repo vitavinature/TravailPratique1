@@ -33,7 +33,7 @@ namespace Preparation_1
             Console.WriteLine($"{_prenom} {_nom} ({_matricule}), Note =  {_noteTotale}");
         }
 
-        private int _matricule;
+        private readonly int _matricule;
         private double _noteTotale;
     }
 

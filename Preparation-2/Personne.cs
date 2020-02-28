@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Preparation_1
+namespace Preparation_2
 {
     class Personne
     {
@@ -12,8 +12,11 @@ namespace Preparation_1
         {
             _prenom = prenom;
             _nom = nom;
+
         }
+
         protected readonly string _prenom;
-        protected readonly string _nom;
+     protected readonly string _nom;
+
     }
 }
