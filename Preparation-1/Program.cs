@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 
-namespace Preparation_1
+namespace TravailPratique1
+
 {
     class Program
     {
