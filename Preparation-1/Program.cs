@@ -8,11 +8,11 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
-            Etudiant etudiant = null;
+            Medecin medecin = null;
             try
             {
-                // Ouverture du canalLecture pour l'accès au fichier "etudiant.txt"
-                using (StreamReader canalLecture = new StreamReader("etudiant.txt"))
+                // Ouverture du canalLecture pour l'accès au fichier "medecins.txt"
+                using (StreamReader canalLecture = new StreamReader("medecins.txt"))
                 {
                     // Lit la première ligne qui identifie l'étudiant
                     string ligne = canalLecture.ReadLine();

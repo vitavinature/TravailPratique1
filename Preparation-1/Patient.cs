@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace TravailPratique1
 {
-    class Etudiant : Personne
+    class Patient : Personne
     {
-        public Etudiant(string prenom, string nom, string matricule) : base (prenom, nom)
+        public Patient(string prenom, string nom, string matricule) : base (prenom, nom)
         {
-            int numeroDeLetudiant = Convert.ToInt32(matricule);
+            int numeroDuPatient = Convert.ToInt32(matricule);
 
-            if (numeroDeLetudiant < 1000000 || numeroDeLetudiant > 9999999)
+            if (numeroDuPatient < 1000000 || numeroDuPatient > 9999999)
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
             }
 
-            _matricule = numeroDeLetudiant;
+            _matricule = numeroDuPatient;
         }
 
         public void AjouterNote(double note)
