@@ -16,17 +16,30 @@ namespace TravailPratique1
             Console.WriteLine("3) Afficher");
             Console.WriteLine("Q) Quitter");
 
+            imprimeLigne(73, '=');
+            Console.WriteLine("= Menu des ajouts de médecins ou de patients                            =");
+            imprimeLigne(73, '=');
+            Console.WriteLine("1) Ajouter un médecin");
+            Console.WriteLine("2) Ajouter un patient");
+            Console.WriteLine("R) Retour au menu principal");
 
-
+            imprimeLigne(73, '=');
+            Console.WriteLine("= Menu de modification des dossiers                                     =");
+            imprimeLigne(73, '=');
+            Console.WriteLine("1) Retrait d'un médecin");
+            Console.WriteLine("2) Décès d'un patient");
+            Console.WriteLine("R) Retour au menu principal");
+//-------------------------------------------------------------------------------------------------------------------
 
             imprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
             imprimeLigne(73, '=');
             Console.WriteLine("1) Afficher les statistiques");
             Console.WriteLine("2) Afficher la liste de médecins");
-            Console.WriteLine("3) Afficher la liste de patients");
-            Console.WriteLine("3) Afficher un patient");
-            Console.WriteLine("Q) Retour au menu principal");
+            Console.WriteLine("3) Afficher un médecin");
+            Console.WriteLine("4) Afficher la liste de patients");
+            Console.WriteLine("5) Afficher un patient");
+            Console.WriteLine("R) Retour au menu principal");
 
             Medecin medecin = null;
             try
