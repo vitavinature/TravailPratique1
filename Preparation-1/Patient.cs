@@ -12,7 +12,7 @@ namespace TravailPratique1
         {
             int numeroDuPatient = Convert.ToInt32(matricule);
 
-            if (numeroDuPatient < 1000000 || numeroDuPatient > 9999999)
+            if (numeroDuPatient < 1000 || numeroDuPatient > 9999)
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
             }

@@ -8,6 +8,26 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
+            imprimeLigne(73, '=');
+            Console.WriteLine("= Gestion des dossiers médicaux                                         =");
+            imprimeLigne(73, '=');
+            Console.WriteLine("1) Ajouter");
+            Console.WriteLine("2) Modifier");
+            Console.WriteLine("3) Afficher");
+            Console.WriteLine("Q) Quitter");
+
+
+
+
+            imprimeLigne(73, '=');
+            Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
+            imprimeLigne(73, '=');
+            Console.WriteLine("1) Afficher les statistiques");
+            Console.WriteLine("2) Afficher la liste de médecins");
+            Console.WriteLine("3) Afficher la liste de patients");
+            Console.WriteLine("3) Afficher un patient");
+            Console.WriteLine("Q) Retour au menu principal");
+
             Medecin medecin = null;
             try
             {
@@ -39,7 +59,7 @@ namespace TravailPratique1
                         }
 
                         // Construction d'un objet étudiant
-                        etudiant = new Etudiant(valeurs2[2], valeurs2[1], valeurs2[0]);
+                        medecin = new Medecin(valeurs2[2], valeurs2[1], valeurs2[0]);
                     }
                     else
                     {
@@ -78,7 +98,7 @@ namespace TravailPratique1
                                             double note = examen.DemanderNote();
 
                                             // Ajoute la note à la note totale de l'étudiant
-                                            etudiant.AjouterNote(note);
+                                            medecin.AjouterNote(note);
                                         }
                                         break;
 
@@ -94,7 +114,7 @@ namespace TravailPratique1
                                             double note = tp.DemanderNote();
 
                                             // Ajoute la note à la note totale de l'étudiant
-                                            etudiant.AjouterNote(note);
+                                            medecin.AjouterNote(note);
                                         }
                                         break;
 
@@ -124,7 +144,7 @@ namespace TravailPratique1
                     
                     // Affiche les détails de l'étudiant
                     Console.WriteLine("\n\n------------------------------");
-                    etudiant.Afficher();
+                    medecin.Afficher();
 
                 }
             }
@@ -136,6 +156,16 @@ namespace TravailPratique1
             Console.WriteLine("Appuyez sur une touche pour continuer");
             Console.ReadKey(true);
 
+        }
+
+        private static void imprimeLigne(int v1, char v2)
+        {
+            for (int i = 0; i < v1; i++)
+            {
+                Console.Write(v2);
+            }
+            Console.WriteLine();
+            throw new NotImplementedException();
         }
     }
 }

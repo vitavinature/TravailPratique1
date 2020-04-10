@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace TravailPratique1
 {
-    class Medicin : Personne
+    class Medecin : Personne
     {
         public Medicin(string prenom, string nom, string matricule) : base (prenom, nom)
         {
             int numeroDuMedecin = Convert.ToInt32(matricule);
 
-            if (numeroDuMedecin < 1000000 || numeroDuMedecin > 9999999)
+            if (numeroDuMedecin < 100 || numeroDuMedecin > 999)
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
             }
