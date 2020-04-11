@@ -29,7 +29,7 @@ namespace TravailPratique1
             Console.WriteLine("1) Retrait d'un médecin");
             Console.WriteLine("2) Décès d'un patient");
             Console.WriteLine("R) Retour au menu principal");
-//-------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------
 
             imprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
@@ -47,38 +47,38 @@ namespace TravailPratique1
                 // Ouverture du canalLecture pour l'accès au fichier "medecins.txt"
                 using (StreamReader canalLecture = new StreamReader("medecins.txt"))
                 {
-                    // Lit la première ligne qui identifie l'étudiant
+                    // Lit la première ligne qui identifie le médecin
                     string ligne = canalLecture.ReadLine();
 
                     if (ligne != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
-                        string[] valeurs2 = ligne.Split(';');
-                        if (valeurs2.Length < 3)
+                        string[] donnees = ligne.Split(';');
+                        if (donnees.Length < 3)
                         {
                             throw new Exception("Erreur: Il manque une information.");
                         }
-                        if (valeurs2[0].StartsWith("#") || valeurs2[0].StartsWith(" "))
+                        if (donnees[0].Length < 3)
                         {
-                            throw new Exception("Erreur le fichier n'est pas valide; la première ligne n'est pas conforme.");
+                            throw new Exception("Erreur le fichier n'est pas valide; la première donnée n'est pas conforme.");
                         }
-                        if (valeurs2[1].Length < 2)
+                        if (donnees[1].Length < 2)
                         {
                             throw new Exception("Erreur, le nom est invalide.");
                         }
-                        if (valeurs2[2].Length < 2)
+                        if (donnees[2].Length < 2)
                         {
                             throw new Exception("Erreur, le prénom est invalide.");
                         }
 
                         // Construction d'un objet étudiant
-                        medecin = new Medecin(valeurs2[2], valeurs2[1], valeurs2[0]);
+                        medecin = new Medecin(donnees[2], donnees[1], donnees[0]);
                     }
                     else
                     {
                         throw new Exception("Erreur le fichier n'est pas valide.");
                     }
-//----------------------------------------------------------------------------------------------------------------------------------
+                    //----------------------------------------------------------------------------------------------------------------------------------
                     // Lit la prochaine ligne
                     ligne = canalLecture.ReadLine();
                     Console.WriteLine("");
@@ -99,38 +99,38 @@ namespace TravailPratique1
                                 // Selon la valeur du (ou des) premier(s) caractère(s) 
                                 switch (valeurs[0])
                                 {
-                                    case "E":
-                                        {
-                                            // Construit un nouvel examen avec les valeurs lues
-                                            Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
+                                    /* case "E":
+                                         {
+                                             // Construit un nouvel examen avec les valeurs lues
+                                             Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
 
-                                            // Affiche les détails de l'examen
-                                            examen.Afficher();
+                                             // Affiche les détails de l'examen
+                                             examen.Afficher();
 
-                                            // Demande à l'utilisateur la note de l'examen
-                                            double note = examen.DemanderNote();
+                                             // Demande à l'utilisateur la note de l'examen
+                                             double note = examen.DemanderNote();
 
-                                            // Ajoute la note à la note totale de l'étudiant
-                                            medecin.AjouterNote(note);
-                                        }
-                                        break;
+                                             // Ajoute la note à la note totale de l'étudiant
+                                             medecin.AjouterNote(note);
+                                         }
+                                         break;
 
-                                    case "T":
-                                        {
-                                            // Construit un nouveau tp avec les valeurs lues
-                                            TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
+                                     case "T":
+                                         {
+                                             // Construit un nouveau tp avec les valeurs lues
+                                             TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
 
-                                            // Affiche les détails du tp
-                                            tp.Afficher();
+                                             // Affiche les détails du tp
+                                             tp.Afficher();
 
-                                            // Demande à l'utilisateur la note du tp
-                                            double note = tp.DemanderNote();
+                                             // Demande à l'utilisateur la note du tp
+                                             double note = tp.DemanderNote();
 
-                                            // Ajoute la note à la note totale de l'étudiant
-                                            medecin.AjouterNote(note);
-                                        }
-                                        break;
-
+                                             // Ajoute la note à la note totale de l'étudiant
+                                             medecin.AjouterNote(note);
+                                         }
+                                         break;
+ */
                                     default:
                                         throw new Exception("Type " + valeurs[0] + " non valide");
                                 }
@@ -154,7 +154,7 @@ namespace TravailPratique1
                         }
                         ligne = canalLecture.ReadLine();
                     }
-                    
+
                     // Affiche les détails de l'étudiant
                     Console.WriteLine("\n\n------------------------------");
                     medecin.Afficher();
@@ -178,7 +178,7 @@ namespace TravailPratique1
                 Console.Write(v2);
             }
             Console.WriteLine();
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
