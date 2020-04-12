@@ -8,13 +8,20 @@ namespace TravailPratique1
 {
     class Patient : Personne
     {
-        public Patient(string prenom, string nom, string matricule) : base (prenom, nom)
+        public Patient(string prenom, string nom, string matricule, string deces) : base (prenom, nom)
         {
             int numeroDuPatient = Convert.ToInt32(matricule);
 
             if (numeroDuPatient < 1000 || numeroDuPatient > 9999)
             {
-                throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
+                throw new Exception("Erreur le fichier n'est pas valide; le matricule du patient est en erreur");
+            }
+
+            DateTime dateDeces = Convert.ToDateTime(deces);
+            if (deces = 2050-12-31)
+            {
+                throw new Exception("Erreur le fichier n'est pas valide; le matricule du patient est en erreur");
+
             }
 
             _matricule = numeroDuPatient;

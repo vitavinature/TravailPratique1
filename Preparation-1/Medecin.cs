@@ -8,13 +8,13 @@ namespace TravailPratique1
 {
     class Medecin : Personne
     {
-        public Medecin(string prenom, string nom, string matricule) : base (prenom, nom)
+        public Medecin(string prenom, string nom, string matricule, DateTime retraite) : base (prenom, nom)
         {
    int numeroDuMedecin = Convert.ToInt32(matricule);
 
             if (numeroDuMedecin < 100 || numeroDuMedecin > 999)         
             {
-                throw new Exception("Erreur le fichier n'est pas valide; le matricule est en erreur");
+                throw new Exception("Erreur le fichier n'est pas valide; le matricule du médecin est en erreur");
             }
 
             _matricule = numeroDuMedecin;

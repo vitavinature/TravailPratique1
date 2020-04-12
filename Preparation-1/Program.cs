@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic; // Pour la classe List
+
 
 namespace TravailPratique1
 
@@ -23,15 +25,21 @@ namespace TravailPratique1
                     if (ligne != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
-                        string[] donnees = ligne.Split(';');
-                        if (donnees.Length < 3)
+                        List<string> donnees = new List<string>( ligne.Split(';'));
+                        if (donnees.Count < 3)
                         {
-                            throw new Exception("Erreur: Il manque une information.");
+                            throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
                         }
-                        if (donnees[0].Length < 3)
+                        if (donnees.Count > 4)
                         {
-                            throw new Exception("Erreur le fichier n'est pas valide; la première donnée n'est pas conforme.");
+                            throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
                         }
+
+                        if (donnees[0].Length < 3 || donnees[0].Length > 3)
+                        {
+                            throw new Exception("Erreur le fichier n'est pas valide; le nouméro du médecin n'est pas conforme.");
+                        }
+
                         if (donnees[1].Length < 2)
                         {
                             throw new Exception("Erreur, le nom est invalide.");
@@ -41,8 +49,8 @@ namespace TravailPratique1
                             throw new Exception("Erreur, le prénom est invalide.");
                         }
 
-                        // Construction d'un objet étudiant
-                        medecin = new Medecin(donnees[2], donnees[1], donnees[0]);
+                        // Construction d'un objet Medecin
+                        medecin = new Medecin(donnees[0], donnees[1], donnees[2], donnees[3]);
                     }
                     else
                     {
