@@ -8,44 +8,14 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
-            imprimeLigne(73, '=');
-            Console.WriteLine("= Gestion des dossiers médicaux                                         =");
-            imprimeLigne(73, '=');
-            Console.WriteLine("1) Ajouter");
-            Console.WriteLine("2) Modifier");
-            Console.WriteLine("3) Afficher");
-            Console.WriteLine("Q) Quitter");
-
-            imprimeLigne(73, '=');
-            Console.WriteLine("= Menu des ajouts de médecins ou de patients                            =");
-            imprimeLigne(73, '=');
-            Console.WriteLine("1) Ajouter un médecin");
-            Console.WriteLine("2) Ajouter un patient");
-            Console.WriteLine("R) Retour au menu principal");
-
-            imprimeLigne(73, '=');
-            Console.WriteLine("= Menu de modification des dossiers                                     =");
-            imprimeLigne(73, '=');
-            Console.WriteLine("1) Retrait d'un médecin");
-            Console.WriteLine("2) Décès d'un patient");
-            Console.WriteLine("R) Retour au menu principal");
-            //-------------------------------------------------------------------------------------------------------------------
-
-            imprimeLigne(73, '=');
-            Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
-            imprimeLigne(73, '=');
-            Console.WriteLine("1) Afficher les statistiques");
-            Console.WriteLine("2) Afficher la liste de médecins");
-            Console.WriteLine("3) Afficher un médecin");
-            Console.WriteLine("4) Afficher la liste de patients");
-            Console.WriteLine("5) Afficher un patient");
-            Console.WriteLine("R) Retour au menu principal");
+            Menu1();
 
             Medecin medecin = null;
             try
             {
+                string fichierMedecins = "medecins.txt";
                 // Ouverture du canalLecture pour l'accès au fichier "medecins.txt"
-                using (StreamReader canalLecture = new StreamReader("medecins.txt"))
+                using (StreamReader canalLecture = new StreamReader(fichierMedecins))
                 {
                     // Lit la première ligne qui identifie le médecin
                     string ligne = canalLecture.ReadLine();
@@ -171,7 +141,7 @@ namespace TravailPratique1
 
         }
 
-        private static void imprimeLigne(int v1, char v2)
+        private static void ImprimeLigne(int v1, char v2)
         {
             for (int i = 0; i < v1; i++)
             {
@@ -180,6 +150,180 @@ namespace TravailPratique1
             Console.WriteLine();
             //throw new NotImplementedException();
         }
+        private static void Menu1()
+        {
+            char choixChar = '0';
+            ImprimeLigne(73, '=');
+            Console.WriteLine("= Gestion des dossiers médicaux                                         =");
+            ImprimeLigne(73, '=');
+            Console.WriteLine("1) Ajouter");
+            Console.WriteLine("2) Modifier");
+            Console.WriteLine("3) Afficher");
+            Console.WriteLine("Q) Quitter");
+            Console.Write("> ");
+            string choix = Console.ReadLine();
+            if (choix.Length == 1 && ValiderChoix(choix, "123qQ") == true) 
+            {
+                choixChar = Convert.ToChar(choix);
+            }
+            else
+            {
+                Menu1();
+            }
+            switch (choixChar)
+            {
+                case '1':
+                    MenuAjouter();
+                    break;
+                case '2':
+                    MenuModifier();
+                    break;
+                case '3':
+                    MenuAfficher();
+                    break;
+                case 'q':
+                case 'Q':
+                    //Quitter();*************************************** à faire
+                    break;
+                default:
+                    Menu1();
+                    break;
+            }
+
+        }
+
+        private static bool ValiderChoix(string choix, string v)
+        {
+            if (v.Contains(choix))
+            {
+                return true;
+            }
+            return false;
+            throw new NotImplementedException();
+        }
+
+        private static void MenuAjouter()
+        {
+            char choixChar = '0';
+
+            ImprimeLigne(73, '=');
+            Console.WriteLine("= Gestion des dossiers médicaux - Ajout                                 =");
+            ImprimeLigne(73, '=');
+            Console.WriteLine("1) Ajouter un médecin");
+            Console.WriteLine("2) Ajouter un patient");
+            Console.WriteLine("R) Retour au menu principal");
+            Console.Write("> ");
+            string choix = Console.ReadLine();
+            if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
+            {
+                choixChar = Convert.ToChar(choix);
+            }
+            else
+            {
+                MenuAjouter();
+            }
+            switch (choixChar)
+            {
+                case '1':
+                    //AjouterMedecin(); ******************
+                    break;
+                case '2':
+                    //AjouterPatient(); ******************
+                    break;
+                 case 'r':
+                case 'R':
+                    Menu1();                    break;
+                default:
+                    MenuAjouter();
+                    break;
+            }
+        }
+        private static void MenuModifier()
+        {
+            char choixChar = '0';
+
+            ImprimeLigne(73, '=');
+            Console.WriteLine("= Gestion des dossiers médicaux - Modification                          =");
+            ImprimeLigne(73, '=');
+            Console.WriteLine("1) Retrait d'un médecin");
+            Console.WriteLine("2) Décès d'un patient");
+            Console.WriteLine("R) Retour au menu principal");
+            Console.Write("> ");
+            string choix = Console.ReadLine();
+            if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
+            {
+                choixChar = Convert.ToChar(choix);
+            }
+            else
+            {
+                MenuModifier();
+            }
+            switch (choixChar)
+            {
+                case '1':
+                    //RetraitMedecin(); ******************
+                    break;
+                case '2':
+                    //DecesPatient(); ******************
+                    break;
+                case 'r':
+                case 'R':
+                    Menu1(); break;
+                default:
+                    MenuModifier();
+                    break;
+            }
+        }
+        private static void MenuAfficher()
+        {
+            char choixChar = '0';
+
+            ImprimeLigne(73, '=');
+            Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
+            ImprimeLigne(73, '=');
+            Console.WriteLine("1) Afficher les statistiques");
+            Console.WriteLine("2) Afficher la liste de médecins");
+            Console.WriteLine("3) Afficher un médecin");
+            Console.WriteLine("4) Afficher la liste de patients");
+            Console.WriteLine("5) Afficher un patient");
+            Console.WriteLine("R) Retour au menu principal");
+            Console.Write("> ");
+            string choix = Console.ReadLine();
+            if (choix.Length == 1 && ValiderChoix(choix, "12345rR") == true)
+            {
+                choixChar = Convert.ToChar(choix);
+            }
+            else
+            {
+                MenuAfficher();
+            }
+            switch (choixChar)
+            {
+                case '1':
+                    //AfficherStatistiques(); ******************
+                    break;
+                case '2':
+                    //AfficherListeMedecins(); ******************
+                    break;
+                case '3':
+                    //AfficherUnMedecin(); ******************
+                    break;
+                case '4':
+                    //AfficherListePatients(); ******************
+                    break;
+                case '5':
+                    //AfficherUnPatient(); ******************
+                    break;
+                case 'r':
+                case 'R':
+                    Menu1(); break;
+                default:
+                    MenuAfficher();
+                    break;
+            }
+        }
+
+
     }
 }
 
