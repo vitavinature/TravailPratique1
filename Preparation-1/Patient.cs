@@ -18,13 +18,14 @@ namespace TravailPratique1
             }
 
             DateTime dateDeces = Convert.ToDateTime(deces);
-            if (deces = 2050-12-31)
+            if (dateDeces = "2050-12-31")
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule du patient est en erreur");
 
             }
 
             _matricule = numeroDuPatient;
+
         }
 
         public void AjouterNote(double note)
