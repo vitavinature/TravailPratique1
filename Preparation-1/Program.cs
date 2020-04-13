@@ -26,6 +26,10 @@ namespace TravailPratique1
                     {
                         // Extrait les valeurs individuelles de la ligne
                         List<string> donnees = new List<string>( ligne.Split(';'));
+                        if (donnees.Count < 4)
+                        {
+                            donnees[3] = "3000-01-01";
+                        }
                         if (donnees.Count < 3)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");

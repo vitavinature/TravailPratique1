@@ -8,7 +8,7 @@ namespace TravailPratique1
 {
     class Medecin : Personne
     {
-        public Medecin(string prenom, string nom, string matricule, DateTime retraite) : base (prenom, nom)
+        public Medecin(string prenom, string nom, string matricule, string retraite) : base (prenom, nom)
         {
    int numeroDuMedecin = Convert.ToInt32(matricule);
 
