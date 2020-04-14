@@ -10,7 +10,7 @@ namespace TravailPratique1
     {
         public Medecin(string prenom, string nom, string matricule, string retraite) : base (prenom, nom)
         {
-            DateTime nonRetraite = new DateTime(3000,1,1);
+            _nonRetraite = new DateTime(3000,1,1);
             int numeroDuMedecin = Convert.ToInt32(matricule);
 
             if (numeroDuMedecin < 100 || numeroDuMedecin > 999)         
@@ -19,15 +19,13 @@ namespace TravailPratique1
             }
             DateTime dateRetraite = Convert.ToDateTime(retraite);
 
-            if (dateRetraite != nonRetraite)
+            if (dateRetraite != _nonRetraite)
             {
-                _dateRetraite = nonRetraite;
-                throw new Exception("Erreur le fichier n'est pas valide; le matricule du patient est en erreur");
-
+                _dateRetraite = dateRetraite;
             }
             else
             {
-                _dateRetraite = dateRetraite;
+                _dateRetraite = _nonRetraite;
 
             }
 
@@ -36,11 +34,23 @@ namespace TravailPratique1
 
         public void Afficher()
         {
-            Console.WriteLine($"{_prenom} {_nom} ({_matricule})");
+            
+            Console.Write($"{_matricule} {_prenom} {_nom}, ");
+            if (_dateRetraite != _nonRetraite)
+            {
+                Console.Write("Retraité");
+            }
+            else
+            {
+                Console.Write($"Nombre de patients: {_nombreDePatients}");
+            }
+            Console.WriteLine();
         }
 
         private readonly int _matricule;
         protected readonly DateTime _dateRetraite = new DateTime();
+        protected readonly DateTime _nonRetraite = new DateTime();
+        protected readonly int _nombreDePatients = 0;
     }
 
 }

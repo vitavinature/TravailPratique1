@@ -10,8 +10,9 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
+            # region List <Medecin> Medecins = new List<Medecin>();
 
-            Medecin medecin = null;
+            List < Medecin> Medecins = new List<Medecin>();
             try
             {
                 string fichierMedecins = "medecins.txt";
@@ -20,19 +21,28 @@ namespace TravailPratique1
                 {
                     // Lit la première ligne qui identifie le médecin
                     string ligne = canalLecture.ReadLine();
+                    Console.WriteLine(ligne);
 
-                    if (ligne != null)
+                    while (ligne != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
                         List<string> donnees = new List<string>( ligne.Split(';'));
-                        if (donnees.Count < 4)
+                        foreach (string item in donnees)
                         {
-                            donnees[3] = "3000-01-01";
+                            Console.WriteLine(item);
                         }
+
                         if (donnees.Count < 3)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
                         }
+
+                        if (donnees.Count == 3)
+                        {
+                            donnees.Add("3000-01-01");
+                            Console.WriteLine(donnees[3]);
+                        }
+      
                         if (donnees.Count > 4)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
@@ -53,18 +63,32 @@ namespace TravailPratique1
                         }
 
                         // Construction d'un objet Medecin
-                        medecin = new Medecin(donnees[0], donnees[1], donnees[2], donnees[3]);
+                        Medecins.Add(new Medecin(donnees[1], donnees[2], donnees[0], donnees[3]));
+
+                        Console.WriteLine("Premier objet médecin créé");
+
+                        ligne = canalLecture.ReadLine();
+                        Console.WriteLine("");
+
                     }
-                    else
+//*******************************************************************************
+                    foreach (Medecin item in Medecins)
+                    {
+                        item.Afficher();
+                    }
+                    //********************************************************************************
+                    #endregion
+
+                    /*
                     {
                         throw new Exception("Erreur le fichier n'est pas valide.");
                     }
+                    */
                     //----------------------------------------------------------------------------------------------------------------------------------
                     // Lit la prochaine ligne
-                    ligne = canalLecture.ReadLine();
-                    Console.WriteLine("");
 
-                    // Pour chaque lignwe lue (si elle contient quelque chose)
+
+                    // Pour chaque ligne lue (si elle contient quelque chose)
                     while (ligne != null)
                     {
                         string[] valeurs;
@@ -138,7 +162,7 @@ namespace TravailPratique1
 
                     // Affiche les détails de l'étudiant
                     Console.WriteLine("\n\n------------------------------");
-                    medecin.Afficher();
+                    //Medecins.Afficher();
                     Menu1();
 
                 }
