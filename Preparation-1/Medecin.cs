@@ -10,32 +10,37 @@ namespace TravailPratique1
     {
         public Medecin(string prenom, string nom, string matricule, string retraite) : base (prenom, nom)
         {
-   int numeroDuMedecin = Convert.ToInt32(matricule);
+            DateTime nonRetraite = new DateTime(3000,1,1);
+            int numeroDuMedecin = Convert.ToInt32(matricule);
 
             if (numeroDuMedecin < 100 || numeroDuMedecin > 999)         
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule du médecin est en erreur");
             }
+            DateTime dateRetraite = Convert.ToDateTime(retraite);
+
+            if (dateRetraite != nonRetraite)
+            {
+                _dateRetraite = nonRetraite;
+                throw new Exception("Erreur le fichier n'est pas valide; le matricule du patient est en erreur");
+
+            }
+            else
+            {
+                _dateRetraite = dateRetraite;
+
+            }
 
             _matricule = numeroDuMedecin;
         }
 
-        public void AjouterNote(double note)
-        {
-            if (_noteTotale + note > 100)
-            {
-                throw new Exception("Note totale trop grande");
-            }
-            _noteTotale += note;
-        }
- 
         public void Afficher()
         {
-            Console.WriteLine($"{_prenom} {_nom} ({_matricule}), Note =  {_noteTotale}");
+            Console.WriteLine($"{_prenom} {_nom} ({_matricule})");
         }
 
         private readonly int _matricule;
-        private double _noteTotale;
+        protected readonly DateTime _dateRetraite = new DateTime();
     }
 
 }

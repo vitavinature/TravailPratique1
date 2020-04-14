@@ -10,7 +10,6 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
-            Menu1();
 
             Medecin medecin = null;
             try
@@ -140,6 +139,7 @@ namespace TravailPratique1
                     // Affiche les détails de l'étudiant
                     Console.WriteLine("\n\n------------------------------");
                     medecin.Afficher();
+                    Menu1();
 
                 }
             }
