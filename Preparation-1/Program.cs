@@ -149,6 +149,10 @@ namespace TravailPratique1
             }
             #endregion
 
+            Console.WriteLine("Appuyez sur une touche pour continuer");
+            Console.ReadKey(true);
+
+            Console.Clear();
             Menu1();
 
             // Le programme est terminé rendu ici.*************************
@@ -167,6 +171,7 @@ namespace TravailPratique1
         }
         private static void Menu1()
         {
+            Console.Clear();
             char choixChar = '0';
             ImprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux                                         =");
@@ -183,17 +188,21 @@ namespace TravailPratique1
             }
             else
             {
+                Console.Clear();
                 Menu1();
             }
             switch (choixChar)
             {
                 case '1':
+                    Console.Clear();
                     MenuAjouter();
                     break;
                 case '2':
+                    Console.Clear();
                     MenuModifier();
                     break;
                 case '3':
+                    Console.Clear();
                     MenuAfficher();
                     break;
                 case 'q':
@@ -201,11 +210,11 @@ namespace TravailPratique1
                     //Quitter();*************************************** à faire
                     break;
                 default:
+                    Console.Clear();
                     Menu1();
                     break;
             }
         }
-
         private static bool ValiderChoix(string choix, string v)
         {
             if (v.Contains(choix))
@@ -215,8 +224,7 @@ namespace TravailPratique1
             return false;
             throw new NotImplementedException();
         }
-
-        private static void MenuAjouter()
+        public static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             char choixChar = '0';
 
@@ -234,20 +242,23 @@ namespace TravailPratique1
             }
             else
             {
-                MenuAjouter();
+                Console.Clear();
+                MenuAjouter(ref Medecins, ref Patients);
             }
             switch (choixChar)
             {
                 case '1':
-                    //AjouterMedecin(); ******************
+                    AjouterMedecin(ref Medecins);
                     break;
                 case '2':
                     //AjouterPatient(); ******************
                     break;
                 case 'r':
                 case 'R':
+                    Console.Clear();
                     Menu1(); break;
                 default:
+                    Console.Clear();
                     MenuAjouter();
                     break;
             }
@@ -270,6 +281,7 @@ namespace TravailPratique1
             }
             else
             {
+                Console.Clear();
                 MenuModifier();
             }
             switch (choixChar)
@@ -282,8 +294,10 @@ namespace TravailPratique1
                     break;
                 case 'r':
                 case 'R':
+                    Console.Clear();
                     Menu1(); break;
                 default:
+                    Console.Clear();
                     MenuModifier();
                     break;
             }
@@ -291,7 +305,6 @@ namespace TravailPratique1
         private static void MenuAfficher()
         {
             char choixChar = '0';
-
             ImprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
             ImprimeLigne(73, '=');
@@ -309,6 +322,7 @@ namespace TravailPratique1
             }
             else
             {
+                Console.Clear();
                 MenuAfficher();
             }
             switch (choixChar)
@@ -330,14 +344,14 @@ namespace TravailPratique1
                     break;
                 case 'r':
                 case 'R':
+                    Console.Clear();
                     Menu1(); break;
                 default:
+                    Console.Clear();
                     MenuAfficher();
                     break;
             }
         }
-
-
     }
 }
 
