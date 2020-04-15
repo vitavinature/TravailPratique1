@@ -10,45 +10,55 @@ namespace TravailPratique1
     {
         public Patient(string prenom, string nom, string assMaladie, string matriculeMedecin, string deces) : base(prenom, nom)
         {
-            DateTime nonDecede = new DateTime(300, 1, 1);
+            int numeroAssMaladie = Convert.ToInt32(assMaladie);
 
-            int numeroDuPatient = Convert.ToInt32(assMaladie);
-
-            if (numeroDuPatient < 1000 || numeroDuPatient > 9999)
+            if (numeroAssMaladie < 1000 || numeroAssMaladie > 9999)
             {
-                throw new Exception("Erreur le fichier n'est pas valide; le matricule du patient est en erreur");
+                throw new Exception("Erreur le fichier n'est pas valide; le numéro d'assurance maladie du patient est en erreur");
+            }
+            else
+            {
+                _assMaladie = numeroAssMaladie;
+
             }
             int numeroDuMedecin = Convert.ToInt32(matriculeMedecin);
 
 
             DateTime dateDeces = Convert.ToDateTime(deces);
 
-           /* if (dateDeces != nonDecede)
+         if (dateDeces != _nonDecede)
             {
-                throw new Exception("Erreur le fichier n'est pas valide; le matricule du patient est en erreur");
+                _dateDeces = dateDeces;
 
             }
-            */
-
-            _assMaladie = numeroDuPatient;
+            else
+            {
+                _dateDeces = _nonDecede;
+            }
             _matriculeMedecin = numeroDuMedecin;
-            _dateDeces = dateDeces;
 
         }
 
 
         public void Afficher()
         {
-            Console.Write($"{_matriculeMedecin} {_prenom} {_nom}, ");
-            if (true)
-            {
 
+            Console.Write($"{_assMaladie} {_prenom} {_nom}, ");
+            if (_dateDeces != _nonDecede)
+            {
+                Console.Write("Décédé");
             }
+            else
+            {
+                Console.Write($"Medecin: {_matriculeMedecin} prénomMédecin nomMédecin");
+            }
+            Console.WriteLine();
         }
 
         private readonly int _assMaladie;
         protected readonly int _matriculeMedecin;
         private readonly DateTime _dateDeces = new DateTime();
+        protected readonly DateTime _nonDecede = new DateTime(300, 1, 1);
     }
 
 }

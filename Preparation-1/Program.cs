@@ -50,7 +50,7 @@ namespace TravailPratique1
 
                         if (donnees[0].Length < 3 || donnees[0].Length > 3)
                         {
-                            throw new Exception("Erreur le fichier n'est pas valide; le nouméro du médecin n'est pas conforme.");
+                            throw new Exception("Erreur le fichier n'est pas valide; le numéro du médecin n'est pas conforme.");
                         }
 
                         if (donnees[1].Length < 2)
@@ -65,7 +65,7 @@ namespace TravailPratique1
                         // Construction d'un objet Medecin
                         Medecins.Add(new Medecin(donnees[1], donnees[2], donnees[0], donnees[3]));
 
-                        Console.WriteLine("Premier objet médecin créé");
+                        Console.WriteLine("Objet médecin créé");
 
                         ligneMed = canalLectureMed.ReadLine();
                         Console.WriteLine("");
@@ -109,7 +109,7 @@ namespace TravailPratique1
                                 if (donnees.Count == 4)
                                 {
                                     donnees.Add("3000-01-01");
-                                    Console.WriteLine(donnees[3]);
+                                    Console.WriteLine(donnees[4]);
                                 }
 
                                 if (donnees.Count > 5)
@@ -119,7 +119,7 @@ namespace TravailPratique1
 
                                 if (donnees[0].Length < 4 || donnees[0].Length > 4)
                                 {
-                                    throw new Exception("Erreur le fichier n'est pas valide; le nouméro du patient n'est pas conforme.");
+                                    throw new Exception("Erreur le fichier n'est pas valide; le numéro du patient n'est pas conforme.");
                                 }
 
                                 if (donnees[1].Length < 2)
@@ -134,7 +134,7 @@ namespace TravailPratique1
                                 // Construction d'un objet Patient
                                 Patients.Add(new Patient(donnees[1], donnees[2], donnees[0], donnees[3], donnees[4]));
 
-                                Console.WriteLine("Premier objet patient créé");
+                                Console.WriteLine("Objet patient créé");
 
                                 lignePat = canalLecturePat.ReadLine();
                                 Console.WriteLine("");
@@ -147,87 +147,6 @@ namespace TravailPratique1
                             }
                             //********************************************************************************
                             #endregion
-
-                            /*
-                            {
-                                throw new Exception("Erreur le fichier n'est pas valide.");
-                            }
-                            */
-                            //----------------------------------------------------------------------------------------------------------------------------------
-                            // Lit la prochaine ligne
-
-
-                            // Pour chaque ligne lue (si elle contient quelque chose)
-                            while (ligne != null)
-                            {
-                                string[] valeurs;
-                                valeurs = ligne.Split(';'); // Séparation de la ligne en segments délimité par (;)
-
-                                try
-                                {
-                                    // Si la ligne ne commence pas par # ou si elle n'est pas vide
-                                    // Ce qui a pour effet d'ignorer les lignes de commentaires et les lignes vides
-                                    // Les lignes qui correspondent aux évaluations entrent dans le if
-                                    if (!(ligne.StartsWith("#") || ligne.Length == 0))
-                                    {
-                                        // Selon la valeur du (ou des) premier(s) caractère(s) 
-                                        switch (valeurs[0])
-                                        {
-                                            /* case "E":
-                                                 {
-                                                     // Construit un nouvel examen avec les valeurs lues
-                                                     Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
-
-                                                     // Affiche les détails de l'examen
-                                                     examen.Afficher();
-
-                                                     // Demande à l'utilisateur la note de l'examen
-                                                     double note = examen.DemanderNote();
-
-                                                     // Ajoute la note à la note totale de l'étudiant
-                                                     medecin.AjouterNote(note);
-                                                 }
-                                                 break;
-
-                                             case "T":
-                                                 {
-                                                     // Construit un nouveau tp avec les valeurs lues
-                                                     TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
-
-                                                     // Affiche les détails du tp
-                                                     tp.Afficher();
-
-                                                     // Demande à l'utilisateur la note du tp
-                                                     double note = tp.DemanderNote();
-
-                                                     // Ajoute la note à la note totale de l'étudiant
-                                                     medecin.AjouterNote(note);
-                                                 }
-                                                 break;
-         */
-                                            default:
-                                                throw new Exception("Type " + valeurs[0] + " non valide");
-                                        }
-                                    }
-                                }
-                                catch (IndexOutOfRangeException)
-                                {
-                                    Console.WriteLine("Il manque des valeurs.");
-                                    Console.WriteLine("Appuyez sur une touche pour continuer");
-                                    Console.ReadKey(true);
-
-                                }
-
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine(e.Message);
-
-                                    Console.WriteLine("Appuyez sur une touche pour continuer");
-                                    Console.ReadKey(true);
-                                    Console.WriteLine("");
-                                }
-                                ligne = canalLecture.ReadLine();
-                            }
 
                             // Affiche les détails de l'étudiant
                             Console.WriteLine("\n\n------------------------------");
@@ -249,6 +168,11 @@ namespace TravailPratique1
 
                 }
             }
+            catch (Exception e)
+            {
+
+            }
+
         }
 
         private static void ImprimeLigne(int v1, char v2)

@@ -8,12 +8,12 @@ namespace TravailPratique1
 {
     class Medecin : Personne
     {
-        public Medecin(string prenom, string nom, string matricule, string retraite) : base (prenom, nom)
+        public Medecin(string prenom, string nom, string matricule, string retraite) : base(prenom, nom)
         {
-            _nonRetraite = new DateTime(3000,1,1);
+            _nonRetraite = new DateTime(3000, 1, 1);
             int numeroDuMedecin = Convert.ToInt32(matricule);
 
-            if (numeroDuMedecin < 100 || numeroDuMedecin > 999)         
+            if (numeroDuMedecin < 100 || numeroDuMedecin > 999)
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule du médecin est en erreur");
             }
@@ -34,9 +34,10 @@ namespace TravailPratique1
 
         public void Afficher()
         {
-            
+
             Console.Write($"{_matricule} {_prenom} {_nom}, ");
             if (_dateRetraite != _nonRetraite)
+
             {
                 Console.Write("Retraité");
             }
