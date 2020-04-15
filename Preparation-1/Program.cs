@@ -4,14 +4,12 @@ using System.Collections.Generic; // Pour la classe List
 
 
 namespace TravailPratique1
-
 {
     class Program
     {
         static void Main(string[] args)
         {
             # region List <Medecin> Medecins = new List<Medecin>();
-
             List<Medecin> Medecins = new List<Medecin>();
             try
             {
@@ -21,36 +19,107 @@ namespace TravailPratique1
                 {
                     // Lit la première ligne qui identifie le médecin
                     string ligneMed = canalLectureMed.ReadLine();
-                    Console.WriteLine(ligneMed);
+                    // Console.WriteLine(ligneMed);
 
                     while (ligneMed != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
                         List<string> donnees = new List<string>(ligneMed.Split(';'));
+                        /*
                         foreach (string item in donnees)
                         {
                             Console.WriteLine(item);
                         }
-
+                        */
                         if (donnees.Count < 3)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
                         }
-
                         if (donnees.Count == 3)
                         {
                             donnees.Add("3000-01-01");
                             Console.WriteLine(donnees[3]);
                         }
-
                         if (donnees.Count > 4)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
                         }
-
                         if (donnees[0].Length < 3 || donnees[0].Length > 3)
                         {
                             throw new Exception("Erreur le fichier n'est pas valide; le numéro du médecin n'est pas conforme.");
+                        }
+                        if (donnees[1].Length < 2)
+                        {
+                            throw new Exception("Erreur, le prénom est invalide.");
+                        }
+                        if (donnees[2].Length < 2)
+                        {
+                            throw new Exception("Erreur, le nom est invalide.");
+                        }
+
+                        // Construction d'un objet Medecin dans la liste d'objets LIST<Medecin>
+                        Medecins.Add(new Medecin(donnees[1], donnees[2], donnees[0], donnees[3]));
+
+                        //Console.WriteLine("Objet médecin créé");
+
+                        ligneMed = canalLectureMed.ReadLine();
+                        //Console.WriteLine("");
+
+                    }
+                }
+                foreach (Medecin item in Medecins)
+                {
+                    item.Afficher();
+                }
+            }
+            catch (Exception e)
+
+            {
+                Console.WriteLine(e.Message);
+            }
+            #endregion
+
+            #region List <Patient> Patients = new List<Patient>();
+
+            List<Patient> Patients = new List<Patient>();
+            try
+            {
+                string fichierPatients = "patients.txt";
+                // Ouverture du canalLecturePat pour l'accès au fichier "patients.txt"
+                using (StreamReader canalLecturePat = new StreamReader(fichierPatients))
+                {
+                    // Lit la première ligne qui identifie le patient
+                    string lignePat = canalLecturePat.ReadLine();
+                    Console.WriteLine(lignePat);
+
+                    while (lignePat != null)
+                    {
+                        // Extrait les valeurs individuelles de la ligne
+                        List<string> donnees = new List<string>(lignePat.Split(';'));
+                        foreach (string item in donnees)
+                        {
+                            Console.WriteLine(item);
+                        }
+
+                        if (donnees.Count < 4)
+                        {
+                            throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
+                        }
+
+                        if (donnees.Count == 4)
+                        {
+                            donnees.Add("3000-01-01");
+                            Console.WriteLine(donnees[4]);
+                        }
+
+                        if (donnees.Count > 5)
+                        {
+                            throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
+                        }
+
+                        if (donnees[0].Length < 4 || donnees[0].Length > 4)
+                        {
+                            throw new Exception("Erreur le fichier n'est pas valide; le numéro du patient n'est pas conforme.");
                         }
 
                         if (donnees[1].Length < 2)
@@ -62,117 +131,31 @@ namespace TravailPratique1
                             throw new Exception("Erreur, le nom est invalide.");
                         }
 
-                        // Construction d'un objet Medecin
-                        Medecins.Add(new Medecin(donnees[1], donnees[2], donnees[0], donnees[3]));
+                        // Construction d'un objet Patient
+                        Patients.Add(new Patient(donnees[1], donnees[2], donnees[0], donnees[3], donnees[4]));
 
-                        Console.WriteLine("Objet médecin créé");
+                        Console.WriteLine("Objet patient créé");
 
-                        ligneMed = canalLectureMed.ReadLine();
+                        lignePat = canalLecturePat.ReadLine();
                         Console.WriteLine("");
-
                     }
-                    //*******************************************************************************
-                    foreach (Medecin item in Medecins)
-                    {
-                        item.Afficher();
-                    }
-                    //********************************************************************************
-                    #endregion
-
-                    #region List <Patient> Patients = new List<Patient>();
-
-                    List<Patient> Patients = new List<Patient>();
-                    try
-                    {
-                        string fichierPatients = "patients.txt";
-                        // Ouverture du canalLecturePat pour l'accès au fichier "patients.txt"
-                        using (StreamReader canalLecturePat = new StreamReader(fichierPatients))
-                        {
-                            // Lit la première ligne qui identifie le patient
-                            string lignePat = canalLecturePat.ReadLine();
-                            Console.WriteLine(lignePat);
-
-                            while (lignePat != null)
-                            {
-                                // Extrait les valeurs individuelles de la ligne
-                                List<string> donnees = new List<string>(lignePat.Split(';'));
-                                foreach (string item in donnees)
-                                {
-                                    Console.WriteLine(item);
-                                }
-
-                                if (donnees.Count < 4)
-                                {
-                                    throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
-                                }
-
-                                if (donnees.Count == 4)
-                                {
-                                    donnees.Add("3000-01-01");
-                                    Console.WriteLine(donnees[4]);
-                                }
-
-                                if (donnees.Count > 5)
-                                {
-                                    throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
-                                }
-
-                                if (donnees[0].Length < 4 || donnees[0].Length > 4)
-                                {
-                                    throw new Exception("Erreur le fichier n'est pas valide; le numéro du patient n'est pas conforme.");
-                                }
-
-                                if (donnees[1].Length < 2)
-                                {
-                                    throw new Exception("Erreur, le prénom est invalide.");
-                                }
-                                if (donnees[2].Length < 2)
-                                {
-                                    throw new Exception("Erreur, le nom est invalide.");
-                                }
-
-                                // Construction d'un objet Patient
-                                Patients.Add(new Patient(donnees[1], donnees[2], donnees[0], donnees[3], donnees[4]));
-
-                                Console.WriteLine("Objet patient créé");
-
-                                lignePat = canalLecturePat.ReadLine();
-                                Console.WriteLine("");
-
-                            }
-                            //*******************************************************************************
-                            foreach (Patient item in Patients)
-                            {
-                                item.Afficher();
-                            }
-                            //********************************************************************************
-                            #endregion
-
-                            // Affiche les détails de l'étudiant
-                            Console.WriteLine("\n\n------------------------------");
-                            //Medecins.Afficher();
-                            Menu1();
-
-                        }
-                    }
-
-
-                    catch (Exception e)
-
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                    // Le programme est terminé rendu ici.*************************
-                    Console.WriteLine("Appuyez sur une touche pour continuer");
-                    Console.ReadKey(true);
-
+                }
+                foreach (Patient item in Patients)
+                {
+                    item.Afficher();
                 }
             }
             catch (Exception e)
             {
-
+                Console.WriteLine(e.Message);
             }
+            #endregion
 
+            Menu1();
+
+            // Le programme est terminé rendu ici.*************************
+            Console.WriteLine("Appuyez sur une touche pour continuer");
+            Console.ReadKey(true);
         }
 
         private static void ImprimeLigne(int v1, char v2)
@@ -223,10 +206,7 @@ namespace TravailPratique1
                     Menu1();
                     break;
             }
-
         }
-
-
 
         private static bool ValiderChoix(string choix, string v)
         {
