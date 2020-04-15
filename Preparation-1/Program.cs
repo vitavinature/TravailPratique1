@@ -10,6 +10,7 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
+            string dateDefaut = "3000-01-01";
             # region List <Medecin> Medecins = new List<Medecin>();
             List<Medecin> Medecins = new List<Medecin>();
             try
@@ -38,7 +39,7 @@ namespace TravailPratique1
                         }
                         if (donnees.Count == 3)
                         {
-                            donnees.Add("3000-01-01");
+                            donnees.Add(dateDefaut);
                             //Console.WriteLine(donnees[3]);
                         }
                         if (donnees.Count > 4)
@@ -109,7 +110,7 @@ namespace TravailPratique1
                         }
                         if (donnees.Count == 4)
                         {
-                            donnees.Add("3000-01-01");
+                            donnees.Add(dateDefaut);
                             // Console.WriteLine(donnees[4]);
                         }
                         if (donnees.Count > 5)
@@ -279,20 +280,40 @@ namespace TravailPratique1
             Console.Write("Code d'identification: ");
             string code = Console.ReadLine();
             int idCode = Convert.ToInt32(code);
-
-            foreach (Medecin item in Medecins)
+            if (idCode >= 100 && idCode <= 999)
             {
-                if (idCode == item._matricule)
+                foreach (Medecin item in Medecins)
                 {
-                    Console.WriteLine("Impossible d'ajouter le médecin, Le  code d'identification existe déjà.");
-                    Console.WriteLine("Appuyez sur une touche pour continuer");
-                    Console.ReadKey(true);
+                    if (idCode == item._matricule)
+                    {
+                        Console.WriteLine("Impossible d'ajouter le médecin, Le  code d'identification existe déjà.");
+                        Console.WriteLine("Appuyez sur une touche pour continuer");
+                        Console.ReadKey(true);
 
-                    Console.Clear();
-                    MenuAjouter(ref Medecins, ref Patients);
+                        Console.Clear();
+                        MenuAjouter(ref Medecins, ref Patients);
+                    }
                 }
+                donnees.Add(code);
+                donnees.Add("3000-01-01");
+                // Construction d'un objet Medecin dans la liste d'objets LIST<Medecin>
+                Medecins.Add(new Medecin(donnees[2], donnees[0], donnees[1], donnees[3]));
+
+                Console.WriteLine("Médecin ajouté");
+                Console.WriteLine("Appuyez sur une touche pour continuer");
+                Console.ReadKey(true);
+
+                foreach (Medecin item in Medecins)
+                {
+                    item.Afficher();
+                }
+                Console.WriteLine();
+                Console.WriteLine("Appuyez sur une touche pour continuer");
+                Console.ReadKey(true);
+
+                Console.Clear();
+                MenuAjouter(ref Medecins, ref Patients);
             }
-            donnees.Add(nom);
         }
         private static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
