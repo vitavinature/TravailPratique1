@@ -8,16 +8,19 @@ namespace TravailPratique1
 {
     class Patient : Personne
     {
-        public Patient(string prenom, string nom, string matricule, string deces) : base(prenom, nom)
+        public Patient(string prenom, string nom, string assMaladie, string matriculeMedecin, string deces) : base(prenom, nom)
         {
             DateTime nonDecede = new DateTime(300, 1, 1);
 
-            int numeroDuPatient = Convert.ToInt32(matricule);
+            int numeroDuPatient = Convert.ToInt32(assMaladie);
 
             if (numeroDuPatient < 1000 || numeroDuPatient > 9999)
             {
                 throw new Exception("Erreur le fichier n'est pas valide; le matricule du patient est en erreur");
             }
+            int numeroDuMedecin = Convert.ToInt32(matriculeMedecin);
+
+
             DateTime dateDeces = Convert.ToDateTime(deces);
 
            /* if (dateDeces != nonDecede)
@@ -27,7 +30,8 @@ namespace TravailPratique1
             }
             */
 
-            _matricule = numeroDuPatient;
+            _assMaladie = numeroDuPatient;
+            _matriculeMedecin = numeroDuMedecin;
             _dateDeces = dateDeces;
 
         }
@@ -35,10 +39,15 @@ namespace TravailPratique1
 
         public void Afficher()
         {
-            Console.WriteLine($"{_prenom} {_nom} ({_matricule})");
+            Console.Write($"{_matriculeMedecin} {_prenom} {_nom}, ");
+            if (true)
+            {
+
+            }
         }
 
-        private readonly int _matricule;
+        private readonly int _assMaladie;
+        protected readonly int _matriculeMedecin;
         private readonly DateTime _dateDeces = new DateTime();
     }
 

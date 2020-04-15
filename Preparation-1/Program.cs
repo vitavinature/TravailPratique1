@@ -12,21 +12,21 @@ namespace TravailPratique1
         {
             # region List <Medecin> Medecins = new List<Medecin>();
 
-            List < Medecin> Medecins = new List<Medecin>();
+            List<Medecin> Medecins = new List<Medecin>();
             try
             {
                 string fichierMedecins = "medecins.txt";
-                // Ouverture du canalLecture pour l'accès au fichier "medecins.txt"
-                using (StreamReader canalLecture = new StreamReader(fichierMedecins))
+                // Ouverture du canalLectureMed pour l'accès au fichier "medecins.txt"
+                using (StreamReader canalLectureMed = new StreamReader(fichierMedecins))
                 {
                     // Lit la première ligne qui identifie le médecin
-                    string ligne = canalLecture.ReadLine();
-                    Console.WriteLine(ligne);
+                    string ligneMed = canalLectureMed.ReadLine();
+                    Console.WriteLine(ligneMed);
 
-                    while (ligne != null)
+                    while (ligneMed != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
-                        List<string> donnees = new List<string>( ligne.Split(';'));
+                        List<string> donnees = new List<string>(ligneMed.Split(';'));
                         foreach (string item in donnees)
                         {
                             Console.WriteLine(item);
@@ -42,7 +42,7 @@ namespace TravailPratique1
                             donnees.Add("3000-01-01");
                             Console.WriteLine(donnees[3]);
                         }
-      
+
                         if (donnees.Count > 4)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
@@ -55,11 +55,11 @@ namespace TravailPratique1
 
                         if (donnees[1].Length < 2)
                         {
-                            throw new Exception("Erreur, le nom est invalide.");
+                            throw new Exception("Erreur, le prénom est invalide.");
                         }
                         if (donnees[2].Length < 2)
                         {
-                            throw new Exception("Erreur, le prénom est invalide.");
+                            throw new Exception("Erreur, le nom est invalide.");
                         }
 
                         // Construction d'un objet Medecin
@@ -67,11 +67,11 @@ namespace TravailPratique1
 
                         Console.WriteLine("Premier objet médecin créé");
 
-                        ligne = canalLecture.ReadLine();
+                        ligneMed = canalLectureMed.ReadLine();
                         Console.WriteLine("");
 
                     }
-//*******************************************************************************
+                    //*******************************************************************************
                     foreach (Medecin item in Medecins)
                     {
                         item.Afficher();
@@ -79,102 +79,176 @@ namespace TravailPratique1
                     //********************************************************************************
                     #endregion
 
-                    /*
+                    #region List <Patient> Patients = new List<Patient>();
+
+                    List<Patient> Patients = new List<Patient>();
+                    try
                     {
-                        throw new Exception("Erreur le fichier n'est pas valide.");
-                    }
-                    */
-                    //----------------------------------------------------------------------------------------------------------------------------------
-                    // Lit la prochaine ligne
-
-
-                    // Pour chaque ligne lue (si elle contient quelque chose)
-                    while (ligne != null)
-                    {
-                        string[] valeurs;
-                        valeurs = ligne.Split(';'); // Séparation de la ligne en segments délimité par (;)
-
-                        try
+                        string fichierPatients = "patients.txt";
+                        // Ouverture du canalLecturePat pour l'accès au fichier "patients.txt"
+                        using (StreamReader canalLecturePat = new StreamReader(fichierPatients))
                         {
-                            // Si la ligne ne commence pas par # ou si elle n'est pas vide
-                            // Ce qui a pour effet d'ignorer les lignes de commentaires et les lignes vides
-                            // Les lignes qui correspondent aux évaluations entrent dans le if
-                            if (!(ligne.StartsWith("#") || ligne.Length == 0))
+                            // Lit la première ligne qui identifie le patient
+                            string lignePat = canalLecturePat.ReadLine();
+                            Console.WriteLine(lignePat);
+
+                            while (lignePat != null)
                             {
-                                // Selon la valeur du (ou des) premier(s) caractère(s) 
-                                switch (valeurs[0])
+                                // Extrait les valeurs individuelles de la ligne
+                                List<string> donnees = new List<string>(lignePat.Split(';'));
+                                foreach (string item in donnees)
                                 {
-                                    /* case "E":
-                                         {
-                                             // Construit un nouvel examen avec les valeurs lues
-                                             Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
-
-                                             // Affiche les détails de l'examen
-                                             examen.Afficher();
-
-                                             // Demande à l'utilisateur la note de l'examen
-                                             double note = examen.DemanderNote();
-
-                                             // Ajoute la note à la note totale de l'étudiant
-                                             medecin.AjouterNote(note);
-                                         }
-                                         break;
-
-                                     case "T":
-                                         {
-                                             // Construit un nouveau tp avec les valeurs lues
-                                             TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
-
-                                             // Affiche les détails du tp
-                                             tp.Afficher();
-
-                                             // Demande à l'utilisateur la note du tp
-                                             double note = tp.DemanderNote();
-
-                                             // Ajoute la note à la note totale de l'étudiant
-                                             medecin.AjouterNote(note);
-                                         }
-                                         break;
- */
-                                    default:
-                                        throw new Exception("Type " + valeurs[0] + " non valide");
+                                    Console.WriteLine(item);
                                 }
+
+                                if (donnees.Count < 4)
+                                {
+                                    throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
+                                }
+
+                                if (donnees.Count == 4)
+                                {
+                                    donnees.Add("3000-01-01");
+                                    Console.WriteLine(donnees[3]);
+                                }
+
+                                if (donnees.Count > 5)
+                                {
+                                    throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
+                                }
+
+                                if (donnees[0].Length < 4 || donnees[0].Length > 4)
+                                {
+                                    throw new Exception("Erreur le fichier n'est pas valide; le nouméro du patient n'est pas conforme.");
+                                }
+
+                                if (donnees[1].Length < 2)
+                                {
+                                    throw new Exception("Erreur, le prénom est invalide.");
+                                }
+                                if (donnees[2].Length < 2)
+                                {
+                                    throw new Exception("Erreur, le nom est invalide.");
+                                }
+
+                                // Construction d'un objet Patient
+                                Patients.Add(new Patient(donnees[1], donnees[2], donnees[0], donnees[3], donnees[4]));
+
+                                Console.WriteLine("Premier objet patient créé");
+
+                                lignePat = canalLecturePat.ReadLine();
+                                Console.WriteLine("");
+
                             }
-                        }
-                        catch (IndexOutOfRangeException)
-                        {
-                            Console.WriteLine("Il manque des valeurs.");
-                            Console.WriteLine("Appuyez sur une touche pour continuer");
-                            Console.ReadKey(true);
+                            //*******************************************************************************
+                            foreach (Patient item in Patients)
+                            {
+                                item.Afficher();
+                            }
+                            //********************************************************************************
+                            #endregion
+
+                            /*
+                            {
+                                throw new Exception("Erreur le fichier n'est pas valide.");
+                            }
+                            */
+                            //----------------------------------------------------------------------------------------------------------------------------------
+                            // Lit la prochaine ligne
+
+
+                            // Pour chaque ligne lue (si elle contient quelque chose)
+                            while (ligne != null)
+                            {
+                                string[] valeurs;
+                                valeurs = ligne.Split(';'); // Séparation de la ligne en segments délimité par (;)
+
+                                try
+                                {
+                                    // Si la ligne ne commence pas par # ou si elle n'est pas vide
+                                    // Ce qui a pour effet d'ignorer les lignes de commentaires et les lignes vides
+                                    // Les lignes qui correspondent aux évaluations entrent dans le if
+                                    if (!(ligne.StartsWith("#") || ligne.Length == 0))
+                                    {
+                                        // Selon la valeur du (ou des) premier(s) caractère(s) 
+                                        switch (valeurs[0])
+                                        {
+                                            /* case "E":
+                                                 {
+                                                     // Construit un nouvel examen avec les valeurs lues
+                                                     Examen examen = new Examen(valeurs[1], valeurs[2], valeurs[3]);
+
+                                                     // Affiche les détails de l'examen
+                                                     examen.Afficher();
+
+                                                     // Demande à l'utilisateur la note de l'examen
+                                                     double note = examen.DemanderNote();
+
+                                                     // Ajoute la note à la note totale de l'étudiant
+                                                     medecin.AjouterNote(note);
+                                                 }
+                                                 break;
+
+                                             case "T":
+                                                 {
+                                                     // Construit un nouveau tp avec les valeurs lues
+                                                     TP tp = new TP(valeurs[1], valeurs[2], valeurs[3]);
+
+                                                     // Affiche les détails du tp
+                                                     tp.Afficher();
+
+                                                     // Demande à l'utilisateur la note du tp
+                                                     double note = tp.DemanderNote();
+
+                                                     // Ajoute la note à la note totale de l'étudiant
+                                                     medecin.AjouterNote(note);
+                                                 }
+                                                 break;
+         */
+                                            default:
+                                                throw new Exception("Type " + valeurs[0] + " non valide");
+                                        }
+                                    }
+                                }
+                                catch (IndexOutOfRangeException)
+                                {
+                                    Console.WriteLine("Il manque des valeurs.");
+                                    Console.WriteLine("Appuyez sur une touche pour continuer");
+                                    Console.ReadKey(true);
+
+                                }
+
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.Message);
+
+                                    Console.WriteLine("Appuyez sur une touche pour continuer");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("");
+                                }
+                                ligne = canalLecture.ReadLine();
+                            }
+
+                            // Affiche les détails de l'étudiant
+                            Console.WriteLine("\n\n------------------------------");
+                            //Medecins.Afficher();
+                            Menu1();
 
                         }
-
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-
-                            Console.WriteLine("Appuyez sur une touche pour continuer");
-                            Console.ReadKey(true);
-                            Console.WriteLine("");
-                        }
-                        ligne = canalLecture.ReadLine();
                     }
 
-                    // Affiche les détails de l'étudiant
-                    Console.WriteLine("\n\n------------------------------");
-                    //Medecins.Afficher();
-                    Menu1();
+
+                    catch (Exception e)
+
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    // Le programme est terminé rendu ici.*************************
+                    Console.WriteLine("Appuyez sur une touche pour continuer");
+                    Console.ReadKey(true);
 
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            // Le programme est terminé rendu ici.*************************
-            Console.WriteLine("Appuyez sur une touche pour continuer");
-            Console.ReadKey(true);
-
         }
 
         private static void ImprimeLigne(int v1, char v2)
@@ -198,7 +272,7 @@ namespace TravailPratique1
             Console.WriteLine("Q) Quitter");
             Console.Write("> ");
             string choix = Console.ReadLine();
-            if (choix.Length == 1 && ValiderChoix(choix, "123qQ") == true) 
+            if (choix.Length == 1 && ValiderChoix(choix, "123qQ") == true)
             {
                 choixChar = Convert.ToChar(choix);
             }
@@ -227,6 +301,8 @@ namespace TravailPratique1
             }
 
         }
+
+
 
         private static bool ValiderChoix(string choix, string v)
         {
@@ -266,9 +342,9 @@ namespace TravailPratique1
                 case '2':
                     //AjouterPatient(); ******************
                     break;
-                 case 'r':
+                case 'r':
                 case 'R':
-                    Menu1();                    break;
+                    Menu1(); break;
                 default:
                     MenuAjouter();
                     break;
