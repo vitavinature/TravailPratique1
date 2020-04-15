@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic; // Pour la classe List
+using System.Text;
 
 
 namespace TravailPratique1
@@ -160,7 +161,7 @@ namespace TravailPratique1
             Console.ReadKey(true);
         }
 
-        private static void ImprimeLigne(int v1, char v2)
+        static void ImprimeLigne(int v1, char v2)
         {
             for (int i = 0; i < v1; i++)
             {
@@ -169,7 +170,7 @@ namespace TravailPratique1
             Console.WriteLine();
             //throw new NotImplementedException();
         }
-        private static void Menu1()
+        static void Menu1()
         {
             Console.Clear();
             char choixChar = '0';
@@ -195,7 +196,7 @@ namespace TravailPratique1
             {
                 case '1':
                     Console.Clear();
-                    MenuAjouter();
+                    MenuAjouter(ref Medecins, ref Patients);
                     break;
                 case '2':
                     Console.Clear();
@@ -215,7 +216,7 @@ namespace TravailPratique1
                     break;
             }
         }
-        private static bool ValiderChoix(string choix, string v)
+        static bool ValiderChoix(string choix, string v)
         {
             if (v.Contains(choix))
             {
@@ -224,7 +225,7 @@ namespace TravailPratique1
             return false;
             throw new NotImplementedException();
         }
-        public static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             char choixChar = '0';
 
@@ -248,7 +249,7 @@ namespace TravailPratique1
             switch (choixChar)
             {
                 case '1':
-                    AjouterMedecin(ref Medecins);
+                    AjouterMedecin(ref Medecins, ref Patients);
                     break;
                 case '2':
                     //AjouterPatient(); ******************
@@ -259,9 +260,33 @@ namespace TravailPratique1
                     Menu1(); break;
                 default:
                     Console.Clear();
-                    MenuAjouter();
+                    MenuAjouter(ref Medecins, ref Patients);
                     break;
             }
+        }
+        static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        {
+            Console.WriteLine("Ajouter d'un médecin");
+            Console.WriteLine("--------------------");
+            Console.Write("Prénom: ");
+            string prenom = Console.ReadLine();
+            List<string> donnees = new List<string>();
+            donnees.Add(prenom);
+            Console.Write("Nom: ");
+            string nom = Console.ReadLine();
+            donnees.Add(nom);
+            Console.Write("Code d'identification: ");
+            string code = Console.ReadLine();
+            int idCode = Convert.ToInt32(code);
+
+            foreach (Medecin item in Medecins)
+            {
+                if (idCode == item._matricule)
+                {
+
+                }
+            }
+            donnees.Add(nom);
         }
         private static void MenuModifier()
         {

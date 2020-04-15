@@ -31,30 +31,7 @@ namespace TravailPratique1
             _matricule = numeroDuMedecin;
         }
 
-        public void AjouterMedecin(ref List<Medecin> Medecins)
-        {
-            Console.WriteLine("Ajouter d'un médecin");
-            Console.WriteLine("--------------------");
-            Console.Write("Prénom: ");
-            string prenom = Console.ReadLine();
-            List<string> donnees = new List<string>();
-            donnees.Add(prenom);
-            Console.Write("Nom: ");
-            string nom = Console.ReadLine();
-            donnees.Add(nom);
-            Console.Write("Code d'identification: ");
-            string code = Console.ReadLine();
-            int idCode = Convert.ToInt32(code);
-           
-            foreach (Medecin item in Medecins)
-            {
-                if (idCode == item._matricule)
-                {
 
-                }
-            }
-            donnees.Add(nom);
-        }
         public void Afficher()
         {
             Console.Write($"{_matricule} {_prenom} {_nom}, ");
@@ -70,7 +47,7 @@ namespace TravailPratique1
             Console.WriteLine();
         }
 
-        private readonly int _matricule;
+        public readonly int _matricule;
         protected readonly DateTime _dateRetraite = new DateTime();
         protected readonly DateTime _nonRetraite = new DateTime();
         protected readonly int _nombreDePatients = 0;
