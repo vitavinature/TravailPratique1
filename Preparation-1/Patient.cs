@@ -19,14 +19,15 @@ namespace TravailPratique1
             else
             {
                 _assMaladie = numeroAssMaladie;
-
             }
+
             int numeroDuMedecin = Convert.ToInt32(matriculeMedecin);
 
+            _matriculeMedecin = numeroDuMedecin;
 
             DateTime dateDeces = Convert.ToDateTime(deces);
 
-         if (dateDeces != _nonDecede)
+            if (dateDeces != _nonDecede)
             {
                 _dateDeces = dateDeces;
 
@@ -35,7 +36,7 @@ namespace TravailPratique1
             {
                 _dateDeces = _nonDecede;
             }
-            _matriculeMedecin = numeroDuMedecin;
+
 
         }
 
@@ -58,7 +59,7 @@ namespace TravailPratique1
         private readonly int _assMaladie;
         protected readonly int _matriculeMedecin;
         private readonly DateTime _dateDeces = new DateTime();
-        protected readonly DateTime _nonDecede = new DateTime(300, 1, 1);
+        protected readonly DateTime _nonDecede = new DateTime(3000, 1, 1);
     }
 
 }

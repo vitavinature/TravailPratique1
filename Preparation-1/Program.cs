@@ -38,7 +38,7 @@ namespace TravailPratique1
                         if (donnees.Count == 3)
                         {
                             donnees.Add("3000-01-01");
-                            Console.WriteLine(donnees[3]);
+                            //Console.WriteLine(donnees[3]);
                         }
                         if (donnees.Count > 4)
                         {
@@ -71,6 +71,7 @@ namespace TravailPratique1
                 {
                     item.Afficher();
                 }
+                Console.WriteLine();
             }
             catch (Exception e)
 
@@ -90,38 +91,34 @@ namespace TravailPratique1
                 {
                     // Lit la première ligne qui identifie le patient
                     string lignePat = canalLecturePat.ReadLine();
-                    Console.WriteLine(lignePat);
+                    //Console.WriteLine(lignePat);
 
                     while (lignePat != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
                         List<string> donnees = new List<string>(lignePat.Split(';'));
-                        foreach (string item in donnees)
-                        {
-                            Console.WriteLine(item);
-                        }
+                        //foreach (string item in donnees)
+                        //{
+                        //    Console.WriteLine(item);
+                        //}
 
                         if (donnees.Count < 4)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
                         }
-
                         if (donnees.Count == 4)
                         {
                             donnees.Add("3000-01-01");
-                            Console.WriteLine(donnees[4]);
+                            // Console.WriteLine(donnees[4]);
                         }
-
                         if (donnees.Count > 5)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
                         }
-
                         if (donnees[0].Length < 4 || donnees[0].Length > 4)
                         {
-                            throw new Exception("Erreur le fichier n'est pas valide; le numéro du patient n'est pas conforme.");
+                            throw new Exception("Erreur le fichier n'est pas valide; le numéro d'assurance maladie du patient n'est pas conforme.");
                         }
-
                         if (donnees[1].Length < 2)
                         {
                             throw new Exception("Erreur, le prénom est invalide.");
@@ -134,16 +131,17 @@ namespace TravailPratique1
                         // Construction d'un objet Patient
                         Patients.Add(new Patient(donnees[1], donnees[2], donnees[0], donnees[3], donnees[4]));
 
-                        Console.WriteLine("Objet patient créé");
+                        //Console.WriteLine("Objet patient créé");
 
                         lignePat = canalLecturePat.ReadLine();
-                        Console.WriteLine("");
+                        //Console.WriteLine("");
                     }
                 }
                 foreach (Patient item in Patients)
                 {
                     item.Afficher();
                 }
+                Console.WriteLine();
             }
             catch (Exception e)
             {
