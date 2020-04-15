@@ -154,7 +154,7 @@ namespace TravailPratique1
             Console.ReadKey(true);
 
             Console.Clear();
-            Menu1();
+            Menu1(ref Medecins, ref Patients);
 
             // Le programme est terminé rendu ici.*************************
             Console.WriteLine("Appuyez sur une touche pour continuer");
@@ -170,7 +170,7 @@ namespace TravailPratique1
             Console.WriteLine();
             //throw new NotImplementedException();
         }
-        static void Menu1()
+        static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             Console.Clear();
             char choixChar = '0';
@@ -190,7 +190,7 @@ namespace TravailPratique1
             else
             {
                 Console.Clear();
-                Menu1();
+                Menu1(ref Medecins, ref Patients);
             }
             switch (choixChar)
             {
@@ -200,11 +200,11 @@ namespace TravailPratique1
                     break;
                 case '2':
                     Console.Clear();
-                    MenuModifier();
+                    MenuModifier(ref Medecins, ref Patients);
                     break;
                 case '3':
                     Console.Clear();
-                    MenuAfficher();
+                    MenuAfficher(ref Medecins, ref Patients);
                     break;
                 case 'q':
                 case 'Q':
@@ -212,7 +212,7 @@ namespace TravailPratique1
                     break;
                 default:
                     Console.Clear();
-                    Menu1();
+                    Menu1(ref Medecins, ref Patients);
                     break;
             }
         }
@@ -257,7 +257,8 @@ namespace TravailPratique1
                 case 'r':
                 case 'R':
                     Console.Clear();
-                    Menu1(); break;
+                    Menu1(ref Medecins, ref Patients);
+                    break;
                 default:
                     Console.Clear();
                     MenuAjouter(ref Medecins, ref Patients);
@@ -283,12 +284,17 @@ namespace TravailPratique1
             {
                 if (idCode == item._matricule)
                 {
+                    Console.WriteLine("Impossible d'ajouter le médecin, Le  code d'identification existe déjà.");
+                    Console.WriteLine("Appuyez sur une touche pour continuer");
+                    Console.ReadKey(true);
 
+                    Console.Clear();
+                    MenuAjouter(ref Medecins, ref Patients);
                 }
             }
             donnees.Add(nom);
         }
-        private static void MenuModifier()
+        private static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             char choixChar = '0';
 
@@ -307,7 +313,7 @@ namespace TravailPratique1
             else
             {
                 Console.Clear();
-                MenuModifier();
+                MenuModifier(ref Medecins, ref Patients);
             }
             switch (choixChar)
             {
@@ -320,14 +326,15 @@ namespace TravailPratique1
                 case 'r':
                 case 'R':
                     Console.Clear();
-                    Menu1(); break;
+                    Menu1(ref Medecins, ref Patients);
+                    break;
                 default:
                     Console.Clear();
-                    MenuModifier();
+                    MenuModifier(ref Medecins, ref Patients);
                     break;
             }
         }
-        private static void MenuAfficher()
+        private static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             char choixChar = '0';
             ImprimeLigne(73, '=');
@@ -348,7 +355,7 @@ namespace TravailPratique1
             else
             {
                 Console.Clear();
-                MenuAfficher();
+                MenuAfficher(ref Medecins, ref Patients);
             }
             switch (choixChar)
             {
@@ -370,10 +377,11 @@ namespace TravailPratique1
                 case 'r':
                 case 'R':
                     Console.Clear();
-                    Menu1(); break;
+                    Menu1(ref Medecins, ref Patients);
+                    break;
                 default:
                     Console.Clear();
-                    MenuAfficher();
+                    MenuAfficher(ref Medecins, ref Patients);
                     break;
             }
         }
