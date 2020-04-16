@@ -268,8 +268,8 @@ namespace TravailPratique1
         }
         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
-            Console.WriteLine("Ajouter d'un médecin");
-            Console.WriteLine("--------------------");
+            Console.WriteLine("Ajout d'un médecin");
+            Console.WriteLine("------------------");
             Console.Write("Prénom: ");
             string prenom = Console.ReadLine();
             List<string> donnees = new List<string>();
@@ -296,8 +296,8 @@ namespace TravailPratique1
                 }
                 donnees.Add(code);
                 donnees.Add("3000-01-01");
-                // Construction d'un objet Medecin dans la liste d'objets LIST<Medecin>
-                Medecins.Add(new Medecin(donnees[2], donnees[0], donnees[1], donnees[3]));
+                // Construction d'un objet Medecin dans la liste d'objets List<Medecin>
+                Medecins.Add(new Medecin(donnees[0], donnees[1], donnees[2], donnees[3]));
 
                 Console.WriteLine("Médecin ajouté");
                 Console.WriteLine("Appuyez sur une touche pour continuer");
@@ -315,6 +315,57 @@ namespace TravailPratique1
                 MenuAjouter(ref Medecins, ref Patients);
             }
         }
+        static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        {
+            Console.WriteLine("Ajout d'un patient");
+            Console.WriteLine("------------------");
+            Console.Write("Prénom: ");
+            string prenom = Console.ReadLine();
+            List<string> donnees = new List<string>();
+            donnees.Add(prenom);
+            Console.Write("Nom: ");
+            string nom = Console.ReadLine();
+            donnees.Add(nom);
+            Console.Write("Numéro d'assurance maladie: ");
+            string code = Console.ReadLine();
+            int idCode = Convert.ToInt32(code);
+            if (idCode >= 1000 && idCode <= 9999)
+            {
+                foreach (Patient item in Patients)
+                {
+                    if (idCode == item._assMaladie)
+                    {
+                        Console.WriteLine("Impossible d'ajouter le patient, Le numéro d'assurance maladie existe déjà.");
+                        Console.WriteLine("Appuyez sur une touche pour continuer");
+                        Console.ReadKey(true);
+
+                        Console.Clear();
+                        MenuAjouter(ref Medecins, ref Patients);
+                    }
+                }
+                donnees.Add(code);
+                donnees.Add("0");
+                donnees.Add("3000-01-01");
+                // Construction d'un objet Patient dans la liste d'objets List<Patient>
+                Patients.Add(new Patient(donnees[0], donnees[1], donnees[2], donnees[3], donnees[4]));
+
+                Console.WriteLine("Patient ajouté");
+                Console.WriteLine("Appuyez sur une touche pour continuer");
+                Console.ReadKey(true);
+
+                foreach (Patient item in Patients)
+                {
+                    item.Afficher();
+                }
+                Console.WriteLine();
+                Console.WriteLine("Appuyez sur une touche pour continuer");
+                Console.ReadKey(true);
+
+                Console.Clear();
+                MenuAjouter(ref Medecins, ref Patients);
+            }
+        }
+
         private static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             char choixChar = '0';

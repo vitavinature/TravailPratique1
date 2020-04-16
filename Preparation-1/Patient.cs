@@ -56,7 +56,7 @@ namespace TravailPratique1
             Console.WriteLine();
         }
 
-        private readonly int _assMaladie;
+        public readonly int _assMaladie;
         protected readonly int _matriculeMedecin;
         private readonly DateTime _dateDeces = new DateTime();
         protected readonly DateTime _nonDecede = new DateTime(3000, 1, 1);
