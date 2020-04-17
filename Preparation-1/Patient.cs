@@ -51,7 +51,7 @@ namespace TravailPratique1
             }
             else
             {
-                Console.Write($"Medecin: {_matriculeMedecin} prénomMédecin nomMédecin");
+                Console.Write($"Medecin: {_matriculeMedecin} prenomMedecin nomMedecin");
             }
             Console.WriteLine();
         }

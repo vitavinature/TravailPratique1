@@ -10,6 +10,8 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
+            int nombreMedecinActif = 0;
+
             string dateDefaut = "3000-01-01";
             # region List <Medecin> Medecins = new List<Medecin>();
             List<Medecin> Medecins = new List<Medecin>();
@@ -39,6 +41,8 @@ namespace TravailPratique1
                         }
                         if (donnees.Count == 3)
                         {
+                            nombreMedecinActif += 1;
+
                             donnees.Add(dateDefaut);
                             //Console.WriteLine(donnees[3]);
                         }
@@ -61,6 +65,7 @@ namespace TravailPratique1
 
                         // Construction d'un objet Medecin dans la liste d'objets LIST<Medecin>
                         Medecins.Add(new Medecin(donnees[1], donnees[2], donnees[0], donnees[3]));
+
 
                         //Console.WriteLine("Objet médecin créé");
 
@@ -155,7 +160,7 @@ namespace TravailPratique1
             Console.ReadKey(true);
 
             Console.Clear();
-            Menu1(ref Medecins, ref Patients);
+            Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
 
             // Le programme est terminé rendu ici.*************************
             Console.WriteLine("Appuyez sur une touche pour continuer");
@@ -171,7 +176,7 @@ namespace TravailPratique1
             Console.WriteLine();
             //throw new NotImplementedException();
         }
-        static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             Console.Clear();
             char choixChar = '0';
@@ -191,13 +196,13 @@ namespace TravailPratique1
             else
             {
                 Console.Clear();
-                Menu1(ref Medecins, ref Patients);
+                Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             switch (choixChar)
             {
                 case '1':
                     Console.Clear();
-                    MenuAjouter(ref Medecins, ref Patients);
+                    MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case '2':
                     Console.Clear();
@@ -213,7 +218,7 @@ namespace TravailPratique1
                     break;
                 default:
                     Console.Clear();
-                    Menu1(ref Medecins, ref Patients);
+                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
         }
@@ -226,7 +231,7 @@ namespace TravailPratique1
             return false;
             throw new NotImplementedException();
         }
-        static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             char choixChar = '0';
 
@@ -245,28 +250,29 @@ namespace TravailPratique1
             else
             {
                 Console.Clear();
-                MenuAjouter(ref Medecins, ref Patients);
+                MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             switch (choixChar)
             {
                 case '1':
-                    AjouterMedecin(ref Medecins, ref Patients);
+                    AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case '2':
+                  
                     //AjouterPatient(); ******************
                     break;
                 case 'r':
                 case 'R':
                     Console.Clear();
-                    Menu1(ref Medecins, ref Patients);
+                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 default:
                     Console.Clear();
-                    MenuAjouter(ref Medecins, ref Patients);
+                    MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
         }
-        static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             Console.WriteLine("Ajout d'un médecin");
             Console.WriteLine("------------------");
@@ -291,7 +297,7 @@ namespace TravailPratique1
                         Console.ReadKey(true);
 
                         Console.Clear();
-                        MenuAjouter(ref Medecins, ref Patients);
+                        MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     }
                 }
                 donnees.Add(code);
@@ -312,10 +318,10 @@ namespace TravailPratique1
                 Console.ReadKey(true);
 
                 Console.Clear();
-                MenuAjouter(ref Medecins, ref Patients);
+                MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
         }
-        static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             Console.WriteLine("Ajout d'un patient");
             Console.WriteLine("------------------");
@@ -340,7 +346,7 @@ namespace TravailPratique1
                         Console.ReadKey(true);
 
                         Console.Clear();
-                        MenuAjouter(ref Medecins, ref Patients);
+                        MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     }
                 }
                 donnees.Add(code);
@@ -362,7 +368,7 @@ namespace TravailPratique1
                 Console.ReadKey(true);
 
                 Console.Clear();
-                MenuAjouter(ref Medecins, ref Patients);
+                MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
         }
 
