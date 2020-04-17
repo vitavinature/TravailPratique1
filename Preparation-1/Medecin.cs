@@ -47,7 +47,7 @@ namespace TravailPratique1
             Console.WriteLine();
         }
 
-        public readonly int _matricule;
+        public int _matricule;
         protected readonly DateTime _dateRetraite = new DateTime();
         protected readonly DateTime _nonRetraite = new DateTime();
         protected readonly int _nombreDePatients = 0;

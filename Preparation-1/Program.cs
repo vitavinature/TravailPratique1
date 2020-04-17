@@ -79,6 +79,8 @@ namespace TravailPratique1
                     item.Afficher();
                 }
                 Console.WriteLine();
+                Console.WriteLine($"Nombre de médecins actifs: {nombreMedecinActif}");
+                Console.WriteLine();
             }
             catch (Exception e)
 
@@ -188,6 +190,7 @@ namespace TravailPratique1
             Console.WriteLine("3) Afficher");
             Console.WriteLine("Q) Quitter");
             Console.Write("> ");
+
             string choix = Console.ReadLine();
             if (choix.Length == 1 && ValiderChoix(choix, "123qQ") == true)
             {
@@ -206,11 +209,11 @@ namespace TravailPratique1
                     break;
                 case '2':
                     Console.Clear();
-                    MenuModifier(ref Medecins, ref Patients);
+                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case '3':
                     Console.Clear();
-                    MenuAfficher(ref Medecins, ref Patients);
+                    MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case 'q':
                 case 'Q':
@@ -258,8 +261,14 @@ namespace TravailPratique1
                     AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case '2':
-                  
-                    //AjouterPatient(); ******************
+                    if (nombreMedecinActif == 0)
+                    {
+                        Console.WriteLine("Il n'y a aucun médecin actif présentement. Veuillez ressayer plus tard.");
+                        Console.WriteLine("Appuyer sur une touche pour continuer:");
+                        Console.ReadKey(true);
+                        AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    }
+                    AjouterPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case 'r':
                 case 'R':
@@ -372,17 +381,18 @@ namespace TravailPratique1
             }
         }
 
-        private static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        private static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             char choixChar = '0';
 
             ImprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux - Modification                          =");
             ImprimeLigne(73, '=');
-            Console.WriteLine("1) Retrait d'un médecin");
-            Console.WriteLine("2) Décès d'un patient");
+            Console.WriteLine("1) Indiquer un départ à la retraite d'un médecin");
+            Console.WriteLine("2) Indiquer un décès d'un patient");
             Console.WriteLine("R) Retour au menu principal");
             Console.Write("> ");
+
             string choix = Console.ReadLine();
             if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
             {
@@ -391,28 +401,98 @@ namespace TravailPratique1
             else
             {
                 Console.Clear();
-                MenuModifier(ref Medecins, ref Patients);
+                MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             switch (choixChar)
             {
                 case '1':
-                    //RetraitMedecin(); ******************
+                    if (nombreMedecinActif <= 1)
+                    {
+                        Console.WriteLine("Il est présentement impossible de mettre un médecin à la retraite,");
+                        Console.WriteLine($"Puisqu'il y a {nombreMedecinActif} médecin actif.");
+                        Console.WriteLine("Veuillez tenter à nouveau plus tard.");
+                        Console.WriteLine();
+                        Console.WriteLine("Appuyez sur une touche pour continuer");
+                        Console.ReadKey(true);
+                        MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    }
+                    RetraitMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+
                     break;
                 case '2':
-                    //DecesPatient(); ******************
+                    DecesPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case 'r':
                 case 'R':
                     Console.Clear();
-                    Menu1(ref Medecins, ref Patients);
+                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 default:
                     Console.Clear();
-                    MenuModifier(ref Medecins, ref Patients);
+                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
         }
-        private static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients)
+
+        private static void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        {
+            Console.Write("Code d'identification: ");
+            int codeIdentification = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
+            foreach (Medecin item in Medecins)
+            {
+                if (item._matricule == codeIdentification)
+                {
+                    Console.WriteLine("Indiquer retraite");
+                    Console.WriteLine("-----------------");
+                    Console.Write("Date de la retraite (AAAA-MM-JJ): ");
+                    DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine($"Date de la retraite: {dateRetraite}");
+                    Console.WriteLine();
+
+                    nombreMedecinActif -= 1;
+
+                    Console.WriteLine($"Nombre de médecin(s) actif(s): {nombreMedecinActif}");
+                    Console.WriteLine();
+
+                    Console.WriteLine("Appuyer sur une touche pour continuer");
+                    Console.ReadKey(true);
+
+                }
+            }
+        }
+
+        private static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        {
+            Console.Write("Numero d'assurance maladie: ");
+            int numeroAssMaladie = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
+            foreach (Patient item in Patients)
+            {
+                if (item._assMaladie == numeroAssMaladie)
+                {
+                    Console.WriteLine("Indiquer décès");
+                    Console.WriteLine("--------------");
+                    Console.Write("Date du décès (AAAA-MM-JJ): ");
+                    DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine($"Date du décès: {dateDeces}");
+                    Console.WriteLine();
+
+
+
+                    Console.WriteLine($"Nombre de médecin(s) actif(s): {nombreMedecinActif}");
+                    Console.WriteLine();
+
+                    Console.WriteLine("Appuyer sur une touche pour continuer");
+                    Console.ReadKey(true);
+
+                }
+            }
+        }
+
+        private static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             char choixChar = '0';
             ImprimeLigne(73, '=');
@@ -433,7 +513,7 @@ namespace TravailPratique1
             else
             {
                 Console.Clear();
-                MenuAfficher(ref Medecins, ref Patients);
+                MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             switch (choixChar)
             {
@@ -455,11 +535,11 @@ namespace TravailPratique1
                 case 'r':
                 case 'R':
                     Console.Clear();
-                    Menu1(ref Medecins, ref Patients);
+                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 default:
                     Console.Clear();
-                    MenuAfficher(ref Medecins, ref Patients);
+                    MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
         }
