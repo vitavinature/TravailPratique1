@@ -92,6 +92,7 @@ namespace TravailPratique1
             #region List <Patient> Patients = new List<Patient>();
 
             List<Patient> Patients = new List<Patient>();
+            List<int> ListPatientMedecin = new List<int>();
             try
             {
                 string fichierPatients = "patients.txt";
@@ -117,6 +118,14 @@ namespace TravailPratique1
                         }
                         if (donnees.Count == 4)
                         {
+                            int matriculeMedecin = Convert.ToInt32(donnees[3]);
+                            foreach (Medecin item in Medecins)
+                            {
+                                if (matriculeMedecin == item._matricule)
+                                {
+                                    ListPatientMedecin.Add(Convert.ToInt32(donnees[0]));
+                                }
+                            }
                             donnees.Add(dateDefaut);
                             // Console.WriteLine(donnees[4]);
                         }
