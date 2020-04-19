@@ -31,6 +31,13 @@ namespace TravailPratique1
             _matricule = numeroDuMedecin;
         }
 
+        public void AjouterPatient(string patient)
+        {
+            if (_dateRetraite == _nonRetraite)
+            {
+
+            }
+        }
 
         public void Afficher()
         {
@@ -51,6 +58,7 @@ namespace TravailPratique1
         protected readonly DateTime _dateRetraite = new DateTime();
         protected readonly DateTime _nonRetraite = new DateTime();
         protected readonly int _nombreDePatients = 0;
+        protected readonly List<Patient> _ListePatient = new List<Patient>();
     }
 
 }
