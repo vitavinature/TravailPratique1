@@ -92,8 +92,7 @@ namespace TravailPratique1
             #region List <Patient> Patients = new List<Patient>();
 
             List<Patient> Patients = new List<Patient>();
-            List<int> ListPatientMedecin = new List<int>();
-            try
+             try
             {
                 string fichierPatients = "patients.txt";
                 // Ouverture du canalLecturePat pour l'accès au fichier "patients.txt"
@@ -123,7 +122,7 @@ namespace TravailPratique1
                             {
                                 if (matriculeMedecin == item._matricule)
                                 {
-                                    ListPatientMedecin.Add(Convert.ToInt32(donnees[0]));
+                                    item.AjouterPatient(Convert.ToInt32(donnees[0]));
                                 }
                             }
                             donnees.Add(dateDefaut);
@@ -368,7 +367,20 @@ namespace TravailPratique1
                     }
                 }
                 donnees.Add(code);
+                int minimumPatient = 1000;
+                foreach (Medecin item in Medecins)
+                {
+                    if (item._ != 0)
+                    {
+                        if (item._nombreDePatients < minimumPatient)
+                        {
+
+                        }
+                    } = item._ListePatient.Count;
+                }
+
                 donnees.Add("0");
+                
                 donnees.Add("3000-01-01");
                 // Construction d'un objet Patient dans la liste d'objets List<Patient>
                 Patients.Add(new Patient(donnees[0], donnees[1], donnees[2], donnees[3], donnees[4]));

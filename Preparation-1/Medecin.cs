@@ -31,12 +31,13 @@ namespace TravailPratique1
             _matricule = numeroDuMedecin;
         }
 
-        public void AjouterPatient(string patient)
+        public void AjouterPatient(int patient)
         {
             if (_dateRetraite == _nonRetraite)
             {
-
+                _ListePatient.Add(patient);
             }
+            Console.WriteLine($"Le patient # {patient} a été ajouté à la liste du médecin # {_matricule}");
         }
 
         public void Afficher()
@@ -55,10 +56,10 @@ namespace TravailPratique1
         }
 
         public int _matricule;
-        protected readonly DateTime _dateRetraite = new DateTime();
-        protected readonly DateTime _nonRetraite = new DateTime();
-        protected readonly int _nombreDePatients = 0;
-        protected readonly List<Patient> _ListePatient = new List<Patient>();
+        public DateTime _dateRetraite = new DateTime();
+        public DateTime _nonRetraite = new DateTime();
+        public int _nombreDePatients = 0;
+        public List<int> _ListePatient = new List<int>();
     }
 
 }
