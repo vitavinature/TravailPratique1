@@ -13,8 +13,11 @@ namespace TravailPratique1
             int nombreMedecinActif = 0;
 
             string dateDefaut = "3000-01-01";
-            # region List <Medecin> Medecins = new List<Medecin>();
             List<Medecin> Medecins = new List<Medecin>();
+            List<Patient> Patients = new List<Patient>();
+
+            # region Lecture du fichier des médecins
+
             try
             {
                 string fichierMedecins = "medecins.txt";
@@ -23,18 +26,11 @@ namespace TravailPratique1
                 {
                     // Lit la première ligne qui identifie le médecin
                     string ligneMed = canalLectureMed.ReadLine();
-                    // Console.WriteLine(ligneMed);
 
                     while (ligneMed != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
                         List<string> donnees = new List<string>(ligneMed.Split(';'));
-                        /*
-                        foreach (string item in donnees)
-                        {
-                            Console.WriteLine(item);
-                        }
-                        */
                         if (donnees.Count < 3)
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
@@ -42,9 +38,7 @@ namespace TravailPratique1
                         if (donnees.Count == 3)
                         {
                             nombreMedecinActif += 1;
-
                             donnees.Add(dateDefaut);
-                            //Console.WriteLine(donnees[3]);
                         }
                         if (donnees.Count > 4)
                         {
@@ -66,33 +60,19 @@ namespace TravailPratique1
                         // Construction d'un objet Medecin dans la liste d'objets LIST<Medecin>
                         Medecins.Add(new Medecin(donnees[1], donnees[2], donnees[0], donnees[3]));
 
-
-                        //Console.WriteLine("Objet médecin créé");
-
-                        ligneMed = canalLectureMed.ReadLine();
-                        //Console.WriteLine("");
-
+                        ligneMed = canalLectureMed.ReadLine(); // Lecture d'une autre ligne dans le fichier
                     }
                 }
-                foreach (Medecin item in Medecins)
-                {
-                    item.Afficher();
-                }
-                Console.WriteLine();
-                Console.WriteLine($"Nombre de médecins actifs: {nombreMedecinActif}");
-                Console.WriteLine();
             }
             catch (Exception e)
-
             {
                 Console.WriteLine(e.Message);
             }
             #endregion
 
-            #region List <Patient> Patients = new List<Patient>();
+            #region Lecture du fichier des patients
 
-            List<Patient> Patients = new List<Patient>();
-             try
+            try
             {
                 string fichierPatients = "patients.txt";
                 // Ouverture du canalLecturePat pour l'accès au fichier "patients.txt"
@@ -100,16 +80,11 @@ namespace TravailPratique1
                 {
                     // Lit la première ligne qui identifie le patient
                     string lignePat = canalLecturePat.ReadLine();
-                    //Console.WriteLine(lignePat);
 
                     while (lignePat != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
                         List<string> donnees = new List<string>(lignePat.Split(';'));
-                        //foreach (string item in donnees)
-                        //{
-                        //    Console.WriteLine(item);
-                        //}
 
                         if (donnees.Count < 4)
                         {
@@ -126,7 +101,6 @@ namespace TravailPratique1
                                 }
                             }
                             donnees.Add(dateDefaut);
-                            // Console.WriteLine(donnees[4]);
                         }
                         if (donnees.Count > 5)
                         {
@@ -148,17 +122,9 @@ namespace TravailPratique1
                         // Construction d'un objet Patient
                         Patients.Add(new Patient(donnees[1], donnees[2], donnees[0], donnees[3], donnees[4]));
 
-                        //Console.WriteLine("Objet patient créé");
-
-                        lignePat = canalLecturePat.ReadLine();
-                        //Console.WriteLine("");
+                        lignePat = canalLecturePat.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
                 }
-                foreach (Patient item in Patients)
-                {
-                    item.Afficher();
-                }
-                Console.WriteLine();
             }
             catch (Exception e)
             {
@@ -166,8 +132,16 @@ namespace TravailPratique1
             }
             #endregion
 
-            Console.WriteLine("Appuyez sur une touche pour continuer");
-            Console.ReadKey(true);
+            foreach (Medecin item in Medecins)
+            {
+                item.Afficher();
+            }
+            Console.WriteLine();
+            Console.WriteLine($"Nombre de médecins actifs: {nombreMedecinActif}");
+            Console.WriteLine();
+
+
+
 
             Console.Clear();
             Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
@@ -186,6 +160,26 @@ namespace TravailPratique1
             Console.WriteLine();
             //throw new NotImplementedException();
         }
+        //----------------------------------------------------------------------------------------------------
+        static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        {
+            foreach (Patient itemPatient in Patients)
+            {
+                itemPatient.Afficher();
+                foreach (Medecin itemMedecin in Medecins)
+                {
+                    if (itemMedecin._matricule == itemPatient._matriculeMedecin)
+                    {
+                        Console.Write($"{itemMedecin._prenom} {itemMedecin._nom}");
+                    }
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Console.WriteLine("Appuyez sur une touche pour continuer");
+            Console.ReadKey(true);
+        }
+        //---------------------------------------------------------------------------------------------------
         static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             Console.Clear();
@@ -368,19 +362,28 @@ namespace TravailPratique1
                 }
                 donnees.Add(code);
                 int minimumPatient = 1000;
+                int medecinAvecMinPatient = 0;
                 foreach (Medecin item in Medecins)
                 {
-                    if (item._ != 0)
+                    if (item._dateRetraite == item._nonRetraite)
                     {
-                        if (item._nombreDePatients < minimumPatient)
+                        if (item._ListePatient.Count < minimumPatient)
                         {
-
+                            minimumPatient = item._ListePatient.Count;
+                            medecinAvecMinPatient = item._matricule;
                         }
-                    } = item._ListePatient.Count;
+                    }
+                }
+                foreach (Medecin item in Medecins)
+                {
+                    if (item._matricule == medecinAvecMinPatient)
+                    {
+                        item.AjouterPatient(idCode);
+                    }
                 }
 
-                donnees.Add("0");
-                
+                donnees.Add(Convert.ToString(medecinAvecMinPatient));
+
                 donnees.Add("3000-01-01");
                 // Construction d'un objet Patient dans la liste d'objets List<Patient>
                 Patients.Add(new Patient(donnees[0], donnees[1], donnees[2], donnees[3], donnees[4]));
@@ -548,7 +551,7 @@ namespace TravailPratique1
                     //AfficherUnMedecin(); ******************
                     break;
                 case '4':
-                    //AfficherListePatients(); ******************
+                    AfficherListePatients(ref Medecins, ref Patients);
                     break;
                 case '5':
                     //AfficherUnPatient(); ******************

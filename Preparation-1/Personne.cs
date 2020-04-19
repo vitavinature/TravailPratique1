@@ -14,8 +14,8 @@ namespace TravailPratique1
             _nom = nom;
         }
 
-        protected readonly string _prenom;
-        protected readonly string _nom;
+        public readonly string _prenom;
+        public readonly string _nom;
     }
 }
 

@@ -35,9 +35,8 @@ namespace TravailPratique1
         {
             if (_dateRetraite == _nonRetraite)
             {
-                _ListePatient.Add(patient);
+                 _ListePatient.Add(patient);
             }
-            Console.WriteLine($"Le patient # {patient} a été ajouté à la liste du médecin # {_matricule}");
         }
 
         public void Afficher()
@@ -50,7 +49,7 @@ namespace TravailPratique1
             }
             else
             {
-                Console.Write($"Nombre de patients: {_nombreDePatients}");
+                Console.Write($"Nombre de patients: {_ListePatient.Count}");
             }
             Console.WriteLine();
         }
@@ -58,7 +57,7 @@ namespace TravailPratique1
         public int _matricule;
         public DateTime _dateRetraite = new DateTime();
         public DateTime _nonRetraite = new DateTime();
-        public int _nombreDePatients = 0;
+        
         public List<int> _ListePatient = new List<int>();
     }
 

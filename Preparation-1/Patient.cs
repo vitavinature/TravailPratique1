@@ -21,9 +21,7 @@ namespace TravailPratique1
                 _assMaladie = numeroAssMaladie;
             }
 
-            int numeroDuMedecin = Convert.ToInt32(matriculeMedecin);
-
-            _matriculeMedecin = numeroDuMedecin;
+            _matriculeMedecin = Convert.ToInt32(matriculeMedecin);
 
             DateTime dateDeces = Convert.ToDateTime(deces);
 
@@ -51,13 +49,12 @@ namespace TravailPratique1
             }
             else
             {
-                Console.Write($"Medecin: {_matriculeMedecin} prenomMedecin nomMedecin");
+                Console.Write($"Medecin: {_matriculeMedecin} ");
             }
-            Console.WriteLine();
         }
 
         public readonly int _assMaladie;
-        protected readonly int _matriculeMedecin;
+        public readonly int _matriculeMedecin;
         private readonly DateTime _dateDeces = new DateTime();
         protected readonly DateTime _nonDecede = new DateTime(3000, 1, 1);
     }
