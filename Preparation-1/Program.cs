@@ -190,7 +190,6 @@ namespace TravailPratique1
         }
         #endregion
 
-
         #region         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
 
         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
@@ -467,6 +466,8 @@ namespace TravailPratique1
                     MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
+            MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
+
         }
         #endregion
 
