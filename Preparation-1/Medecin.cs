@@ -8,7 +8,7 @@ namespace TravailPratique1
 {
     class Medecin : Personne
     {
-        public Medecin(string prenom, string nom, string matricule, string retraite) : base(prenom, nom)
+        public Medecin(string prenom, string nom, string matricule, string retraite, ref int nombreMedecinActif) : base(prenom, nom)
         {
             _nonRetraite = new DateTime(3000, 1, 1);
             int numeroDuMedecin = Convert.ToInt32(matricule);
@@ -29,6 +29,8 @@ namespace TravailPratique1
             }
 
             _matricule = numeroDuMedecin;
+
+            _nombreMedecinActif = nombreMedecinActif;
         }
 
         public void AjouterPatient(int patient)
@@ -57,7 +59,7 @@ namespace TravailPratique1
         public int _matricule;
         public DateTime _dateRetraite = new DateTime();
         public DateTime _nonRetraite = new DateTime();
-        
+        public int _nombreMedecinActif;
         public List<int> _ListePatient = new List<int>();
     }
 
