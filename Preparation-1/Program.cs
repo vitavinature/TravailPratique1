@@ -388,9 +388,11 @@ namespace TravailPratique1
             }
             else
             {
-                Console.Clear();
+                Pause();
                 MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
+            Pause();
+            MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
         #endregion
 
