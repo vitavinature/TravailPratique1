@@ -132,7 +132,6 @@ namespace TravailPratique1
             }
             #endregion
 
-            Console.Clear();
             Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
 
             // Le programme est terminé rendu ici.*************************
@@ -430,14 +429,10 @@ namespace TravailPratique1
                     Console.WriteLine($"Date du décès: {dateDeces}");
                     Console.WriteLine();
 
-
-
                     Console.WriteLine($"Nombre de médecin(s) actif(s): {nombreMedecinActif}");
                     Console.WriteLine();
 
-                    Console.WriteLine("Appuyer sur une touche pour continuer");
-                    Console.ReadKey(true);
-
+                    Pause();
                 }
             }
         }
@@ -478,21 +473,17 @@ namespace TravailPratique1
             }
             else
             {
-                Console.Clear();
                 Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             switch (choixChar)
             {
                 case '1':
-                    Console.Clear();
                     MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case '2':
-                    Console.Clear();
                     MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case '3':
-                    Console.Clear();
                     MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case 'q':
@@ -500,7 +491,6 @@ namespace TravailPratique1
                     //Quitter();*************************************** à faire
                     break;
                 default:
-                    Console.Clear();
                     Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
@@ -568,6 +558,8 @@ namespace TravailPratique1
 
         static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            Console.Clear();
+
             char choixChar = '0';
 
             ImprimeLigne(73, '=');
@@ -584,7 +576,6 @@ namespace TravailPratique1
             }
             else
             {
-                Console.Clear();
                 MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             switch (choixChar)
@@ -603,11 +594,9 @@ namespace TravailPratique1
                     break;
                 case 'r':
                 case 'R':
-                    Console.Clear();
                     Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 default:
-                    Console.Clear();
                     MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
@@ -618,6 +607,8 @@ namespace TravailPratique1
 
         static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            Console.Clear();
+
             char choixChar = '0';
 
             ImprimeLigne(73, '=');
@@ -635,7 +626,6 @@ namespace TravailPratique1
             }
             else
             {
-                Console.Clear();
                 MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             switch (choixChar)
@@ -660,11 +650,9 @@ namespace TravailPratique1
                     break;
                 case 'r':
                 case 'R':
-                    Console.Clear();
                     Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 default:
-                    Console.Clear();
                     MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
@@ -677,6 +665,53 @@ namespace TravailPratique1
         {
             Console.WriteLine("Appuyez sur une touche pour continuer");
             Console.ReadKey(true);
+        }
+        #endregion
+
+        #region         static void Quitter(ref List<Medecin> Medecins, ref List<Patient> Patients)
+
+        static void Quitter(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        {
+            try
+            {
+                string fichierMedecins = "medecins.txt";
+                // Ouverture du canalEcritureMed pour l'écriture dans le fichier "medecins.txt"
+                using (StreamWriter canalEcritureMed = new StreamWriter(fichierMedecins))
+                {
+                    foreach (Medecin item in Medecins)
+                    {
+                        if (item._dateRetraite != item._nonRetraite)
+                        {
+                            canalEcritureMed.WriteLine($"{item._matricule};{item._prenom};{item._nom};{item._dateRetraite}");
+                        }
+                        else
+                        {
+                            canalEcritureMed.WriteLine($"{item._matricule};{item._prenom};{item._nom}");
+                        }
+                    }
+                }
+                string fichierPatients = "patients.txt";
+                // Ouverture du canalEcriturePat pour l'écriture dans le fichier "patients.txt"
+                using (StreamWriter canalEcriturePat = new StreamWriter(fichierPatients))
+                {
+                    foreach (Patient item in Patients)
+                    {
+                        if (item._dateDeces != item._nonDecede)
+                        {
+                            canalEcriturePat.WriteLine($"{item._assMaladie};{item._prenom};{item._nom};{item._dateDeces}");
+                        }
+                        else
+                        {
+                            canalEcriturePat.WriteLine($"{item._assMaladie};{item._prenom};{item._nom}");
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         #endregion
 
@@ -703,9 +738,7 @@ namespace TravailPratique1
                     Console.WriteLine($"Nombre de médecin(s) actif(s): {nombreMedecinActif}");
                     Console.WriteLine();
 
-                    Console.WriteLine("Appuyer sur une touche pour continuer");
-                    Console.ReadKey(true);
-
+                    Pause();
                 }
             }
         }
