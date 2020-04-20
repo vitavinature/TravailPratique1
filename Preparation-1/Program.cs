@@ -292,6 +292,7 @@ namespace TravailPratique1
 
         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            Console.WriteLine();
             Console.WriteLine("Ajout d'un médecin");
             Console.WriteLine("------------------");
             Console.Write("Prénom: ");
@@ -331,6 +332,7 @@ namespace TravailPratique1
 
         static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            Console.WriteLine();
             Console.WriteLine("Ajout d'un patient");
             Console.WriteLine("------------------");
             Console.Write("Prénom: ");
@@ -384,7 +386,6 @@ namespace TravailPratique1
                 Patients.Add(new Patient(donnees[0], donnees[1], donnees[2], donnees[3], donnees[4]));
 
                 Console.WriteLine("Patient ajouté");
-                Pause();
             }
             else
             {
@@ -445,10 +446,12 @@ namespace TravailPratique1
             ImprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux                                         =");
             ImprimeLigne(73, '=');
+            Console.WriteLine();
             Console.WriteLine("1) Ajouter");
             Console.WriteLine("2) Modifier");
             Console.WriteLine("3) Afficher");
             Console.WriteLine("Q) Quitter");
+            Console.WriteLine();
             Console.Write("> ");
 
             string choix = Console.ReadLine();
@@ -490,12 +493,14 @@ namespace TravailPratique1
             ImprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
             ImprimeLigne(73, '=');
+            Console.WriteLine();
             Console.WriteLine("1) Afficher les statistiques");
             Console.WriteLine("2) Afficher la liste de médecins");
             Console.WriteLine("3) Afficher un médecin");
             Console.WriteLine("4) Afficher la liste de patients");
             Console.WriteLine("5) Afficher un patient");
             Console.WriteLine("R) Retour au menu principal");
+            Console.WriteLine();
             Console.Write("> ");
             string choix = Console.ReadLine();
             if (choix.Length == 1 && ValiderChoix(choix, "12345rR") == true)
@@ -550,9 +555,11 @@ namespace TravailPratique1
             ImprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux - Ajout                                 =");
             ImprimeLigne(73, '=');
+            Console.WriteLine();
             Console.WriteLine("1) Ajouter un médecin");
             Console.WriteLine("2) Ajouter un patient");
             Console.WriteLine("R) Retour au menu principal");
+            Console.WriteLine();
             Console.Write("> ");
             string choix = Console.ReadLine();
             if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
@@ -599,9 +606,11 @@ namespace TravailPratique1
             ImprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux - Modification                          =");
             ImprimeLigne(73, '=');
+            Console.WriteLine();
             Console.WriteLine("1) Indiquer un départ à la retraite d'un médecin");
             Console.WriteLine("2) Indiquer un décès d'un patient");
             Console.WriteLine("R) Retour au menu principal");
+            Console.WriteLine();
             Console.Write("> ");
 
             string choix = Console.ReadLine();
@@ -715,16 +724,22 @@ namespace TravailPratique1
                     Console.WriteLine("-----------------");
                     Console.Write("Date de la retraite (AAAA-MM-JJ): ");
                     DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());
-                    Console.WriteLine($"Date de la retraite: {dateRetraite}");
-                    Console.WriteLine();
+                    //Console.WriteLine($"Date de la retraite: {dateRetraite}");
+                    //Console.WriteLine();
 
                     nombreMedecinActif -= 1;
 
-                    Console.WriteLine($"Nombre de médecin(s) actif(s): {nombreMedecinActif}");
-                    Console.WriteLine();
+                    //Console.WriteLine($"Nombre de médecin(s) actif(s): {nombreMedecinActif}");
+                    //Console.WriteLine();
 
                     Pause();
                 }
+            }
+            else
+            {
+                Console.WriteLine($"Il n'y a pas de médecin avec le code D'identification {codeIdentification}");
+                Pause();
+                MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
         }
         #endregion
