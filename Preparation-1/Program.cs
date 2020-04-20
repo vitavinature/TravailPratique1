@@ -155,7 +155,7 @@ namespace TravailPratique1
                     compteurMedecinRetraite += 1;
                 }
             }
-            Console.WriteLine($"{compteurMedecin} médecins, dont {compteurMedecinRetraite} à la retraite");
+            Console.WriteLine($"  {compteurMedecin} médecins, dont {compteurMedecinRetraite} à la retraite");
 
             foreach (Patient itemPatient in Patients)
             {
@@ -165,9 +165,8 @@ namespace TravailPratique1
                     compteurPatientDecede += 1;
                 }
             }
-            Console.WriteLine($"{compteurPatient} Patients, dont {compteurPatientDecede} décédés");
+            Console.WriteLine($"  {compteurPatient} Patients, dont {compteurPatientDecede} décédés");
 
-            Console.WriteLine();
             Pause();
         }
         #endregion
@@ -176,6 +175,7 @@ namespace TravailPratique1
 
         static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
+            Console.WriteLine();
             Console.WriteLine("Liste des patients");
             Console.WriteLine("------------------");
             foreach (Patient itemPatient in Patients)
@@ -190,7 +190,6 @@ namespace TravailPratique1
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine();
             Pause();
         }
         #endregion
@@ -199,17 +198,14 @@ namespace TravailPratique1
 
         static void AfficherListeMedecins(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            Console.WriteLine();
             Console.WriteLine("Liste des médecins");
             Console.WriteLine("------------------");
-
 
             foreach (Medecin item in Medecins)
             {
                 item.Afficher();
             }
-            Console.WriteLine();
-            Console.WriteLine($"Nombre de médecins actifs: {nombreMedecinActif}");
-            Console.WriteLine();
             Pause();
         }
         #endregion
@@ -218,7 +214,7 @@ namespace TravailPratique1
 
         static void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
-            Console.WriteLine("Code d'identification: ");
+            Console.Write("Code d'identification: ");
             string code = Console.ReadLine();
             int codeDIdentification = Convert.ToInt32(code);
 
@@ -226,6 +222,7 @@ namespace TravailPratique1
             {
                 if (itemMedecin._matricule == codeDIdentification)
                 {
+                    Console.WriteLine();
                     Console.WriteLine("Medecin");
                     Console.WriteLine("-------");
                     Console.WriteLine($"Code d'identification: {itemMedecin._matricule}");
@@ -280,7 +277,7 @@ namespace TravailPratique1
                     }
                     else
                     {
-                        Console.WriteLine("Patient décédé");
+                        Console.WriteLine($"Décédé le {Convert.ToDateTime(itemPatient._dateDeces)}");
                     }
                 }
             }
@@ -401,6 +398,7 @@ namespace TravailPratique1
 
         static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            int matchNumeroAssMaladie = 0;
             Console.Write("Numero d'assurance maladie: ");
             int numeroAssMaladie = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
@@ -408,19 +406,21 @@ namespace TravailPratique1
             {
                 if (item._assMaladie == numeroAssMaladie)
                 {
+                    matchNumeroAssMaladie += 1;
                     Console.WriteLine("Indiquer décès");
                     Console.WriteLine("--------------");
                     Console.Write("Date du décès (AAAA-MM-JJ): ");
                     DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());
-                    Console.WriteLine($"Date du décès: {dateDeces}");
-                    Console.WriteLine();
-
-                    Console.WriteLine($"Nombre de médecin(s) actif(s): {nombreMedecinActif}");
-                    Console.WriteLine();
 
                     Pause();
                 }
             }
+            if (matchNumeroAssMaladie == 0)
+            {
+                Console.WriteLine($"Il n'y a pas de patient avec le numéro d'assurance maladie {numeroAssMaladie}");
+                Pause();
+            }
+            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
         #endregion
 
@@ -447,10 +447,10 @@ namespace TravailPratique1
             Console.WriteLine("= Gestion des dossiers médicaux                                         =");
             ImprimeLigne(73, '=');
             Console.WriteLine();
-            Console.WriteLine("1) Ajouter");
-            Console.WriteLine("2) Modifier");
-            Console.WriteLine("3) Afficher");
-            Console.WriteLine("Q) Quitter");
+            Console.WriteLine(" 1) Ajouter");
+            Console.WriteLine(" 2) Modifier");
+            Console.WriteLine(" 3) Afficher");
+            Console.WriteLine(" Q) Quitter");
             Console.WriteLine();
             Console.Write("> ");
 
@@ -489,17 +489,19 @@ namespace TravailPratique1
 
         static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            Console.Clear();
+
             char choixChar = '0';
             ImprimeLigne(73, '=');
             Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
             ImprimeLigne(73, '=');
             Console.WriteLine();
-            Console.WriteLine("1) Afficher les statistiques");
-            Console.WriteLine("2) Afficher la liste de médecins");
-            Console.WriteLine("3) Afficher un médecin");
-            Console.WriteLine("4) Afficher la liste de patients");
-            Console.WriteLine("5) Afficher un patient");
-            Console.WriteLine("R) Retour au menu principal");
+            Console.WriteLine(" 1) Afficher les statistiques");
+            Console.WriteLine(" 2) Afficher la liste de médecins");
+            Console.WriteLine(" 3) Afficher un médecin");
+            Console.WriteLine(" 4) Afficher la liste de patients");
+            Console.WriteLine(" 5) Afficher un patient");
+            Console.WriteLine(" R) Retour au menu principal");
             Console.WriteLine();
             Console.Write("> ");
             string choix = Console.ReadLine();
@@ -556,9 +558,9 @@ namespace TravailPratique1
             Console.WriteLine("= Gestion des dossiers médicaux - Ajout                                 =");
             ImprimeLigne(73, '=');
             Console.WriteLine();
-            Console.WriteLine("1) Ajouter un médecin");
-            Console.WriteLine("2) Ajouter un patient");
-            Console.WriteLine("R) Retour au menu principal");
+            Console.WriteLine(" 1) Ajouter un médecin");
+            Console.WriteLine(" 2) Ajouter un patient");
+            Console.WriteLine(" R) Retour au menu principal");
             Console.WriteLine();
             Console.Write("> ");
             string choix = Console.ReadLine();
@@ -607,9 +609,9 @@ namespace TravailPratique1
             Console.WriteLine("= Gestion des dossiers médicaux - Modification                          =");
             ImprimeLigne(73, '=');
             Console.WriteLine();
-            Console.WriteLine("1) Indiquer un départ à la retraite d'un médecin");
-            Console.WriteLine("2) Indiquer un décès d'un patient");
-            Console.WriteLine("R) Retour au menu principal");
+            Console.WriteLine(" 1) Indiquer un départ à la retraite d'un médecin");
+            Console.WriteLine(" 2) Indiquer un décès d'un patient");
+            Console.WriteLine(" R) Retour au menu principal");
             Console.WriteLine();
             Console.Write("> ");
 
@@ -713,6 +715,7 @@ namespace TravailPratique1
 
         static void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            int nombreMedecinActifDebut = nombreMedecinActif;
             Console.Write("Code d'identification: ");
             int codeIdentification = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
@@ -735,12 +738,12 @@ namespace TravailPratique1
                     Pause();
                 }
             }
-            else
+            if (nombreMedecinActif == nombreMedecinActifDebut)
             {
                 Console.WriteLine($"Il n'y a pas de médecin avec le code D'identification {codeIdentification}");
                 Pause();
-                MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
+            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
         #endregion
 
