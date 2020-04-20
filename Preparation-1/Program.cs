@@ -141,8 +141,7 @@ namespace TravailPratique1
             Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
 
             // Le programme est terminé rendu ici.*************************
-            Console.WriteLine("Appuyez sur une touche pour continuer");
-            Console.ReadKey(true);
+            Pause();
         }
 
 
@@ -165,8 +164,7 @@ namespace TravailPratique1
                 Console.WriteLine();
             }
             Console.WriteLine();
-            Console.WriteLine("Appuyez sur une touche pour continuer");
-            Console.ReadKey(true);
+            Pause();
         }
         #endregion
 
@@ -185,10 +183,84 @@ namespace TravailPratique1
             Console.WriteLine();
             Console.WriteLine($"Nombre de médecins actifs: {nombreMedecinActif}");
             Console.WriteLine();
-            Console.WriteLine("Appuyez sur une touche pour continuer");
-            Console.ReadKey(true);
+            Pause();
         }
         #endregion
+
+        #region         static void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
+
+        static void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        {
+            Console.WriteLine("Code d'identification: ");
+            string code = Console.ReadLine();
+            int codeDIdentification = Convert.ToInt32(code);
+
+            foreach (Medecin itemMedecin in Medecins)
+            {
+                if (itemMedecin._matricule == codeDIdentification)
+                {
+                    Console.WriteLine("Medecin");
+                    Console.WriteLine("-------");
+                    Console.WriteLine($"Code d'identification: {itemMedecin._matricule}");
+                    Console.WriteLine($"Nom: {itemMedecin._prenom} {itemMedecin._nom}");
+                    if (itemMedecin._ListePatient.Count > 0)
+                    {
+                        Console.WriteLine("Patients:");
+                        foreach (Patient itemPatient in Patients)
+                        {
+                            if (itemPatient._matriculeMedecin == itemMedecin._matricule)
+                            {
+                                Console.WriteLine($"{itemPatient._assMaladie} {itemPatient._prenom} {itemPatient._nom}");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Aucun patient");
+                    }
+                }
+            }
+            Pause();
+        }
+        #endregion
+
+        #region         static void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
+
+        static void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        {
+            Console.WriteLine("Numéro d'assurance maladie: ");
+            string numAssMal = Console.ReadLine();
+            int numeroDAssuranceMaladie = Convert.ToInt32(numAssMal);
+
+            foreach (Patient itemPatient in Patients)
+            {
+                if (itemPatient._assMaladie == numeroDAssuranceMaladie)
+                {
+                    Console.WriteLine("Patient");
+                    Console.WriteLine("-------");
+                    Console.WriteLine($"Numéro d'assurance maladie: {itemPatient._assMaladie}");
+                    Console.WriteLine($"Nom: {itemPatient._prenom} {itemPatient._nom}");
+                    if (itemPatient._matriculeMedecin != 0)
+                    {
+                        Console.Write("Medecin:");
+                        foreach (Medecin itemMedecin in Medecins)
+                        {
+                            if (itemPatient._matriculeMedecin == itemMedecin._matricule)
+                            {
+                                Console.WriteLine($"{itemMedecin._matricule} {itemMedecin._prenom} {itemMedecin._nom}");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Patient décédé");
+                    }
+                }
+            }
+            Pause();
+        }
+        #endregion
+
 
         #region         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
 
@@ -213,8 +285,7 @@ namespace TravailPratique1
                     if (idCode == item._matricule)
                     {
                         Console.WriteLine("Impossible d'ajouter le médecin, Le  code d'identification existe déjà.");
-                        Console.WriteLine("Appuyez sur une touche pour continuer");
-                        Console.ReadKey(true);
+                        Pause();
 
                         Console.Clear();
                         MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
@@ -226,16 +297,14 @@ namespace TravailPratique1
                 Medecins.Add(new Medecin(donnees[0], donnees[1], donnees[2], donnees[3], ref nombreMedecinActif));
 
                 Console.WriteLine("Médecin ajouté");
-                Console.WriteLine("Appuyez sur une touche pour continuer");
-                Console.ReadKey(true);
+                Pause();
 
                 foreach (Medecin item in Medecins)
                 {
                     item.Afficher();
                 }
                 Console.WriteLine();
-                Console.WriteLine("Appuyez sur une touche pour continuer");
-                Console.ReadKey(true);
+                Pause();
 
                 Console.Clear();
                 MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
@@ -266,8 +335,7 @@ namespace TravailPratique1
                     if (idCode == item._assMaladie)
                     {
                         Console.WriteLine("Impossible d'ajouter le patient, Le numéro d'assurance maladie existe déjà.");
-                        Console.WriteLine("Appuyez sur une touche pour continuer");
-                        Console.ReadKey(true);
+                        Pause();
 
                         Console.Clear();
                         MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
@@ -302,16 +370,14 @@ namespace TravailPratique1
                 Patients.Add(new Patient(donnees[0], donnees[1], donnees[2], donnees[3], donnees[4]));
 
                 Console.WriteLine("Patient ajouté");
-                Console.WriteLine("Appuyez sur une touche pour continuer");
-                Console.ReadKey(true);
+                Pause();
 
                 foreach (Patient item in Patients)
                 {
                     item.Afficher();
                 }
                 Console.WriteLine();
-                Console.WriteLine("Appuyez sur une touche pour continuer");
-                Console.ReadKey(true);
+                Pause();
 
                 Console.Clear();
                 MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
@@ -445,16 +511,16 @@ namespace TravailPratique1
                     //AfficherStatistiques(); ******************
                     break;
                 case '2':
-                    //AfficherListeMedecins(ref Medecins, ref Patients); ******************
+                    AfficherListeMedecins(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
                 case '3':
-                    //AfficherUnMedecin(); ******************
+                    AfficherUnMedecin(ref Medecins, ref Patients);
                     break;
                 case '4':
                     AfficherListePatients(ref Medecins, ref Patients);
                     break;
                 case '5':
-                    //AfficherUnPatient(); ******************
+                    AfficherUnPatient(ref Medecins, ref Patients);
                     break;
                 case 'r':
                 case 'R':
@@ -503,8 +569,7 @@ namespace TravailPratique1
                     if (nombreMedecinActif == 0)
                     {
                         Console.WriteLine("Il n'y a aucun médecin actif présentement. Veuillez ressayer plus tard.");
-                        Console.WriteLine("Appuyer sur une touche pour continuer:");
-                        Console.ReadKey(true);
+                        Pause();
                         AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
                     }
                     AjouterPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
@@ -555,8 +620,7 @@ namespace TravailPratique1
                         Console.WriteLine($"Puisqu'il y a {nombreMedecinActif} médecin actif.");
                         Console.WriteLine("Veuillez tenter à nouveau plus tard.");
                         Console.WriteLine();
-                        Console.WriteLine("Appuyez sur une touche pour continuer");
-                        Console.ReadKey(true);
+                        Pause();
                         MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                     }
                     RetraitMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
@@ -577,6 +641,15 @@ namespace TravailPratique1
                     MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
+        }
+        #endregion
+
+        #region         static void Pause()
+
+        static void Pause()
+        {
+            Console.WriteLine("Appuyez sur une touche pour continuer");
+            Console.ReadKey(true);
         }
         #endregion
 
