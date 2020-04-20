@@ -132,18 +132,46 @@ namespace TravailPratique1
             }
             #endregion
 
-
-
-
-
-
             Console.Clear();
             Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
 
             // Le programme est terminé rendu ici.*************************
             Pause();
         }
+        #region         static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
 
+        static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        {
+            int compteurMedecin = 0;
+            int compteurMedecinRetraite = 0;
+            int compteurPatient = 0;
+            int compteurPatientDecede = 0;
+
+            Console.WriteLine("Le système contient:");
+            foreach (Medecin itemMedecin in Medecins)
+            {
+                compteurMedecin += 1;
+                if (itemMedecin._dateRetraite != itemMedecin._nonRetraite)
+                {
+                    compteurMedecinRetraite += 1;
+                }
+            }
+            Console.WriteLine($"{compteurMedecin} médecins, dont {compteurMedecinRetraite} à la retraite");
+
+            foreach (Patient itemPatient in Patients)
+            {
+                compteurPatient += 1;
+                if (itemPatient._dateDeces != itemPatient._nonDecede)
+                {
+                    compteurPatientDecede += 1;
+                }
+            }
+            Console.WriteLine($"{compteurPatient} Patients, dont {compteurPatientDecede} décédés");
+
+            Console.WriteLine();
+            Pause();
+        }
+        #endregion
 
         #region         static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
 
@@ -260,7 +288,6 @@ namespace TravailPratique1
             Pause();
         }
         #endregion
-
 
         #region         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
 
@@ -508,7 +535,7 @@ namespace TravailPratique1
             switch (choixChar)
             {
                 case '1':
-                    //AfficherStatistiques(); ******************
+                    AfficherLesStatistiques(ref Medecins, ref Patients);
                     break;
                 case '2':
                     AfficherListeMedecins(ref Medecins, ref Patients, ref nombreMedecinActif);
