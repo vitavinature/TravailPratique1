@@ -332,7 +332,6 @@ namespace TravailPratique1
                 Console.WriteLine();
                 Pause();
 
-                Console.Clear();
                 MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
         }
@@ -488,7 +487,7 @@ namespace TravailPratique1
                     break;
                 case 'q':
                 case 'Q':
-                    //Quitter();*************************************** à faire
+                    Quitter(ref Medecins, ref Patients);
                     break;
                 default:
                     Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
