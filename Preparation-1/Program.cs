@@ -134,7 +134,7 @@ namespace TravailPratique1
 
             Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
 
-            // Le programme est terminé rendu ici.*************************
+            // Le programme est terminé rendu ici.
             Pause();
         }
         #region         static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
@@ -476,6 +476,7 @@ namespace TravailPratique1
                     break;
                 case 'q':
                 case 'Q':
+                    Console.WriteLine("Sauvegarde des données et fin du programme");
                     Quitter(ref Medecins, ref Patients);
                     break;
                 default:
