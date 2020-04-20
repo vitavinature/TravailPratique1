@@ -312,8 +312,6 @@ namespace TravailPratique1
                     {
                         Console.WriteLine("Impossible d'ajouter le médecin, Le  code d'identification existe déjà.");
                         Pause();
-
-                        Console.Clear();
                         MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     }
                 }
@@ -323,17 +321,9 @@ namespace TravailPratique1
                 Medecins.Add(new Medecin(donnees[0], donnees[1], donnees[2], donnees[3], ref nombreMedecinActif));
 
                 Console.WriteLine("Médecin ajouté");
-                Pause();
-
-                foreach (Medecin item in Medecins)
-                {
-                    item.Afficher();
-                }
-                Console.WriteLine();
-                Pause();
-
-                MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
+            Pause();
+            MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
         #endregion
 
@@ -387,7 +377,6 @@ namespace TravailPratique1
                         item.AjouterPatient(idCode);
                     }
                 }
-
                 donnees.Add(Convert.ToString(medecinAvecMinPatient));
 
                 donnees.Add("3000-01-01");
@@ -396,14 +385,9 @@ namespace TravailPratique1
 
                 Console.WriteLine("Patient ajouté");
                 Pause();
-
-                foreach (Patient item in Patients)
-                {
-                    item.Afficher();
-                }
-                Console.WriteLine();
-                Pause();
-
+            }
+            else
+            {
                 Console.Clear();
                 MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
