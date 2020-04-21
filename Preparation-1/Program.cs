@@ -453,7 +453,18 @@ namespace TravailPratique1
         }
         #endregion
 
+        #region         static int DemanderCode(string texte, int minimum, int maximum)
 
+        /// <summary>
+        /// Demande à l'utilisateur d'entrer une valeur
+        /// Valide la valeur entrée pour qu'elle soit du bon type (un entier)
+        /// Valide la valeur entrée pour qu'elle soit entre un minimum et un maximum
+        /// Redemande à l'utilisateur d'entrer une valeur tant qu'elle n'est pas valide
+        /// </summary>
+        /// <param name="texte">contient la description de valeur demandé à l'utilisateur</param>
+        /// <param name="minimum">valeur minimale que la valeur entrée pa</param>
+        /// <param name="maximum"></param>
+        /// <returns></returns>
         static int DemanderCode(string texte, int minimum, int maximum)
         {
             int entier = 0;
@@ -463,7 +474,6 @@ namespace TravailPratique1
                 try
                 {
                     Console.WriteLine(texte);
-                    Console.WriteLine("Nouvelle fonction DemanderCode");
                     entier = Convert.ToInt32(Console.ReadLine());
                     while (entier < minimum || entier > maximum)
                     {
@@ -487,6 +497,7 @@ namespace TravailPratique1
             }
             return entier;
         }
+        #endregion
 
         #region         static void ImprimeLigne(int v1, char v2)
 
@@ -716,7 +727,14 @@ namespace TravailPratique1
         #endregion
 
         #region         static void Quitter(ref List<Medecin> Medecins, ref List<Patient> Patients)
-
+        /// <summary>
+        /// Ouvre le canal d'écriture de fichierMedecins
+        /// Écrit le contenu des informations des médecins
+        /// Ouvre le canal d'écriture de fichierPatients
+        /// Écrit le contenu des informations des patients
+        /// </summary>
+        /// <param name="Medecins">nom de la List<Medecin> passé en paramètre référence</param>
+        /// <param name="Patients">nom de la List<Patient> passé en paramètre référence</param>
         static void Quitter(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             try
