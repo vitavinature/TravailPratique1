@@ -316,7 +316,13 @@ namespace TravailPratique1
         #endregion
 
         #region         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
+        /// <summary>
+        /// Demande le (Prénom et le Nom qui sont des chaines de caractères), et le (Code d’identification, un entier) du médecin
+        /// Un message d’erreur indique que l’ajout est impossible si un médecin portant le même code d’identification est déjà présent dans le système 
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patients</param>
+        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             try
@@ -331,8 +337,8 @@ namespace TravailPratique1
                 Console.Write("Nom: ");
                 string nom = Console.ReadLine();
                 donnees.Add(nom);
-                string texte = "Code d'identification: ";
 
+                string texte = "Code d'identification: ";
                 int matricule = DemanderCode(texte, 100, 999);
 
                 foreach (Medecin item in Medecins)
@@ -365,6 +371,9 @@ namespace TravailPratique1
 
         static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
+            int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
+            int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
+
             Console.WriteLine();
             Console.WriteLine("Ajout d'un patient");
             Console.WriteLine("------------------");
@@ -375,8 +384,9 @@ namespace TravailPratique1
             Console.Write("Nom: ");
             string nom = Console.ReadLine();
             donnees.Add(nom);
+
             string texte = "Numéro d'assurance maladie: ";
-            int numero = DemanderCode(texte, 1000, 9999);
+            int numero = DemanderCode(texte, 1000, 9999);// Numéro d'assurance maladie du patient
 
             foreach (Patient item in Patients)
             {
@@ -384,14 +394,11 @@ namespace TravailPratique1
                 {
                     Console.WriteLine("Impossible d'ajouter le patient, Le numéro d'assurance maladie existe déjà.");
                     Pause();
-
-                    Console.Clear();
                     MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                 }
             }
             donnees.Add(Convert.ToString(numero));
-            int minimumPatient = 1000;
-            int medecinAvecMinPatient = 0;
+
             foreach (Medecin item in Medecins)
             {
                 if (item._dateRetraite == item._nonRetraite)
@@ -615,7 +622,14 @@ namespace TravailPratique1
         #endregion
 
         #region         static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
+        /// <summary>
+        /// Permet de choisir l’élément à ajouter, un médecin ou un patient.
+        /// Pour pouvoir ajouter un patient, au moins un médecin actif doit être défini.
+        /// Si aucun médecin actif n’est défini, un message informe l’utilisateur et l’ajout du patient est impossible. 
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
+        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
         static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             Console.Clear();
@@ -663,56 +677,69 @@ namespace TravailPratique1
         #endregion
 
         #region     static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
+        /// <summary>
+        /// Affiche le Menu Modifier où un médecin peut être mis à la retraite ou le décès d'un patient peut être enregistré
+        /// Le choix est validé
+        /// Si le nombre de médecins actifs est inférieur à 2 il est impossible de mettre un médecin à la retraite
+        /// Un switch fait la sélection de la méthode à apeller selon qu'un médecin est mis à la retraite ou un patient est décédé
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
+        /// <param name="nombreMedecinActif">Nombre de médecins actifs</param>
         static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             Console.Clear();
-
             char choixChar = '0';
+            try
+            {
+                ImprimeLigne(73, '=');
+                Console.WriteLine("= Gestion des dossiers médicaux - Modification                          =");
+                ImprimeLigne(73, '=');
+                Console.WriteLine();
+                Console.WriteLine(" 1) Indiquer un départ à la retraite d'un médecin");
+                Console.WriteLine(" 2) Indiquer un décès d'un patient");
+                Console.WriteLine(" R) Retour au menu principal");
+                Console.WriteLine();
+                Console.Write("> ");
 
-            ImprimeLigne(73, '=');
-            Console.WriteLine("= Gestion des dossiers médicaux - Modification                          =");
-            ImprimeLigne(73, '=');
-            Console.WriteLine();
-            Console.WriteLine(" 1) Indiquer un départ à la retraite d'un médecin");
-            Console.WriteLine(" 2) Indiquer un décès d'un patient");
-            Console.WriteLine(" R) Retour au menu principal");
-            Console.WriteLine();
-            Console.Write("> ");
-
-            string choix = Console.ReadLine();
-            if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
-            {
-                choixChar = Convert.ToChar(choix);
-            }
-            else
-            {
-                MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-            }
-            switch (choixChar)
-            {
-                case '1':
-                    if (nombreMedecinActif <= 1)
-                    {
-                        Console.WriteLine("Il est présentement impossible de mettre un médecin à la retraite,");
-                        Console.WriteLine($"Puisqu'il y a {nombreMedecinActif} médecin actif.");
-                        Console.WriteLine("Veuillez tenter à nouveau plus tard.");
-                        Console.WriteLine();
-                        Pause();
+                string choix = Console.ReadLine();
+                if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
+                {
+                    choixChar = Convert.ToChar(choix);
+                }
+                else
+                {
+                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+                }
+                switch (choixChar)
+                {
+                    case '1':
+                        if (nombreMedecinActif <= 1)
+                        {
+                            Console.WriteLine("Il est présentement impossible de mettre un médecin à la retraite,");
+                            Console.WriteLine($"Puisqu'il y a {nombreMedecinActif} médecin actif.");
+                            Console.WriteLine("Veuillez tenter à nouveau plus tard.");
+                            Console.WriteLine();
+                            Pause();
+                            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        }
+                        RetraitMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
                         MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    }
-                    RetraitMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
 
-                    break;
-                case '2':
-                    DecesPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
-                case 'r':
-                case 'R':
-                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
+                        break;
+                    case '2':
+                        DecesPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        break;
+                    case 'r':
+                    case 'R':
+                        Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
         #endregion
@@ -782,46 +809,65 @@ namespace TravailPratique1
         #endregion
 
         #region         static void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Medecins"></param>
+        /// <param name="Patients"></param>
+        /// <param name="nombreMedecinActif"></param>
         static void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            int nombreMedecinActifDebut = nombreMedecinActif;
-            Console.Write("Code d'identification: ");
-            int codeIdentification = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
-            foreach (Medecin item in Medecins)
+            try
             {
-                if (item._matricule == codeIdentification)
+                int nombreMedecinActifDebut = nombreMedecinActif;
+                //********************************************* 
+                string texte = "Code d'identification: ";
+                int matricule = DemanderCode(texte, 100, 999);
+
+                Console.WriteLine();
+                foreach (Medecin item in Medecins)
                 {
-                    Console.WriteLine("Indiquer retraite");
-                    Console.WriteLine("-----------------");
-                    Console.Write("Date de la retraite (AAAA-MM-JJ): ");
-                    DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());
+                    if (item._matricule == matricule)
+                    {
+                        Console.WriteLine("Indiquer retraite");
+                        Console.WriteLine("-----------------");
+                        Console.Write("Date de la retraite (AAAA-MM-JJ): ");
+                        DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());
 
-                    nombreMedecinActif -= 1;
+                        nombreMedecinActif -= 1;
 
+                        Pause();
+                    }
+                }
+                if (nombreMedecinActif == nombreMedecinActifDebut)
+                {
+                    Console.WriteLine($"Il n'y a pas de médecin avec le code D'identification {matricule}");
                     Pause();
                 }
+                MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
-            if (nombreMedecinActif == nombreMedecinActifDebut)
+            catch (Exception e)
             {
-                Console.WriteLine($"Il n'y a pas de médecin avec le code D'identification {codeIdentification}");
-                Pause();
+                Console.WriteLine(e.Message);
             }
-            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
         #endregion
 
-        #region         static bool ValiderChoix(string choix, string v)
-
-        static bool ValiderChoix(string choix, string v)
+        #region         static bool ValiderChoix(string choix, string choixPossibles)
+        /// <summary>
+        /// Vérifie que le choix de l'utilisateur est valide, selon le menu présenté
+        /// </summary>
+        /// <param name="choix">valeur entrée par l'utilisateur</param>
+        /// <param name="choixPossibles">mot contenant tout les choix possibles selon le menu présenté</param>
+        /// <returns></returns>
+        static bool ValiderChoix(string choix, string choixPossibles)
         {
-            if (v.Contains(choix))
+            if (choixPossibles.Contains(choix))
             {
                 return true;
             }
             return false;
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         #endregion
     }
