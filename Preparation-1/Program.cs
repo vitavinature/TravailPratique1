@@ -331,6 +331,7 @@ namespace TravailPratique1
             donnees.Add(nom);
             Console.Write("Code d'identification: ");
             string code = Console.ReadLine();
+            //****** VALIDER QU'IL SAGIT BIEN DE CHIFFRES AVANT DE FAIRE LA CONVERSION
             int matricule = Convert.ToInt32(code);
             if (matricule >= 100 && matricule <= 999)
             {
@@ -372,7 +373,7 @@ namespace TravailPratique1
             Console.Write("Numéro d'assurance maladie: ");
             string code = Console.ReadLine();
             int idCode = Convert.ToInt32(code);
-            if (idCode >= 1000 && idCode <= 9999)
+            if (idCode > 999 && idCode < 10000)
             {
                 foreach (Patient item in Patients)
                 {
@@ -711,7 +712,7 @@ namespace TravailPratique1
                     {
                         if (item._dateDeces != item._nonDecede)
                         {
-                            canalEcriturePat.WriteLine($"{item._assMaladie};{item._prenom};{item._nom};{item._dateDeces}");
+                            canalEcriturePat.WriteLine($"{item._assMaladie};{item._prenom};{item._nom};{0};{item._dateDeces}");
                         }
                         else
                         {
