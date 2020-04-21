@@ -319,22 +319,22 @@ namespace TravailPratique1
 
         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            Console.WriteLine();
-            Console.WriteLine("Ajout d'un médecin");
-            Console.WriteLine("------------------");
-            Console.Write("Prénom: ");
-            string prenom = Console.ReadLine();
-            List<string> donnees = new List<string>();
-            donnees.Add(prenom);
-            Console.Write("Nom: ");
-            string nom = Console.ReadLine();
-            donnees.Add(nom);
-            Console.Write("Code d'identification: ");
-            string code = Console.ReadLine();
-            //****** VALIDER QU'IL SAGIT BIEN DE CHIFFRES AVANT DE FAIRE LA CONVERSION
-            int matricule = Convert.ToInt32(code);
-            if (matricule >= 100 && matricule <= 999)
+            try
             {
+                Console.WriteLine();
+                Console.WriteLine("Ajout d'un médecin");
+                Console.WriteLine("------------------");
+                Console.Write("Prénom: ");
+                string prenom = Console.ReadLine();
+                List<string> donnees = new List<string>();
+                donnees.Add(prenom);
+                Console.Write("Nom: ");
+                string nom = Console.ReadLine();
+                donnees.Add(nom);
+                string texte = "Code d'identification: ";
+
+                int matricule = DemanderCode(texte, 100, 999);
+
                 foreach (Medecin item in Medecins)
                 {
                     if (matricule == item._matricule)
@@ -344,15 +344,20 @@ namespace TravailPratique1
                         MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     }
                 }
-                donnees.Add(code);
+                donnees.Add(Convert.ToString(matricule));
                 donnees.Add("3000-01-01");
                 // Construction d'un objet Medecin dans la liste d'objets List<Medecin>
                 Medecins.Add(new Medecin(donnees[0], donnees[1], matricule, donnees[3], ref nombreMedecinActif));
 
                 Console.WriteLine("Médecin ajouté");
+                //}
+                Pause();
+                MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
-            Pause();
-            MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         #endregion
 
@@ -370,56 +375,49 @@ namespace TravailPratique1
             Console.Write("Nom: ");
             string nom = Console.ReadLine();
             donnees.Add(nom);
-            Console.Write("Numéro d'assurance maladie: ");
-            string code = Console.ReadLine();
-            int idCode = Convert.ToInt32(code);
-            if (idCode > 999 && idCode < 10000)
+            string texte = "Numéro d'assurance maladie: ";
+            int numero = DemanderCode(texte, 1000, 9999);
+
+            foreach (Patient item in Patients)
             {
-                foreach (Patient item in Patients)
+                if (numero == item._assMaladie)
                 {
-                    if (idCode == item._assMaladie)
-                    {
-                        Console.WriteLine("Impossible d'ajouter le patient, Le numéro d'assurance maladie existe déjà.");
-                        Pause();
+                    Console.WriteLine("Impossible d'ajouter le patient, Le numéro d'assurance maladie existe déjà.");
+                    Pause();
 
-                        Console.Clear();
-                        MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    }
+                    Console.Clear();
+                    MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                 }
-                donnees.Add(code);
-                int minimumPatient = 1000;
-                int medecinAvecMinPatient = 0;
-                foreach (Medecin item in Medecins)
-                {
-                    if (item._dateRetraite == item._nonRetraite)
-                    {
-                        if (item._ListePatient.Count < minimumPatient)
-                        {
-                            minimumPatient = item._ListePatient.Count;
-                            medecinAvecMinPatient = item._matricule;
-                        }
-                    }
-                }
-                foreach (Medecin item in Medecins)
-                {
-                    if (item._matricule == medecinAvecMinPatient)
-                    {
-                        item.AjouterPatient(idCode);
-                    }
-                }
-                donnees.Add(Convert.ToString(medecinAvecMinPatient));
-
-                donnees.Add("3000-01-01");
-                // Construction d'un objet Patient dans la liste d'objets List<Patient>
-                Patients.Add(new Patient(donnees[0], donnees[1], idCode, donnees[3], donnees[4]));
-
-                Console.WriteLine("Patient ajouté");
             }
-            //else
-            //{
-            //    Pause();
-            //    MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-            //}
+            donnees.Add(Convert.ToString(numero));
+            int minimumPatient = 1000;
+            int medecinAvecMinPatient = 0;
+            foreach (Medecin item in Medecins)
+            {
+                if (item._dateRetraite == item._nonRetraite)
+                {
+                    if (item._ListePatient.Count < minimumPatient)
+                    {
+                        minimumPatient = item._ListePatient.Count;
+                        medecinAvecMinPatient = item._matricule;
+                    }
+                }
+            }
+            foreach (Medecin item in Medecins)
+            {
+                if (item._matricule == medecinAvecMinPatient)
+                {
+                    item.AjouterPatient(numero);
+                }
+            }
+            donnees.Add(Convert.ToString(medecinAvecMinPatient));
+
+            donnees.Add("3000-01-01");
+            // Construction d'un objet Patient dans la liste d'objets List<Patient>
+            Patients.Add(new Patient(donnees[0], donnees[1], numero, donnees[3], donnees[4]));
+
+            Console.WriteLine("Patient ajouté");
+
             Pause();
             MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
@@ -454,6 +452,41 @@ namespace TravailPratique1
             MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
         #endregion
+
+
+        static int DemanderCode(string texte, int minimum, int maximum)
+        {
+            int entier = 0;
+            bool erreur = true;
+            while (erreur)
+            {
+                try
+                {
+                    Console.WriteLine(texte);
+                    Console.WriteLine("Nouvelle fonction DemanderCode");
+                    entier = Convert.ToInt32(Console.ReadLine());
+                    while (entier < minimum || entier > maximum)
+                    {
+                        try
+                        {
+                            Console.WriteLine($"Valeur invalide, doit être entre {minimum} et {maximum}");
+                            Console.Write(texte);
+                            entier = Convert.ToInt32(Console.ReadLine());
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                    }
+                    erreur = false;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+            return entier;
+        }
 
         #region         static void ImprimeLigne(int v1, char v2)
 
