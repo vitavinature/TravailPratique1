@@ -8,15 +8,11 @@ namespace TravailPratique1
 {
     class Medecin : Personne
     {
-        public Medecin(string prenom, string nom, string matricule, string retraite, ref int nombreMedecinActif) : base(prenom, nom)
+        public Medecin(string prenom, string nom, int matricule, string retraite, ref int nombreMedecinActif) : base(prenom, nom)
         {
             _nonRetraite = new DateTime(3000, 1, 1);
-            int numeroDuMedecin = Convert.ToInt32(matricule);
 
-            if (numeroDuMedecin < 100 || numeroDuMedecin > 999)
-            {
-                throw new Exception("Erreur le fichier n'est pas valide; le matricule du médecin est en erreur");
-            }
+
             DateTime dateRetraite = Convert.ToDateTime(retraite);
 
             if (dateRetraite != _nonRetraite)
@@ -28,7 +24,7 @@ namespace TravailPratique1
                 _dateRetraite = _nonRetraite;
             }
 
-            _matricule = numeroDuMedecin;
+            _matricule = matricule;
 
             _nombreMedecinActif = nombreMedecinActif;
         }

@@ -8,18 +8,9 @@ namespace TravailPratique1
 {
     class Patient : Personne
     {
-        public Patient(string prenom, string nom, string assMaladie, string matriculeMedecin, string deces) : base(prenom, nom)
+        public Patient(string prenom, string nom, int assMaladie, string matriculeMedecin, string deces) : base(prenom, nom)
         {
-            int numeroAssMaladie = Convert.ToInt32(assMaladie);
-
-            if (numeroAssMaladie < 1000 || numeroAssMaladie > 9999)
-            {
-                throw new Exception("Erreur le fichier n'est pas valide; le numéro d'assurance maladie du patient est en erreur");
-            }
-            else
-            {
-                _assMaladie = numeroAssMaladie;
-            }
+            _assMaladie = assMaladie;
 
             _matriculeMedecin = Convert.ToInt32(matriculeMedecin);
 

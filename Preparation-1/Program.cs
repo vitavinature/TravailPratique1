@@ -50,15 +50,28 @@ namespace TravailPratique1
                         }
                         if (donnees[1].Length < 2)
                         {
-                            throw new Exception("Erreur, le prénom est invalide.");
+                            throw new Exception("Erreur le fichier n'est pas valide, le prénom du médecin est invalide.");
                         }
                         if (donnees[2].Length < 2)
                         {
-                            throw new Exception("Erreur, le nom est invalide.");
+                            throw new Exception("Erreur le fichier n'est pas valide, le nom du médecin est invalide.");
+                        }
+
+                        int matricule = Convert.ToInt32(donnees[0]);
+                        if (matricule < 100 || matricule > 999)
+                        {
+                            throw new Exception("Erreur le fichier n'est pas valide; le matricule du médecin est invalide.");
+                        }
+                        foreach (Medecin item in Medecins)
+                        {
+                            if (item._matricule == matricule)
+                            {
+                                throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de médecin identiques.");
+                            }
                         }
 
                         // Construction d'un objet Medecin dans la liste d'objets LIST<Medecin>
-                        Medecins.Add(new Medecin(donnees[1], donnees[2], donnees[0], donnees[3], ref nombreMedecinActif));
+                        Medecins.Add(new Medecin(donnees[1], donnees[2], matricule, donnees[3], ref nombreMedecinActif));
 
                         ligneMed = canalLectureMed.ReadLine(); // Lecture d'une autre ligne dans le fichier
                     }
@@ -67,6 +80,7 @@ namespace TravailPratique1
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Pause();
             }
             #endregion
 
@@ -95,7 +109,7 @@ namespace TravailPratique1
                             int matriculeMedecin = Convert.ToInt32(donnees[3]);
                             foreach (Medecin item in Medecins)
                             {
-                                if (matriculeMedecin == item._matricule)
+                                if (matriculeMedecin == item._matricule && item._matricule != 0)
                                 {
                                     item.AjouterPatient(Convert.ToInt32(donnees[0]));
                                 }
@@ -119,8 +133,22 @@ namespace TravailPratique1
                             throw new Exception("Erreur, le nom est invalide.");
                         }
 
+                        int numeroAssMaladie = Convert.ToInt32(donnees[0]);
+
+                        if (numeroAssMaladie < 1000 || numeroAssMaladie > 9999)
+                        {
+                            throw new Exception("Erreur le fichier n'est pas valide; le numéro d'assurance maladie du patient est en erreur");
+                        }
+                        foreach (Patient item in Patients)
+                        {
+                            if (item._assMaladie == numeroAssMaladie)
+                            {
+                                throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro d'assurance maladie identiques.");
+                            }
+                        }
+
                         // Construction d'un objet Patient
-                        Patients.Add(new Patient(donnees[1], donnees[2], donnees[0], donnees[3], donnees[4]));
+                        Patients.Add(new Patient(donnees[1], donnees[2], numeroAssMaladie, donnees[3], donnees[4]));
 
                         lignePat = canalLecturePat.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
@@ -129,6 +157,7 @@ namespace TravailPratique1
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Pause();
             }
             #endregion
 
@@ -137,6 +166,7 @@ namespace TravailPratique1
             // Le programme est terminé rendu ici.
             Pause();
         }
+
         #region         static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
 
         static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
@@ -301,12 +331,12 @@ namespace TravailPratique1
             donnees.Add(nom);
             Console.Write("Code d'identification: ");
             string code = Console.ReadLine();
-            int idCode = Convert.ToInt32(code);
-            if (idCode >= 100 && idCode <= 999)
+            int matricule = Convert.ToInt32(code);
+            if (matricule >= 100 && matricule <= 999)
             {
                 foreach (Medecin item in Medecins)
                 {
-                    if (idCode == item._matricule)
+                    if (matricule == item._matricule)
                     {
                         Console.WriteLine("Impossible d'ajouter le médecin, Le  code d'identification existe déjà.");
                         Pause();
@@ -316,7 +346,7 @@ namespace TravailPratique1
                 donnees.Add(code);
                 donnees.Add("3000-01-01");
                 // Construction d'un objet Medecin dans la liste d'objets List<Medecin>
-                Medecins.Add(new Medecin(donnees[0], donnees[1], donnees[2], donnees[3], ref nombreMedecinActif));
+                Medecins.Add(new Medecin(donnees[0], donnees[1], matricule, donnees[3], ref nombreMedecinActif));
 
                 Console.WriteLine("Médecin ajouté");
             }
@@ -380,15 +410,15 @@ namespace TravailPratique1
 
                 donnees.Add("3000-01-01");
                 // Construction d'un objet Patient dans la liste d'objets List<Patient>
-                Patients.Add(new Patient(donnees[0], donnees[1], donnees[2], donnees[3], donnees[4]));
+                Patients.Add(new Patient(donnees[0], donnees[1], idCode, donnees[3], donnees[4]));
 
                 Console.WriteLine("Patient ajouté");
             }
-            else
-            {
-                Pause();
-                MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-            }
+            //else
+            //{
+            //    Pause();
+            //    MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
+            //}
             Pause();
             MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
@@ -433,7 +463,6 @@ namespace TravailPratique1
                 Console.Write(v2);
             }
             Console.WriteLine();
-            //throw new NotImplementedException();
         }
         #endregion
 
@@ -478,9 +507,6 @@ namespace TravailPratique1
                 case 'Q':
                     Console.WriteLine("Sauvegarde des données et fin du programme");
                     Quitter(ref Medecins, ref Patients);
-                    break;
-                default:
-                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
         }
@@ -537,12 +563,8 @@ namespace TravailPratique1
                     Console.Clear();
                     Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
-                default:
-                    Console.Clear();
-                    MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
             }
-            MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
+            //MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
 
         }
         #endregion
@@ -590,9 +612,6 @@ namespace TravailPratique1
                 case 'r':
                 case 'R':
                     Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
-                default:
-                    MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
             }
         }
@@ -649,9 +668,6 @@ namespace TravailPratique1
                 case 'R':
                     Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
                     break;
-                default:
-                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
             }
         }
         #endregion
@@ -699,7 +715,7 @@ namespace TravailPratique1
                         }
                         else
                         {
-                            canalEcriturePat.WriteLine($"{item._assMaladie};{item._prenom};{item._nom}");
+                            canalEcriturePat.WriteLine($"{item._assMaladie};{item._prenom};{item._nom};{item._matriculeMedecin}");
                         }
                     }
                 }
@@ -708,6 +724,7 @@ namespace TravailPratique1
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Pause();
             }
         }
         #endregion
@@ -728,13 +745,8 @@ namespace TravailPratique1
                     Console.WriteLine("-----------------");
                     Console.Write("Date de la retraite (AAAA-MM-JJ): ");
                     DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());
-                    //Console.WriteLine($"Date de la retraite: {dateRetraite}");
-                    //Console.WriteLine();
 
                     nombreMedecinActif -= 1;
-
-                    //Console.WriteLine($"Nombre de médecin(s) actif(s): {nombreMedecinActif}");
-                    //Console.WriteLine();
 
                     Pause();
                 }
@@ -760,7 +772,6 @@ namespace TravailPratique1
             throw new NotImplementedException();
         }
         #endregion
-
     }
 }
 
