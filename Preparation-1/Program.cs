@@ -381,7 +381,7 @@ namespace TravailPratique1
                     }
                 }
                 donnees.Add(Convert.ToString(matricule));
-                donnees.Add("3000-01-01");
+                donnees.Add("3000/01/01");
                 // Construction d'un objet Medecin dans la liste d'objets List<Medecin>
                 Medecins.Add(new Medecin(donnees[0], donnees[1], matricule, donnees[3], ref nombreMedecinActif));
 
@@ -460,7 +460,7 @@ namespace TravailPratique1
             }
             donnees.Add(Convert.ToString(medecinAvecMinPatient));
 
-            donnees.Add("3000-01-01");
+            donnees.Add("3000/01/01");
             // Construction d'un objet Patient dans la liste d'objets List<Patient>
             Patients.Add(new Patient(donnees[0], donnees[1], numero, donnees[3], donnees[4]));
 
@@ -497,8 +497,9 @@ namespace TravailPratique1
                     matchNumeroAssMaladie = true;// Le booléen de match est activé
                     Console.WriteLine("Indiquer décès");// Affichage à l'écran
                     Console.WriteLine("--------------");
-                    Console.Write("Date du décès (AAAA-MM-JJ): ");
-                    DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
+                    Console.Write("Date du décès (AAAA/MM/JJ): ");
+                    //DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
+                    DateTime dateDeces = DateTime.Parse(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
 
                     foreach (Medecin itemMedecin in Medecins)
                     {
@@ -838,7 +839,7 @@ namespace TravailPratique1
                         if (nombreMedecinActif <= 1)
                         {
                             Console.WriteLine("Il est présentement impossible de mettre un médecin à la retraite,");
-                            Console.WriteLine($"Puisqu'il y a {nombreMedecinActif} médecin actif.");
+                            Console.WriteLine($"Puisqu'il n'y a que {nombreMedecinActif} médecin actif.");
                             Console.WriteLine("Veuillez tenter à nouveau plus tard.");
                             Console.WriteLine();
                             Pause();
@@ -986,8 +987,9 @@ namespace TravailPratique1
                     {
                         Console.WriteLine("Indiquer retraite");
                         Console.WriteLine("-----------------");
-                        Console.Write("Date de la retraite (AAAA-MM-JJ): ");// La date de la retraite est demandée
-                        DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());//************************DATETIME
+                        Console.Write("Date de la retraite (AAAA/MM/JJ): ");// La date de la retraite est demandée
+                        //DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());//************************DATETIME
+                        DateTime dateRetraite = DateTime.Parse(Console.ReadLine());//************************DATETIME valider ????
 
                         nombreMedecinActif -= 1;// Le nombre de médecins actifs est réduit de 1
 

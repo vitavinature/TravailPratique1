@@ -10,10 +10,11 @@ namespace TravailPratique1
     {
         public Medecin(string prenom, string nom, int matricule, string retraite, ref int nombreMedecinActif) : base(prenom, nom)
         {
-            _nonRetraite = new DateTime(3000, 1, 1);
+            //_nonRetraite = new DateTime(3000, 1, 1);
+            _nonRetraite = DateTime.Parse("3000/1/1");
 
-
-            DateTime dateRetraite = Convert.ToDateTime(retraite);
+            //DateTime dateRetraite = Convert.ToDateTime(retraite);
+            DateTime dateRetraite = DateTime.Parse(retraite);
 
             if (dateRetraite != _nonRetraite)
             {
