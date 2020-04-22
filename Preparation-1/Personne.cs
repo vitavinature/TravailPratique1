@@ -19,34 +19,6 @@ namespace TravailPratique1
     }
 }
 
-// Simplement des aides mémoire
-
-//public int Matricule { get; set; } 
-
-//public void SetNom(string nom)//Mutateur
-//{
-//    if (nom.Length >= 2)
-//    {
-//        _nom = nom;
-//    }
-//}
-/*
-public string PropPrenom // Propriété
-{
-    get
-    {
-        return _prenom;
-    }
-    set
-    {
-        if (value.Length > 2)
-        {
-            _prenom = value;
-        }
-    }
-}
-*/
-
 
 
 
