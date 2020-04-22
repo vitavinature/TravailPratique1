@@ -45,8 +45,8 @@ namespace TravailPratique1
         }
 
         public readonly int _assMaladie;
-        public readonly int _matriculeMedecin;
-        public readonly DateTime _dateDeces = new DateTime();
+        public int _matriculeMedecin;
+        public DateTime _dateDeces = new DateTime();
         public readonly DateTime _nonDecede = new DateTime(3000, 1, 1);
     }
 

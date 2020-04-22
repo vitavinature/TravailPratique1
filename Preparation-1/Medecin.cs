@@ -37,6 +37,11 @@ namespace TravailPratique1
             }
         }
 
+        public void EnleverPatient(int patient)
+        {
+            _ListePatient.Remove(patient);
+
+        }
         public void Afficher()
         {
             Console.Write($"{_matricule} {_prenom} {_nom}, ");

@@ -202,7 +202,12 @@ namespace TravailPratique1
         #endregion
 
         #region         static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
-
+        /// <summary>
+        /// Affiche la liste des patients (numéro d'assurance maladie, prénom et nom) et leur médecin respectifs (matricule, prénom, nom).
+        /// Si le patient est décédé, la mention décédé remplace l'information du médecin.
+        /// </summary>
+        /// <param name="Medecins"></param>
+        /// <param name="Patients"></param>
         static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             Console.WriteLine();
@@ -211,13 +216,17 @@ namespace TravailPratique1
             foreach (Patient itemPatient in Patients)
             {
                 itemPatient.Afficher();
-                foreach (Medecin itemMedecin in Medecins)
+                if (itemPatient._dateDeces == itemPatient._nonDecede)
                 {
-                    if (itemMedecin._matricule == itemPatient._matriculeMedecin)
+                    foreach (Medecin itemMedecin in Medecins)
                     {
-                        Console.Write($"{itemMedecin._prenom} {itemMedecin._nom}");
+                        if (itemMedecin._matricule == itemPatient._matriculeMedecin)
+                        {
+                            Console.Write($"{itemMedecin._prenom} {itemMedecin._nom}");
+                        }
                     }
                 }
+
                 Console.WriteLine();
             }
             Pause();
@@ -241,16 +250,20 @@ namespace TravailPratique1
         #endregion
 
         #region         static void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
-
+        /// <summary>
+        /// Affiche les informations d'un médecin: prénom, nom, matricule et la liste des ses patients, s'il n'est pas retraité.
+        /// S'il est retraité, la date du début de sa retraite est affichée.
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
         static void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
-            Console.Write("Code d'identification: ");
-            string code = Console.ReadLine();
-            int codeDIdentification = Convert.ToInt32(code);
+            string texte = "Code d'identification: ";
+            int codeIdentification = DemanderCode(texte, 100, 999);
 
             foreach (Medecin itemMedecin in Medecins)
             {
-                if (itemMedecin._matricule == codeDIdentification)
+                if (itemMedecin._matricule == codeIdentification)
                 {
                     Console.WriteLine();
                     Console.WriteLine("Medecin");
@@ -279,17 +292,24 @@ namespace TravailPratique1
         #endregion
 
         #region         static void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
-
+        /// <summary>
+        /// Affiche les informations d'un patient: numéro d'assurance maladie, prénom, nom et matricule de son médecin.
+        /// Si le patient est décédé, aucun matricule de médecin n'est affiché. La date sdu décès est affichée à la place.
+        /// Le numéro d'assurance maladie entré par l'utilisateur est validé. S'il ne figure pas dans le registre des patients un message est affiché.
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
         static void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
-            Console.WriteLine("Numéro d'assurance maladie: ");
-            string numAssMal = Console.ReadLine();
-            int numeroDAssuranceMaladie = Convert.ToInt32(numAssMal);
+            int patientMatch = 0;// Pour vérifier que le patient demandé fait bien parti du registre des patients.
+            string texte = "Numéro d'assurance maladie: ";
+            int numeroAssuranceMaladie = DemanderCode(texte, 1000, 9999);
 
             foreach (Patient itemPatient in Patients)
             {
-                if (itemPatient._assMaladie == numeroDAssuranceMaladie)
+                if (itemPatient._assMaladie == numeroAssuranceMaladie)
                 {
+                    patientMatch += 1;
                     Console.WriteLine("Patient");
                     Console.WriteLine("-------");
                     Console.WriteLine($"Numéro d'assurance maladie: {itemPatient._assMaladie}");
@@ -310,6 +330,10 @@ namespace TravailPratique1
                         Console.WriteLine($"Décédé le {Convert.ToDateTime(itemPatient._dateDeces)}");
                     }
                 }
+            }
+            if (patientMatch == 0)
+            {
+                Console.WriteLine($"Il n'y a aucun patient avec le numéro d'assurance maladie {numeroAssuranceMaladie}.");
             }
             Pause();
         }
@@ -368,7 +392,20 @@ namespace TravailPratique1
         #endregion
 
         #region static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
+        /// <summary>
+        /// Pour pouvoir ajouter un patient, au moins un médecin actif doit être défini.
+        /// Si aucun médecin actif n’est défini, un message informe l’utilisateur et l’ajout du patient est impossible.
+        /// Lors de l’ajout d’un patient, le programme demande le Prénom, le Nom, et de Numéro d’assurance maladie du patient.
+        /// Le prénom et le nom sont des chaines de caractères.Le numéro d’assurance maladie est un entier de 4 chiffres (entre 1000 et 9999).
+        /// Le programme le redemande tant qu’il n’est pas valide.
+        /// Lorsque l’information est entrée correctement, le patient est ajouté à la liste du système.
+        /// Un message d’erreur indique que l’ajout est impossible si un patient portant le même numéro d’assurance maladie est déjà présent dans le système.
+        /// Lors de l’ajout d’un patient, celui-ci est associé au médecin actif ayant le plus petit nombre de patients déjà associés.
+        /// En cas d’égalité, l'un des deux médecins est choisi. 
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
+        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
         static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
@@ -414,7 +451,7 @@ namespace TravailPratique1
             {
                 if (item._matricule == medecinAvecMinPatient)
                 {
-                    item.AjouterPatient(numero);
+                    item.AjouterPatient(numero);//******************************ÉTRANGE VÉRIFIER
                 }
             }
             donnees.Add(Convert.ToString(medecinAvecMinPatient));
@@ -434,24 +471,30 @@ namespace TravailPratique1
 
         static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            int matchNumeroAssMaladie = 0;
-            Console.Write("Numero d'assurance maladie: ");
-            int numeroAssMaladie = Convert.ToInt32(Console.ReadLine());
+            bool matchNumeroAssMaladie = false;//boolléen de match de numéro d'assurance maladie trouvé
+
+            string texte = "Numero d'assurance maladie: ";
+            int numeroAssMaladie = DemanderCode(texte, 1000, 9999);// Validation de la valeur entrée par l'utilisateur
+
             Console.WriteLine();
             foreach (Patient item in Patients)
             {
                 if (item._assMaladie == numeroAssMaladie)
                 {
-                    matchNumeroAssMaladie += 1;
+                    matchNumeroAssMaladie = true;
                     Console.WriteLine("Indiquer décès");
                     Console.WriteLine("--------------");
                     Console.Write("Date du décès (AAAA-MM-JJ): ");
                     DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());
 
+                    item._matriculeMedecin = 0;
+                    item._dateDeces = dateDeces;
+
                     Pause();
                 }
             }
-            if (matchNumeroAssMaladie == 0)
+
+            if (matchNumeroAssMaladie == false)
             {
                 Console.WriteLine($"Il n'y a pas de patient avec le numéro d'assurance maladie {numeroAssMaladie}");
                 Pause();
@@ -519,7 +562,15 @@ namespace TravailPratique1
         #endregion
 
         #region         static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
+        /// <summary>
+        /// Affiche le menu d'entré lorsque l'application est lancée.
+        /// Le menu offre les choix d'ajouter, modifier, afficher médecins et patients ou de quitter le programme.
+        /// Le choix de l'utilisateur est validé.
+        /// Un switch oriente le programme selon le choix de l'utilisateur.
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets patient</param>
+        /// <param name="nombreMedecinActif">Nombre des médecin(s) actif(s)</param>
         static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             Console.Clear();
@@ -557,67 +608,79 @@ namespace TravailPratique1
                     break;
                 case 'q':
                 case 'Q':
-                    Console.WriteLine("Sauvegarde des données et fin du programme");
                     Quitter(ref Medecins, ref Patients);
+                    Console.WriteLine("Sauvegarde des données et fin du programme");
+                    Pause();
                     break;
             }
         }
         #endregion
 
         #region         static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
+        /// <summary>
+        /// Affiche le Menu Afficher où l'information concernant médecins et patients peut être vu sous différentes façon.
+        /// Le choix de l'utilisateur est validé
+        /// Un switch fait la sélection de la méthode à apeller selon le choix de l'utilisateur
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
+        /// <param name="nombreMedecinActif">Nombre de médecins actifs</param>
         static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            Console.Clear();
-
-            char choixChar = '0';
-            ImprimeLigne(73, '=');
-            Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
-            ImprimeLigne(73, '=');
-            Console.WriteLine();
-            Console.WriteLine(" 1) Afficher les statistiques");
-            Console.WriteLine(" 2) Afficher la liste de médecins");
-            Console.WriteLine(" 3) Afficher un médecin");
-            Console.WriteLine(" 4) Afficher la liste de patients");
-            Console.WriteLine(" 5) Afficher un patient");
-            Console.WriteLine(" R) Retour au menu principal");
-            Console.WriteLine();
-            Console.Write("> ");
-            string choix = Console.ReadLine();
-            if (choix.Length == 1 && ValiderChoix(choix, "12345rR") == true)
-            {
-                choixChar = Convert.ToChar(choix);
-            }
-            else
+            try
             {
                 Console.Clear();
+
+                char choixChar = '0';
+                ImprimeLigne(73, '=');
+                Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
+                ImprimeLigne(73, '=');
+                Console.WriteLine();
+                Console.WriteLine(" 1) Afficher les statistiques");
+                Console.WriteLine(" 2) Afficher la liste de médecins");
+                Console.WriteLine(" 3) Afficher un médecin");
+                Console.WriteLine(" 4) Afficher la liste de patients");
+                Console.WriteLine(" 5) Afficher un patient");
+                Console.WriteLine(" R) Retour au menu principal");
+                Console.WriteLine();
+                Console.Write("> ");
+                string choix = Console.ReadLine();
+                if (choix.Length == 1 && ValiderChoix(choix, "12345rR") == true)
+                {
+                    choixChar = Convert.ToChar(choix);
+                }
+                else
+                {
+                    MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
+                }
+                switch (choixChar)
+                {
+                    case '1':
+                        AfficherLesStatistiques(ref Medecins, ref Patients);
+                        break;
+                    case '2':
+                        AfficherListeMedecins(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        break;
+                    case '3':
+                        AfficherUnMedecin(ref Medecins, ref Patients);
+                        break;
+                    case '4':
+                        AfficherListePatients(ref Medecins, ref Patients);
+                        break;
+                    case '5':
+                        AfficherUnPatient(ref Medecins, ref Patients);
+                        break;
+                    case 'r':
+                    case 'R':
+                        Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        break;
+                }
                 MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
-            switch (choixChar)
+            catch (Exception e)
             {
-                case '1':
-                    AfficherLesStatistiques(ref Medecins, ref Patients);
-                    break;
-                case '2':
-                    AfficherListeMedecins(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
-                case '3':
-                    AfficherUnMedecin(ref Medecins, ref Patients);
-                    break;
-                case '4':
-                    AfficherListePatients(ref Medecins, ref Patients);
-                    break;
-                case '5':
-                    AfficherUnPatient(ref Medecins, ref Patients);
-                    break;
-                case 'r':
-                case 'R':
-                    Console.Clear();
-                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
+                Console.WriteLine(e.Message);
             }
-            //MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
-
         }
         #endregion
 
@@ -810,40 +873,103 @@ namespace TravailPratique1
 
         #region         static void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         /// <summary>
-        /// 
+        /// Il est possible pour un médecin de partir à la retraite.
+        /// Il est par contre impossible de ne plus avoir de médecins actifs dans le système. (Cette condition est vérifiée avant l'entrée dans cette méthode).
+        /// Donc s’il n’y a qu’un seul médecin actif, il est impossible pour lui de partir à la retraite (et ceci même si aucun patient n’est défini).
+        /// Lors d’un départ à la retraite, le système demande le code d’identification du médecin.Celui-ci doit être valide et correspondre à un médecin du système.
+        /// Sinon, un message d’erreur est affiché et l’opération est annulée.
+        /// Lorsqu’un code valide est donné, la date du départ à la retraite est demandée, en format Année/Mois/Jour.
+        /// La date est validée. Lorsqu’une date valide est donnée, le médecin est alors marqué comme retraité.
+        /// Il demeure quand même dans le système, il n’est pas effacé.
+        /// Tous les patients associés à ce médecin sont alors redistribués un par un aux médecins actifs, selon le même critère lors d’un ajout,
+        /// c’est-à-dire en choisissant le (ou l’un des) médecin ayant le moins de patients.
         /// </summary>
-        /// <param name="Medecins"></param>
-        /// <param name="Patients"></param>
-        /// <param name="nombreMedecinActif"></param>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
+        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
         static void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
             try
             {
+                int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
+                int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
+                bool match = false;
                 int nombreMedecinActifDebut = nombreMedecinActif;
-                //********************************************* 
-                string texte = "Code d'identification: ";
-                int matricule = DemanderCode(texte, 100, 999);
 
+                string texte = "Code d'identification: ";
+                int matricule = DemanderCode(texte, 100, 999);// matricule est celui du médecin que l'utilisateur désire retraiter
                 Console.WriteLine();
-                foreach (Medecin item in Medecins)
+                
+                foreach (Medecin itemMedecin in Medecins)// Pour chaque médecin dans la liste des médecins
                 {
-                    if (item._matricule == matricule)
+                    if (itemMedecin._matricule == matricule)// Si le médecin existe dans le registre des médecins
+                    {
+                        match = true;// Oui le médecin existe
+                        if (itemMedecin._dateRetraite != itemMedecin._nonRetraite)// Si le médecin en question est déjà à la retraite
+                        {
+                            Console.WriteLine($"Le médecin matricule {itemMedecin._matricule} est déja retraité");// Oui il est déjà retraité
+                            Pause();
+                            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);// Retour au menu modifier
+                        }
+                    }
+                }
+
+                if (match == false)// S'il n'y a pas de médecin avec le matricule choisi par l'utilisateur
+                {
+                    Console.WriteLine($"Il n'y a pas de médecin avec le code D'identification {matricule}");// Message à l'utilisateur
+                    Pause();
+                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);// Retour au menu modifier
+                }
+
+                foreach (Medecin itemMedecin in Medecins)// Pour chaque médecin dans la liste des médecins
+                {
+                    if (itemMedecin._matricule == matricule)// Si un des médecins (qui n'est pas déjà à la retraite) a le matricule recherché 
                     {
                         Console.WriteLine("Indiquer retraite");
                         Console.WriteLine("-----------------");
-                        Console.Write("Date de la retraite (AAAA-MM-JJ): ");
-                        DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());
+                        Console.Write("Date de la retraite (AAAA-MM-JJ): ");// La date de la retraite est demandée
+                        DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());//************************DATETIME
 
-                        nombreMedecinActif -= 1;
+                        nombreMedecinActif -= 1;// Le nombre de médecins actifs est réduit de 1
 
-                        Pause();
+                        foreach (Patient itemPatient in Patients)// Pour chacun des patient de la liste des patients
+                        {
+                            if (itemPatient._matriculeMedecin == itemMedecin._matricule)// Si le patient a comme médecin celui qui vient d'être retraité
+                            {
+                                foreach (Medecin medecinListe in Medecins)// Pour chaque médecin dans la liste des médecins
+                                {
+                                    // Si le médecin de la liste n'est pas retraité et que son matricule est différent de celui qui vient d'être retraité
+                                    if (medecinListe._dateRetraite == medecinListe._nonRetraite && medecinListe._matricule != itemPatient._matriculeMedecin)
+                                    {
+                                        if (medecinListe._ListePatient.Count < minimumPatient)// Si le nombre de patient(s) du médecin de la liste est inférieur au compteur du minimum de patients
+                                        {
+                                            minimumPatient = medecinListe._ListePatient.Count;// Alors le compteur minimum de patient prend la valeur du nombre de patient(s) du médecin
+                                            medecinAvecMinPatient = medecinListe._matricule;// Et le matricule du médecin est entré dans la variable avec le minimum de patient
+                                        }
+                                    }
+                                }
+
+                                itemPatient._matriculeMedecin = medecinAvecMinPatient;// Le patient est assigné au médecin avec le minimum de patient(s)
+                
+                                itemMedecin.EnleverPatient(itemPatient._assMaladie);// Le patient est retiré de la liste des patients du médecin retraité
+
+                                foreach (Medecin item in Medecins)// Pour chaque médecin dans la liste des médecins
+                                {
+                                    if (item._matricule == medecinAvecMinPatient)// Si le matricule du médecin est celue qui a le moins de patients
+                                    {
+                                        item.AjouterPatient(itemPatient._assMaladie);// Le patient retiré de la liste du médecin retraité est ajouté à la liste du médecin ayant le moins de patients
+                                    }
+                                }
+                            }
+                            minimumPatient = 1000;// Remise des variables aux valeurs initiales
+                            medecinAvecMinPatient = 0;
+                        }
+                        // Tous les patients on été réassignés
+                        itemMedecin._dateRetraite = dateRetraite;// Alors la date de la retraite du médecin est entrée au registre
+                        MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);// Retour au menu Modifier
                     }
                 }
-                if (nombreMedecinActif == nombreMedecinActifDebut)
-                {
-                    Console.WriteLine($"Il n'y a pas de médecin avec le code D'identification {matricule}");
-                    Pause();
-                }
+                Pause();
                 MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             catch (Exception e)
