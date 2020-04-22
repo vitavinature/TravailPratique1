@@ -42,28 +42,19 @@ namespace TravailPratique1
             _ListePatient.Remove(patient);
 
         }
-        public void Afficher(int mode)
+        public void Afficher()
         {
             Console.Write($"{_matricule} {_prenom} {_nom}, ");
-            if (mode == 1)
             {
                 if (_dateRetraite != _nonRetraite)
                 {
-                    Console.Write("Retraité");
+                                Console.Write("Retraité");
                 }
                 else
                 {
-                    Console.Write($"Nombre de patients: {_ListePatient.Count}");
+                        Console.Write($"Nombre de patients: {_ListePatient.Count}");
                 }
                 Console.WriteLine();
-            }
-            else
-            {
-                if (_dateRetraite != _nonRetraite)
-                {
-                    Console.WriteLine();
-                    Console.Write($"Retraité le {_dateRetraite}");
-                }
             }
         }
 

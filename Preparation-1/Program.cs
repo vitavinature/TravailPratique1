@@ -164,7 +164,6 @@ namespace TravailPratique1
             Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
 
             // Le programme est terminé rendu ici.
-            Pause();
         }
 
         #region         static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
@@ -243,7 +242,7 @@ namespace TravailPratique1
 
             foreach (Medecin item in Medecins)
             {
-                item.Afficher(1);
+                item.Afficher();
             }
             Pause();
         }
@@ -283,7 +282,14 @@ namespace TravailPratique1
                     }
                     else
                     {
-                        Console.WriteLine("Aucun patient");
+                        if (itemMedecin._dateRetraite == itemMedecin._nonRetraite)
+                        {
+                            Console.WriteLine("Aucun patients");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Retraité le {itemMedecin._dateRetraite}");
+                        }
                     }
                 }
             }
@@ -351,15 +357,15 @@ namespace TravailPratique1
         {
             try
             {
+                List<string> donnees = new List<string>();
+
                 Console.WriteLine();
                 Console.WriteLine("Ajout d'un médecin");
                 Console.WriteLine("------------------");
-                Console.Write("Prénom: ");
-                string prenom = Console.ReadLine();
-                List<string> donnees = new List<string>();
+                string prenom = DemanderTexte("Prénom");
                 donnees.Add(prenom);
-                Console.Write("Nom: ");
-                string nom = Console.ReadLine();
+
+                string nom = DemanderTexte("Nom");
                 donnees.Add(nom);
 
                 string texte = "Code d'identification: ";
@@ -414,12 +420,10 @@ namespace TravailPratique1
             Console.WriteLine();
             Console.WriteLine("Ajout d'un patient");
             Console.WriteLine("------------------");
-            Console.Write("Prénom: ");
-            string prenom = Console.ReadLine();
+            string prenom = DemanderTexte("Prénom");
             List<string> donnees = new List<string>();
             donnees.Add(prenom);
-            Console.Write("Nom: ");
-            string nom = Console.ReadLine();
+            string nom = DemanderTexte("Nom");
             donnees.Add(nom);
 
             string texte = "Numéro d'assurance maladie: ";
@@ -503,7 +507,7 @@ namespace TravailPratique1
                             itemMedecin.EnleverPatient(item._assMaladie);
                             item._matriculeMedecin = 0;
                             item._dateDeces = dateDeces;
-                    Pause();
+                            Pause();
                             MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                         }
                     }
@@ -538,7 +542,7 @@ namespace TravailPratique1
             {
                 try
                 {
-                    Console.WriteLine(texte);
+                    Console.Write(texte);
                     entier = Convert.ToInt32(Console.ReadLine());
                     while (entier < minimum || entier > maximum)
                     {
@@ -561,6 +565,45 @@ namespace TravailPratique1
                 }
             }
             return entier;
+        }
+        #endregion
+
+        #region         static string DemanderTexte(string texte)
+/// <summary>
+/// Demande à l'utilisateur d'entrer un nom ou un prénom et assure que l'entrée est valide.
+/// Le programme continu à demander à l'utilisateur tant que l'entrée n'est pas valide.
+/// </summary>
+/// <param name="texte">Ce qui est demandé à l'utilisateur.</param>
+/// <returns></returns>
+        static string DemanderTexte(string texte)
+        {
+            string texteValide = "";
+            bool valide = false;
+            while (!valide)
+            {
+                Console.Write($"{texte}: ");
+                texteValide = Console.ReadLine();
+                if (texteValide.Length >= 2)
+                {
+                    for (int i = 0; i < texteValide.Length; i++)
+                    {
+                        valide = ValiderChoix(Convert.ToString(texteValide[i]), "abcçdeéèêëfghiîjklmnoôpqrstuvwxyzABCDEÉÈÊËFGHIÎJKLMNOPQRSTUVWXYZ' ''-'");
+                        if (valide == false)
+                        {
+                            Console.WriteLine($"Le {texte} n'est pas valide");
+                            Pause();
+                            DemanderTexte(texte);
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Le {texte} n'est pas valide");
+                    Pause();
+                    DemanderTexte(texte);
+                }
+            }
+            return texteValide;
         }
         #endregion
 
@@ -625,6 +668,7 @@ namespace TravailPratique1
                 case 'Q':
                     Quitter(ref Medecins, ref Patients);
                     Console.WriteLine("Sauvegarde des données et fin du programme");
+                    Pause();
                     break;
             }
         }
