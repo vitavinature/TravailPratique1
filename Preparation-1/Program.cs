@@ -243,7 +243,7 @@ namespace TravailPratique1
 
             foreach (Medecin item in Medecins)
             {
-                item.Afficher();
+                item.Afficher(1);
             }
             Pause();
         }
@@ -468,32 +468,47 @@ namespace TravailPratique1
         #endregion
 
         #region         static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
+        /// <summary>
+        /// Il est possible pour un patient de décéder. Le système demande alors le numéro d’assurance maladie du patient.
+        /// Celui-ci doit être valide et correspondre à un patient du système. Sinon, un message d’erreur est affiché et l’opération est annulée. 
+        /// Lorsqu’un numéro valide est donné, la date du décès est demandée, en format Année/Mois/Jour.La date doit être valide.
+        /// Lorsqu’une date valide est donnée, le patient est marqué comme décédé.Il demeure quand même dans le système, il n’est pas effacé.
+        /// Il est par contre enlevé de la liste des patients du médecin auquel il était associé. Il n’est plus considéré comme suivi par un médecin. 
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
+        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
         static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            bool matchNumeroAssMaladie = false;//boolléen de match de numéro d'assurance maladie trouvé
+            bool matchNumeroAssMaladie = false;// Booléen de match de numéro d'assurance maladie trouvé
 
-            string texte = "Numero d'assurance maladie: ";
+            string texte = "Numero d'assurance maladie: ";// Message à l'utilisateur
             int numeroAssMaladie = DemanderCode(texte, 1000, 9999);// Validation de la valeur entrée par l'utilisateur
 
-            Console.WriteLine();
-            foreach (Patient item in Patients)
+            Console.WriteLine();// Saut d'une ligne 
+            foreach (Patient item in Patients)// Pour chaque patient de la liste de patients
             {
-                if (item._assMaladie == numeroAssMaladie)
+                if (item._assMaladie == numeroAssMaladie)// Si le numéro d'assurance maladie est trouvé dans la liste des patients
                 {
-                    matchNumeroAssMaladie = true;
-                    Console.WriteLine("Indiquer décès");
+                    matchNumeroAssMaladie = true;// Le booléen de match est activé
+                    Console.WriteLine("Indiquer décès");// Affichage à l'écran
                     Console.WriteLine("--------------");
                     Console.Write("Date du décès (AAAA-MM-JJ): ");
-                    DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());
+                    DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
 
-                    item._matriculeMedecin = 0;
-                    item._dateDeces = dateDeces;
-
+                    foreach (Medecin itemMedecin in Medecins)
+                    {
+                        if (itemMedecin._matricule == item._matriculeMedecin)
+                        {
+                            itemMedecin.EnleverPatient(item._assMaladie);
+                            item._matriculeMedecin = 0;
+                            item._dateDeces = dateDeces;
                     Pause();
+                            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        }
+                    }
                 }
             }
-
             if (matchNumeroAssMaladie == false)
             {
                 Console.WriteLine($"Il n'y a pas de patient avec le numéro d'assurance maladie {numeroAssMaladie}");
@@ -610,7 +625,6 @@ namespace TravailPratique1
                 case 'Q':
                     Quitter(ref Medecins, ref Patients);
                     Console.WriteLine("Sauvegarde des données et fin du programme");
-                    Pause();
                     break;
             }
         }
@@ -808,7 +822,9 @@ namespace TravailPratique1
         #endregion
 
         #region         static void Pause()
-
+        /// <summary>
+        /// Pour pauser le programme jusqu'à ce que l'utilisateur appuie sur une touche
+        /// </summary>
         static void Pause()
         {
             Console.WriteLine("Appuyez sur une touche pour continuer");
@@ -866,7 +882,6 @@ namespace TravailPratique1
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                Pause();
             }
         }
         #endregion
@@ -899,7 +914,7 @@ namespace TravailPratique1
                 string texte = "Code d'identification: ";
                 int matricule = DemanderCode(texte, 100, 999);// matricule est celui du médecin que l'utilisateur désire retraiter
                 Console.WriteLine();
-                
+
                 foreach (Medecin itemMedecin in Medecins)// Pour chaque médecin dans la liste des médecins
                 {
                     if (itemMedecin._matricule == matricule)// Si le médecin existe dans le registre des médecins
@@ -950,7 +965,7 @@ namespace TravailPratique1
                                 }
 
                                 itemPatient._matriculeMedecin = medecinAvecMinPatient;// Le patient est assigné au médecin avec le minimum de patient(s)
-                
+
                                 itemMedecin.EnleverPatient(itemPatient._assMaladie);// Le patient est retiré de la liste des patients du médecin retraité
 
                                 foreach (Medecin item in Medecins)// Pour chaque médecin dans la liste des médecins

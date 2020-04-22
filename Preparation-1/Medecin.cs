@@ -33,7 +33,7 @@ namespace TravailPratique1
         {
             if (_dateRetraite == _nonRetraite)
             {
-                 _ListePatient.Add(patient);
+                _ListePatient.Add(patient);
             }
         }
 
@@ -42,19 +42,29 @@ namespace TravailPratique1
             _ListePatient.Remove(patient);
 
         }
-        public void Afficher()
+        public void Afficher(int mode)
         {
             Console.Write($"{_matricule} {_prenom} {_nom}, ");
-            if (_dateRetraite != _nonRetraite)
-
+            if (mode == 1)
             {
-                Console.Write("Retraité");
+                if (_dateRetraite != _nonRetraite)
+                {
+                    Console.Write("Retraité");
+                }
+                else
+                {
+                    Console.Write($"Nombre de patients: {_ListePatient.Count}");
+                }
+                Console.WriteLine();
             }
             else
             {
-                Console.Write($"Nombre de patients: {_ListePatient.Count}");
+                if (_dateRetraite != _nonRetraite)
+                {
+                    Console.WriteLine();
+                    Console.Write($"Retraité le {_dateRetraite}");
+                }
             }
-            Console.WriteLine();
         }
 
         public int _matricule;
