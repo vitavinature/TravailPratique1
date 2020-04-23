@@ -134,7 +134,7 @@ namespace Preparation_1
         /// </summary>
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
-        static void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        public void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
         {
             int patientMatch = 0;// Pour vérifier que le patient demandé fait bien parti du registre des patients.
             string texte = "Numéro d'assurance maladie: ";
@@ -189,7 +189,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        static void AjouterPatient()
+        public void AjouterPatient()
         {
             int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
             int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
@@ -206,7 +206,7 @@ namespace Preparation_1
             string texte = "Numéro d'assurance maladie: ";
             int numero = Program.DemanderCode(texte, 1000, 9999);// Numéro d'assurance maladie du patient
 
-            foreach (Patient item in ListePatient)
+            foreach (Patient item in _listePatients)
             {
                 if (numero == item.AssMaladie)
                 {
@@ -231,7 +231,7 @@ namespace Preparation_1
             {
                 if (item.Matricule == medecinAvecMinPatient)
                 {
-                    AjouterPatient(numero);//******************************ÉTRANGE VÉRIFIER
+                    item.AjouterPatient(numero);//******************************ÉTRANGE VÉRIFIER
                 }
             }
             donnees.Add(Convert.ToString(medecinAvecMinPatient));
@@ -267,7 +267,7 @@ namespace Preparation_1
             Console.WriteLine();// Saut d'une ligne 
             foreach (Patient item in _listePatients)// Pour chaque patient de la liste de patients
             {
-                if (item._assMaladie == numeroAssMaladie)// Si le numéro d'assurance maladie est trouvé dans la liste des patients
+                if (item.AssMaladie == numeroAssMaladie)// Si le numéro d'assurance maladie est trouvé dans la liste des patients
                 {
                     matchNumeroAssMaladie = true;// Le booléen de match est activé
                     Console.WriteLine("Indiquer décès");// Affichage à l'écran
@@ -276,16 +276,15 @@ namespace Preparation_1
                     //DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
                     DateTime dateDeces = DateTime.Parse(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
 
-                    foreach (Medecin itemMedecin in Medecins)
+                    foreach (Medecin itemMedecin in ListeMedecins)
                     {
-                        if (itemMedecin._matricule == item._matriculeMedecin)
+                        if (itemMedecin.Matricule == item.MatriculeMedecin)
                         {
-                            itemMedecin.EnleverPatient(item._assMaladie);
-                            item._matriculeMedecin = 0;
+                            itemMedecin.EnleverPatient(item.AssMaladie);
+                            item.MatriculeMedecin = 0;
                             //item.Patient._dateDeces = dateDeces;
-                            item._dateDeces = dateDeces;
+                            item.DateDeces = dateDeces;
                             Program.Pause();
-                            Program.MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
                         }
                     }
                 }

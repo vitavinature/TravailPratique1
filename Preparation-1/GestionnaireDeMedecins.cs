@@ -76,11 +76,45 @@ namespace Preparation_1
                 Program.Pause();
             }
             #endregion
-
-
         }
 
-        #region         public void AfficherListeMedecins(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         public void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
+
+        public void AfficherLesStatistiques(ref GestionnaireDeMedecins getionMedecin, ref GestionnaireDePatients gestionPatient)
+        {
+            int compteurMedecin = 0;
+            int compteurMedecinRetraite = 0;
+            int compteurPatient = 0;
+            int compteurPatientDecede = 0;
+
+            Console.WriteLine("Le système contient:");
+            foreach (Medecin itemMedecin in _listeMedecins )
+            {
+                compteurMedecin += 1;
+                if (itemMedecin.DateRetraite != itemMedecin.NonRetraite)
+                {
+                    compteurMedecinRetraite += 1;
+                }
+            }
+            Console.WriteLine($"  {compteurMedecin} médecins, dont {compteurMedecinRetraite} à la retraite");
+
+            foreach (Patient itemPatient in Patient.ListePatients)
+            {
+                compteurPatient += 1;
+                if (itemPatient.DateDeces != itemPatient.NonDecede)
+                {
+                    compteurPatientDecede += 1;
+                }
+            }
+            Console.WriteLine($"  {compteurPatient} Patients, dont {compteurPatientDecede} décédés");
+
+            Program.Pause();
+        }
+        #endregion
+
+
+
+        #region         public void AfficherListeMedecins()
 
         public void AfficherListeMedecins()
         {
@@ -110,7 +144,7 @@ namespace Preparation_1
 
             foreach (Medecin itemMedecin in _listeMedecins)
             {
-                if (itemMedecin._matricule == codeIdentification)
+                if (itemMedecin.Matricule == codeIdentification)
                 {
                     itemMedecin.Afficher2();
                 }
@@ -119,7 +153,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         public void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         /// <summary>
         /// Demande le (Prénom et le Nom qui sont des chaines de caractères), et le (Code d’identification, un entier) du médecin
         /// Un message d’erreur indique que l’ajout est impossible si un médecin portant le même code d’identification est déjà présent dans le système 
@@ -147,7 +181,7 @@ namespace Preparation_1
 
                 foreach (Medecin item in _listeMedecins)
                 {
-                    if (matricule == item._matricule)
+                    if (matricule == item.Matricule)
                     {
                         Console.WriteLine("Impossible d'ajouter le médecin, Le  code d'identification existe déjà.");
                         return;
@@ -199,7 +233,7 @@ namespace Preparation_1
                 int matricule = Program.DemanderCode(texte, 100, 999);// matricule est celui du médecin que l'utilisateur désire retraiter
                 Console.WriteLine();
 
-                foreach (Medecin itemMedecin in Medecins)// Pour chaque médecin dans la liste des médecins
+                foreach (Medecin itemMedecin in _listeMedecins)// Pour chaque médecin dans la liste des médecins
                 {
                     if (itemMedecin.Matricule == matricule)// Si le médecin existe dans le registre des médecins
                     {
@@ -218,7 +252,7 @@ namespace Preparation_1
                     Program.Pause();
                 }
 
-                foreach (Medecin itemMedecin in Medecins)// Pour chaque médecin dans la liste des médecins
+                foreach (Medecin itemMedecin in _listeMedecins)// Pour chaque médecin dans la liste des médecins
                 {
                     if (itemMedecin.Matricule == matricule)// Si un des médecins (qui n'est pas déjà à la retraite) a le matricule recherché 
                     {
@@ -230,7 +264,7 @@ namespace Preparation_1
 
                         nombreMedecinActif -= 1;// Le nombre de médecins actifs est réduit de 1
 
-                        foreach (Patient itemPatient in Patients)// Pour chacun des patient de la liste des patients
+                        foreach (Patient itemPatient in itemMedecin.ListePatient)// Pour chacun des patient de la liste des patients
                         {
                             if (itemPatient.MatriculeMedecin == itemMedecin.Matricule)// Si le patient a comme médecin celui qui vient d'être retraité
                             {
@@ -239,9 +273,9 @@ namespace Preparation_1
                                     // Si le médecin de la liste n'est pas retraité et que son matricule est différent de celui qui vient d'être retraité
                                     if (medecinListe.DateRetraite == medecinListe.NonRetraite && medecinListe.Matricule != itemPatient.MatriculeMedecin)
                                     {
-                                        if (medecinListe._ListePatient.Count < minimumPatient)// Si le nombre de patient(s) du médecin de la liste est inférieur au compteur du minimum de patients
+                                        if (medecinListe.ListePatient.Count < minimumPatient)// Si le nombre de patient(s) du médecin de la liste est inférieur au compteur du minimum de patients
                                         {
-                                            minimumPatient = medecinListe._ListePatient.Count;// Alors le compteur minimum de patient prend la valeur du nombre de patient(s) du médecin
+                                            minimumPatient = medecinListe.ListePatient.Count;// Alors le compteur minimum de patient prend la valeur du nombre de patient(s) du médecin
                                             medecinAvecMinPatient = medecinListe.Matricule;// Et le matricule du médecin est entré dans la variable avec le minimum de patient
                                         }
                                     }
@@ -276,7 +310,7 @@ namespace Preparation_1
         #endregion
 
         public int NombreMedecinActif { get { return _nombreMedecinActif; } }
-
+        public List<Medecin> ListeMedecins { get { return _listeMedecins; } }
         private List<Medecin> _listeMedecins;
 
         private int _nombreMedecinActif = 0;

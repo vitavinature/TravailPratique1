@@ -20,47 +20,13 @@ namespace TravailPratique1
             GestionnaireDePatients gestionPatient = new GestionnaireDePatients();
 
 
-            Menu1(ref gestionMedecin, ref gestionPatient, ref _nombreMedecinActif);
+            Menu1(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
             
             // Le programme est terminé rendu ici.
         }
 
-        #region         static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
-
-        static void AfficherLesStatistiques(ref GestionnaireDeMedecins getionMedecin, ref GestionnaireDePatients gestionPatient)
-        {
-            int compteurMedecin = 0;
-            int compteurMedecinRetraite = 0;
-            int compteurPatient = 0;
-            int compteurPatientDecede = 0;
-
-            Console.WriteLine("Le système contient:");
-            foreach (Medecin itemMedecin in _listeMedecins)
-            {
-                compteurMedecin += 1;
-                if (itemMedecin._dateRetraite != itemMedecin._nonRetraite)
-                {
-                    compteurMedecinRetraite += 1;
-                }
-            }
-            Console.WriteLine($"  {compteurMedecin} médecins, dont {compteurMedecinRetraite} à la retraite");
-
-            foreach (Patient itemPatient in Patients)
-            {
-                compteurPatient += 1;
-                if (itemPatient._dateDeces != itemPatient._nonDecede)
-                {
-                    compteurPatientDecede += 1;
-                }
-            }
-            Console.WriteLine($"  {compteurPatient} Patients, dont {compteurPatientDecede} décédés");
-
-            Pause();
-        }
-        #endregion
 
         #region         public static int DemanderCode(string texte, int minimum, int maximum)
-
         /// <summary>
         /// Demande à l'utilisateur d'entrer une valeur
         /// Valide la valeur entrée pour qu'elle soit du bon type (un entier)
@@ -156,7 +122,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         static void Menu1(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Affiche le menu d'entré lorsque l'application est lancée.
         /// Le menu offre les choix d'ajouter, modifier, afficher médecins et patients ou de quitter le programme.
@@ -166,7 +132,7 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets patient</param>
         /// <param name="nombreMedecinActif">Nombre des médecin(s) actif(s)</param>
-        static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        static void Menu1(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         {
             while (true)
             {
@@ -190,32 +156,31 @@ namespace TravailPratique1
                 }
                 else
                 {
-                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    Menu1(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                 }
                 switch (choixChar)
                 {
                     case '1':
-                        MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        MenuAjouter(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                         break;
                     case '2':
-                        MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        MenuModifier(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                         break;
                     case '3':
-                        MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        MenuAfficher(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                         break;
                     case 'q':
                     case 'Q':
-                        Quitter(ref Medecins, ref Patients);
+                        Quitter(ref gestionMedecin, ref gestionPatient);
                         Console.WriteLine("Sauvegarde des données et fin du programme");
                         Pause();
                         return;
-
                 }
             }
         }
         #endregion
 
-        #region         static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         static void MenuAfficher(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Affiche le Menu Afficher où l'information concernant médecins et patients peut être vu sous différentes façon.
         /// Le choix de l'utilisateur est validé
@@ -224,7 +189,7 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecins actifs</param>
-        static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        static void MenuAfficher(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         {
             while (true)
             {
@@ -251,24 +216,24 @@ namespace TravailPratique1
                     }
                     else
                     {
-                        MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        MenuAfficher(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                     }
                     switch (choixChar)
                     {
                         case '1':
-                            AfficherLesStatistiques(ref Medecins, ref Patients);
+                            AfficherLesStatistiques(ref gestionMedecin, ref gestionPatient);
                             break;
                         case '2':
-                            AfficherListeMedecins(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            AfficherListeMedecins(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             break;
                         case '3':
-                            AfficherUnMedecin(ref Medecins, ref Patients);
+                            AfficherUnMedecin(ref gestionMedecin, ref gestionPatient);
                             break;
                         case '4':
-                            AfficherListePatients(ref Medecins, ref Patients);
+                            AfficherListePatients(ref gestionMedecin, ref gestionPatient);
                             break;
                         case '5':
-                            AfficherUnPatient(ref Medecins, ref Patients);
+                            AfficherUnPatient(ref gestionMedecin, ref gestionPatient);
                             break;
                         case 'r':
                         case 'R':
@@ -283,7 +248,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         static void MenuAjouter(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Permet de choisir l’élément à ajouter, un médecin ou un patient.
         /// Pour pouvoir ajouter un patient, au moins un médecin actif doit être défini.
@@ -292,7 +257,7 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        static void MenuAjouter(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         {
             while (true)
             {
@@ -318,25 +283,25 @@ namespace TravailPratique1
                     }
                     else
                     {
-                        MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        MenuAjouter(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                     }
                     switch (choixChar)
                     {
                         case '1':
-                            AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            AjouterMedecin(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             break;
                         case '2':
                             if (nombreMedecinActif == 0)
                             {
                                 Console.WriteLine("Il n'y a aucun médecin actif présentement. Veuillez ressayer plus tard.");
                                 Pause();
-                                AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                                AjouterMedecin(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             }
-                            AjouterPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            AjouterPatient(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             break;
                         case 'r':
                         case 'R':
-                            Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            Menu1(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             break;
                     }
                 }
@@ -348,7 +313,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region     static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region     static void MenuModifier(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Affiche le Menu Modifier où un médecin peut être mis à la retraite ou le décès d'un patient peut être enregistré
         /// Le choix est validé
@@ -358,7 +323,7 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecins actifs</param>
-        static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        static void MenuModifier(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         {
             while (true)
             {
@@ -383,7 +348,7 @@ namespace TravailPratique1
                     }
                     else
                     {
-                        MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        MenuModifier(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                     }
                     switch (choixChar)
                     {
@@ -397,10 +362,10 @@ namespace TravailPratique1
                                 Pause();
                                 return;
                             }
-                            RetraitMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            RetraitMedecin(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             break;
                         case '2':
-                            DecesPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            DecesPatient(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             break;
                         case 'r':
                         case 'R':
@@ -426,7 +391,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void Quitter(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        #region         static void Quitter(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
         /// <summary>
         /// Ouvre le canal d'écriture de fichierMedecins
         /// Écrit le contenu des informations des médecins
@@ -435,7 +400,7 @@ namespace TravailPratique1
         /// </summary>
         /// <param name="Medecins">nom de la List<Medecin> passé en paramètre référence</param>
         /// <param name="Patients">nom de la List<Patient> passé en paramètre référence</param>
-        static void Quitter(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        static void Quitter(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
         {
             try
             {
@@ -443,15 +408,15 @@ namespace TravailPratique1
                 // Ouverture du canalEcritureMed pour l'écriture dans le fichier "medecins.txt"
                 using (StreamWriter canalEcritureMed = new StreamWriter(fichierMedecins))
                 {
-                    foreach (Medecin item in Medecins)
+                    foreach (Medecin item in gestionMedecin)
                     {
-                        if (item._dateRetraite != item._nonRetraite)
+                        if (item.DateRetraite != item.NonRetraite)
                         {
-                            canalEcritureMed.WriteLine($"{item._matricule};{item._prenom};{item._nom};{item._dateRetraite}");
+                            canalEcritureMed.WriteLine($"{item.Matricule};{item.Prenom};{item.Nom};{item.DateRetraite}");
                         }
                         else
                         {
-                            canalEcritureMed.WriteLine($"{item._matricule};{item._prenom};{item._nom}");
+                            canalEcritureMed.WriteLine($"{item.Matricule};{item.Prenom};{item.Nom}");
                         }
                     }
                 }
@@ -459,15 +424,15 @@ namespace TravailPratique1
                 // Ouverture du canalEcriturePat pour l'écriture dans le fichier "patients.txt"
                 using (StreamWriter canalEcriturePat = new StreamWriter(fichierPatients))
                 {
-                    foreach (Patient item in Patients)
+                    foreach (Patient item in gestionPatient)
                     {
-                        if (item._dateDeces != item._nonDecede)
+                        if (item.DateDeces != item.NonDecede)
                         {
-                            canalEcriturePat.WriteLine($"{item._assMaladie};{item._prenom};{item._nom};{0};{item._dateDeces}");
+                            canalEcriturePat.WriteLine($"{item.AssMaladie};{item.Prenom};{item.Nom};{0};{item.DateDeces}");
                         }
                         else
                         {
-                            canalEcriturePat.WriteLine($"{item._assMaladie};{item._prenom};{item._nom};{item._matriculeMedecin}");
+                            canalEcriturePat.WriteLine($"{item.AssMaladie};{item.Prenom};{item.Nom};{item.MatriculeMedecin}");
                         }
                     }
                 }
