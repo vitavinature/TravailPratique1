@@ -49,11 +49,11 @@ namespace TravailPratique1
         public DateTime DateDeces { get { return _dateDeces; } }
         public DateTime NonDecede { get { return _nonDecede; } }
 
-
+        
 
         private readonly int _assMaladie;
         private int _matriculeMedecin;
         private DateTime _dateDeces = new DateTime();
-        private readonly DateTime _nonDecede = new DateTime(3000/1/1);
+        private readonly DateTime _nonDecede = new DateTime(3000,1,1);
     }
 }

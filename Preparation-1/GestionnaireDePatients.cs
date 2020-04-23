@@ -109,13 +109,13 @@ namespace Preparation_1
             foreach (Patient itemPatient in Patients)
             {
                 itemPatient.Afficher();
-                if (itemPatient._dateDeces == itemPatient._nonDecede)
+                if (itemPatient.DateDeces == itemPatient.NonDecede)
                 {
                     foreach (Medecin itemMedecin in Medecins)
                     {
-                        if (itemMedecin._matricule == itemPatient._matriculeMedecin)
+                        if (itemMedecin.Matricule == itemPatient.MatriculeMedecin)
                         {
-                            Console.Write($"{itemMedecin._prenom} {itemMedecin._nom}");
+                            Console.Write($"{itemMedecin.Prenom} {itemMedecin.Nom}");
                         }
                     }
                 }
@@ -142,27 +142,27 @@ namespace Preparation_1
 
             foreach (Patient itemPatient in Patients)
             {
-                if (itemPatient._assMaladie == numeroAssuranceMaladie)
+                if (itemPatient.AssMaladie == numeroAssuranceMaladie)
                 {
                     patientMatch += 1;
                     Console.WriteLine("Patient");
                     Console.WriteLine("-------");
-                    Console.WriteLine($"Numéro d'assurance maladie: {itemPatient._assMaladie}");
-                    Console.WriteLine($"Nom: {itemPatient._prenom} {itemPatient._nom}");
-                    if (itemPatient._matriculeMedecin != 0)
+                    Console.WriteLine($"Numéro d'assurance maladie: {itemPatient.AssMaladie}");
+                    Console.WriteLine($"Nom: {itemPatient.Prenom} {itemPatient.Nom}");
+                    if (itemPatient.MatriculeMedecin != 0)
                     {
                         Console.Write("Medecin:");
                         foreach (Medecin itemMedecin in Medecins)
                         {
-                            if (itemPatient._matriculeMedecin == itemMedecin._matricule)
+                            if (itemPatient.MatriculeMedecin == itemMedecin.m)
                             {
-                                Console.WriteLine($"{itemMedecin._matricule} {itemMedecin._prenom} {itemMedecin._nom}");
+                                Console.WriteLine($"{itemMedecin.Matricule} {itemMedecin.Prenom} {itemMedecin.Nom}");
                             }
                         }
                     }
                     else
                     {
-                        Console.WriteLine($"Décédé le {Convert.ToDateTime(itemPatient._dateDeces.ToLongDateString)}");
+                        Console.WriteLine($"Décédé le {itemPatient.DateDeces.ToLongDateString()}");
                     }
                 }
             }
@@ -170,7 +170,7 @@ namespace Preparation_1
             {
                 Console.WriteLine($"Il n'y a aucun patient avec le numéro d'assurance maladie {numeroAssuranceMaladie}.");
             }
-            Pause();
+            Program.Pause();
         }
         #endregion
 
@@ -206,45 +206,43 @@ namespace Preparation_1
             string texte = "Numéro d'assurance maladie: ";
             int numero = Program.DemanderCode(texte, 1000, 9999);// Numéro d'assurance maladie du patient
 
-            foreach (Patient item in _listePatients)
+            foreach (Patient item in ListePatient)
             {
-                if (numero == item._assMaladie)
+                if (numero == item.AssMaladie)
                 {
                     Console.WriteLine("Impossible d'ajouter le patient, Le numéro d'assurance maladie existe déjà.");
-                    Pause();
-                    MenuAjouter(ref _listeMedecins, ref _listePatients, ref _nombreMedecinActif);
+                    Program.Pause();
                 }
             }
             donnees.Add(Convert.ToString(numero));
 
             foreach (Medecin item in _listeMedecins)
             {
-                if (item._dateRetraite == item._nonRetraite)
+                if (item.DateRetraite == item.NonRetraite)
                 {
-                    if (item._ListePatient.Count < minimumPatient)
+                    if (item.ListePatient.Count < minimumPatient)
                     {
-                        minimumPatient = item._ListePatient.Count;
-                        medecinAvecMinPatient = item._matricule;
+                        minimumPatient = item.ListePatient.Count;
+                        medecinAvecMinPatient = item.Matricule;
                     }
                 }
             }
-            foreach (Medecin item in Medecins)
+            foreach (Medecin item in _listeMedecins)
             {
-                if (item._matricule == medecinAvecMinPatient)
+                if (item.Matricule == medecinAvecMinPatient)
                 {
-                    item.AjouterPatient(numero);//******************************ÉTRANGE VÉRIFIER
+                    AjouterPatient(numero);//******************************ÉTRANGE VÉRIFIER
                 }
             }
             donnees.Add(Convert.ToString(medecinAvecMinPatient));
 
             donnees.Add("3000/01/01");
             // Construction d'un objet Patient dans la liste d'objets List<Patient>
-            Patients.Add(new Patient(donnees[0], donnees[1], numero, donnees[3], donnees[4]));
+            _listePatients.Add(new Patient(donnees[0], donnees[1], numero, donnees[3], donnees[4]));
 
-            Console.WriteLine("Patient ajouté");
+ Console.WriteLine("Patient ajouté");
 
-            Pause();
-            MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
+            Program.Pause();
         }
         #endregion
 

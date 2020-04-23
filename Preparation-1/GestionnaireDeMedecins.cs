@@ -80,7 +80,7 @@ namespace Preparation_1
 
         }
 
-        #region         static void AfficherListeMedecins(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         public void AfficherListeMedecins(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
 
         public void AfficherListeMedecins()
         {
@@ -96,7 +96,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         static void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        #region         public void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
         /// <summary>
         /// Affiche les informations d'un médecin: prénom, nom, matricule et la liste des ses patients, s'il n'est pas retraité.
         /// S'il est retraité, la date du début de sa retraite est affichée.
@@ -275,7 +275,7 @@ namespace Preparation_1
         }
         #endregion
 
-
+        public int NombreMedecinActif { get { return _nombreMedecinActif; } }
 
         private List<Medecin> _listeMedecins;
 

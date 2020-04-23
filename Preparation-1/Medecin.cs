@@ -93,6 +93,7 @@ namespace TravailPratique1
         public DateTime NonRetraite { get { return _nonRetraite; } }
         public int NombreMedecinActif { get { return _nombreMedecinActif; } }
 
+        public List<Patient> ListePatient { get { return _ListePatient; } }
 
         private int _matricule;
         private DateTime _dateRetraite = new DateTime();
