@@ -311,6 +311,7 @@ namespace Preparation_1
 
         public int NombreMedecinActif { get { return _nombreMedecinActif; } }
         public List<Medecin> ListeMedecins { get { return _listeMedecins; } }
+
         private List<Medecin> _listeMedecins;
 
         private int _nombreMedecinActif = 0;

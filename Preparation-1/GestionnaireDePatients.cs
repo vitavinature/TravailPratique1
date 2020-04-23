@@ -94,24 +94,24 @@ namespace Preparation_1
             #endregion
         }
 
-        #region         static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        #region         static void AfficherListePatients(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
         /// <summary>
         /// Affiche la liste des patients (numéro d'assurance maladie, prénom et nom) et leur médecin respectifs (matricule, prénom, nom).
         /// Si le patient est décédé, la mention décédé remplace l'information du médecin.
         /// </summary>
         /// <param name="Medecins"></param>
         /// <param name="Patients"></param>
-        static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        static void AfficherListePatients(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
         {
             Console.WriteLine();
             Console.WriteLine("Liste des patients");
             Console.WriteLine("------------------");
-            foreach (Patient itemPatient in Patients)
+            foreach (Patient itemPatient in gestionPatient)
             {
                 itemPatient.Afficher();
                 if (itemPatient.DateDeces == itemPatient.NonDecede)
                 {
-                    foreach (Medecin itemMedecin in Medecins)
+                    foreach (Medecin itemMedecin in gestionMedecin)
                     {
                         if (itemMedecin.Matricule == itemPatient.MatriculeMedecin)
                         {
@@ -126,7 +126,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         static void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        #region         static void AfficherUnPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
         /// <summary>
         /// Affiche les informations d'un patient: numéro d'assurance maladie, prénom, nom et matricule de son médecin.
         /// Si le patient est décédé, aucun matricule de médecin n'est affiché. La date sdu décès est affichée à la place.
@@ -134,13 +134,13 @@ namespace Preparation_1
         /// </summary>
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
-        public void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        public void AfficherUnPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
         {
             int patientMatch = 0;// Pour vérifier que le patient demandé fait bien parti du registre des patients.
             string texte = "Numéro d'assurance maladie: ";
             int numeroAssuranceMaladie = Program.DemanderCode(texte, 1000, 9999);
 
-            foreach (Patient itemPatient in Patients)
+            foreach (Patient itemPatient in gestionPatient)
             {
                 if (itemPatient.AssMaladie == numeroAssuranceMaladie)
                 {
@@ -152,9 +152,9 @@ namespace Preparation_1
                     if (itemPatient.MatriculeMedecin != 0)
                     {
                         Console.Write("Medecin:");
-                        foreach (Medecin itemMedecin in Medecins)
+                        foreach (Medecin itemMedecin in gestionMedecin)
                         {
-                            if (itemPatient.MatriculeMedecin == itemMedecin.m)
+                            if (itemPatient.MatriculeMedecin == itemMedecin.Matricule)
                             {
                                 Console.WriteLine($"{itemMedecin.Matricule} {itemMedecin.Prenom} {itemMedecin.Nom}");
                             }
@@ -174,7 +174,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region static void AjouterPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
         /// <summary>
         /// Pour pouvoir ajouter un patient, au moins un médecin actif doit être défini.
         /// Si aucun médecin actif n’est défini, un message informe l’utilisateur et l’ajout du patient est impossible.
@@ -189,7 +189,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void AjouterPatient()
+        public void AjouterPatient(ref List<Medecin> gestionMedecins, ref List<Patient> gestionPatients)
         {
             int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
             int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
@@ -216,7 +216,7 @@ namespace Preparation_1
             }
             donnees.Add(Convert.ToString(numero));
 
-            foreach (Medecin item in _listeMedecins)
+            foreach (Medecin item in gestionMedecin.ListeMedecins)
             {
                 if (item.DateRetraite == item.NonRetraite)
                 {
@@ -246,7 +246,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         public void DecesPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Il est possible pour un patient de décéder. Le système demande alors le numéro d’assurance maladie du patient.
         /// Celui-ci doit être valide et correspondre à un patient du système. Sinon, un message d’erreur est affiché et l’opération est annulée. 
@@ -257,7 +257,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        public void DecesPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
         {
             bool matchNumeroAssMaladie = false;// Booléen de match de numéro d'assurance maladie trouvé
 
@@ -276,7 +276,7 @@ namespace Preparation_1
                     //DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
                     DateTime dateDeces = DateTime.Parse(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
 
-                    foreach (Medecin itemMedecin in ListeMedecins)
+                    foreach (Medecin itemMedecin in gestionMedecin.)
                     {
                         if (itemMedecin.Matricule == item.MatriculeMedecin)
                         {
@@ -294,7 +294,6 @@ namespace Preparation_1
                 Console.WriteLine($"Il n'y a pas de patient avec le numéro d'assurance maladie {numeroAssMaladie}");
                 Program.Pause();
             }
-            Program.MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
         }
         #endregion
 
