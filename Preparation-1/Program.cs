@@ -16,99 +16,18 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
-
-            List<Patient> Patients = new List<Patient>();
-
             GestionnaireDeMedecins gestionMedecin = new GestionnaireDeMedecins();
+            GestionnaireDePatients gestionPatient = new GestionnaireDePatients();
 
 
-            #region Lecture du fichier des patients
-
-            try
-            {
-                string fichierPatients = "patients.txt";
-                // Ouverture du canalLecturePat pour l'accès au fichier "patients.txt"
-                using (StreamReader canalLecturePat = new StreamReader(fichierPatients))
-                {
-                    // Lit la première ligne qui identifie le patient
-                    string lignePat = canalLecturePat.ReadLine();
-
-                    while (lignePat != null)
-                    {
-                        // Extrait les valeurs individuelles de la ligne
-                        List<string> donnees = new List<string>(lignePat.Split(';'));
-
-                        if (donnees.Count < 4)
-                        {
-                            throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
-                        }
-                        if (donnees.Count == 4)
-                        {
-                            int matriculeMedecin = Convert.ToInt32(donnees[3]);
-                            foreach (Medecin item in Medecins)
-                            {
-                                if (matriculeMedecin == item._matricule && item._matricule != 0)
-                                {
-                                    item.AjouterPatient(Convert.ToInt32(donnees[0]));
-                                }
-                            }
-                            donnees.Add(dateDefaut);
-                        }
-                        if (donnees.Count > 5)
-                        {
-                            throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
-                        }
-                        if (donnees[0].Length < 4 || donnees[0].Length > 4)
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide; le numéro d'assurance maladie du patient n'est pas conforme.");
-                        }
-                        if (donnees[1].Length < 2)
-                        {
-                            throw new Exception("Erreur, le prénom est invalide.");
-                        }
-                        if (donnees[2].Length < 2)
-                        {
-                            throw new Exception("Erreur, le nom est invalide.");
-                        }
-
-                        int numeroAssMaladie = Convert.ToInt32(donnees[0]);
-
-                        if (numeroAssMaladie < 1000 || numeroAssMaladie > 9999)
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide; le numéro d'assurance maladie du patient est en erreur");
-                        }
-                        foreach (Patient item in Patients)
-                        {
-                            if (item._assMaladie == numeroAssMaladie)
-                            {
-                                throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro d'assurance maladie identiques.");
-                            }
-                        }
-
-                        // Construction d'un objet Patient
-                        Patients.Add(new Patient(donnees[1], donnees[2], numeroAssMaladie, donnees[3], donnees[4]));
-
-                        lignePat = canalLecturePat.ReadLine(); // Lecture de la ligne suivante dans le fichier
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine();
-                Console.WriteLine("Un fichier patients.txt sera créé");
-                Pause();
-            }
-            #endregion
-
-            Menu1(ref _listeMedecins, ref Patients, ref _nombreMedecinActif);
-
+            Menu1(ref gestionMedecin, ref gestionPatient, ref _nombreMedecinActif);
+            
             // Le programme est terminé rendu ici.
         }
 
         #region         static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
 
-        static void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        static void AfficherLesStatistiques(ref GestionnaireDeMedecins getionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             int compteurMedecin = 0;
             int compteurMedecinRetraite = 0;
@@ -116,7 +35,7 @@ namespace TravailPratique1
             int compteurPatientDecede = 0;
 
             Console.WriteLine("Le système contient:");
-            foreach (Medecin itemMedecin in Medecins)
+            foreach (Medecin itemMedecin in _listeMedecins)
             {
                 compteurMedecin += 1;
                 if (itemMedecin._dateRetraite != itemMedecin._nonRetraite)
@@ -140,279 +59,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
-        /// <summary>
-        /// Affiche la liste des patients (numéro d'assurance maladie, prénom et nom) et leur médecin respectifs (matricule, prénom, nom).
-        /// Si le patient est décédé, la mention décédé remplace l'information du médecin.
-        /// </summary>
-        /// <param name="Medecins"></param>
-        /// <param name="Patients"></param>
-        static void AfficherListePatients(ref List<Medecin> Medecins, ref List<Patient> Patients)
-        {
-            Console.WriteLine();
-            Console.WriteLine("Liste des patients");
-            Console.WriteLine("------------------");
-            foreach (Patient itemPatient in Patients)
-            {
-                itemPatient.Afficher();
-                if (itemPatient._dateDeces == itemPatient._nonDecede)
-                {
-                    foreach (Medecin itemMedecin in Medecins)
-                    {
-                        if (itemMedecin._matricule == itemPatient._matriculeMedecin)
-                        {
-                            Console.Write($"{itemMedecin._prenom} {itemMedecin._nom}");
-                        }
-                    }
-                }
-
-                Console.WriteLine();
-            }
-            Pause();
-        }
-        #endregion
-
-        #region         static void AfficherListeMedecins(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-
-        static void AfficherListeMedecins(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        {
-            Console.WriteLine();
-            Console.WriteLine("Liste des médecins");
-            Console.WriteLine("------------------");
-
-            foreach (Medecin item in Medecins)
-            {
-                item.Afficher();
-            }
-            Pause();
-        }
-        #endregion
-
-        #region         static void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
-        /// <summary>
-        /// Affiche les informations d'un médecin: prénom, nom, matricule et la liste des ses patients, s'il n'est pas retraité.
-        /// S'il est retraité, la date du début de sa retraite est affichée.
-        /// </summary>
-        /// <param name="Medecins">Liste des objets Medecin</param>
-        /// <param name="Patients">Liste des objets Patient</param>
-        static void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
-        {
-            string texte = "Code d'identification: ";
-            int codeIdentification = DemanderCode(texte, 100, 999);
-
-            foreach (Medecin itemMedecin in Medecins)
-            {
-                if (itemMedecin._matricule == codeIdentification)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Medecin");
-                    Console.WriteLine("-------");
-                    Console.WriteLine($"Code d'identification: {itemMedecin._matricule}");
-                    Console.WriteLine($"Nom: {itemMedecin._prenom} {itemMedecin._nom}");
-                    if (itemMedecin._ListePatient.Count > 0)
-                    {
-                        Console.WriteLine("Patients:");
-                        foreach (Patient itemPatient in Patients)
-                        {
-                            if (itemPatient._matriculeMedecin == itemMedecin._matricule)
-                            {
-                                Console.WriteLine($"{itemPatient._assMaladie} {itemPatient._prenom} {itemPatient._nom}");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (itemMedecin._dateRetraite == itemMedecin._nonRetraite)
-                        {
-                            Console.WriteLine("Aucun patients");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Retraité le {itemMedecin._dateRetraite.ToLongDateString()}");
-                        }
-                    }
-                }
-            }
-            Pause();
-        }
-        #endregion
-
-        #region         static void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
-        /// <summary>
-        /// Affiche les informations d'un patient: numéro d'assurance maladie, prénom, nom et matricule de son médecin.
-        /// Si le patient est décédé, aucun matricule de médecin n'est affiché. La date sdu décès est affichée à la place.
-        /// Le numéro d'assurance maladie entré par l'utilisateur est validé. S'il ne figure pas dans le registre des patients un message est affiché.
-        /// </summary>
-        /// <param name="Medecins">Liste des objets Medecin</param>
-        /// <param name="Patients">Liste des objets Patient</param>
-        static void AfficherUnPatient(ref List<Medecin> Medecins, ref List<Patient> Patients)
-        {
-            int patientMatch = 0;// Pour vérifier que le patient demandé fait bien parti du registre des patients.
-            string texte = "Numéro d'assurance maladie: ";
-            int numeroAssuranceMaladie = DemanderCode(texte, 1000, 9999);
-
-            foreach (Patient itemPatient in Patients)
-            {
-                if (itemPatient._assMaladie == numeroAssuranceMaladie)
-                {
-                    patientMatch += 1;
-                    Console.WriteLine("Patient");
-                    Console.WriteLine("-------");
-                    Console.WriteLine($"Numéro d'assurance maladie: {itemPatient._assMaladie}");
-                    Console.WriteLine($"Nom: {itemPatient._prenom} {itemPatient._nom}");
-                    if (itemPatient._matriculeMedecin != 0)
-                    {
-                        Console.Write("Medecin:");
-                        foreach (Medecin itemMedecin in Medecins)
-                        {
-                            if (itemPatient._matriculeMedecin == itemMedecin._matricule)
-                            {
-                                Console.WriteLine($"{itemMedecin._matricule} {itemMedecin._prenom} {itemMedecin._nom}");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Décédé le {Convert.ToDateTime(itemPatient._dateDeces.ToLongDateString)}");
-                    }
-                }
-            }
-            if (patientMatch == 0)
-            {
-                Console.WriteLine($"Il n'y a aucun patient avec le numéro d'assurance maladie {numeroAssuranceMaladie}.");
-            }
-            Pause();
-        }
-        #endregion
-
-
-        #region static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        /// <summary>
-        /// Pour pouvoir ajouter un patient, au moins un médecin actif doit être défini.
-        /// Si aucun médecin actif n’est défini, un message informe l’utilisateur et l’ajout du patient est impossible.
-        /// Lors de l’ajout d’un patient, le programme demande le Prénom, le Nom, et de Numéro d’assurance maladie du patient.
-        /// Le prénom et le nom sont des chaines de caractères.Le numéro d’assurance maladie est un entier de 4 chiffres (entre 1000 et 9999).
-        /// Le programme le redemande tant qu’il n’est pas valide.
-        /// Lorsque l’information est entrée correctement, le patient est ajouté à la liste du système.
-        /// Un message d’erreur indique que l’ajout est impossible si un patient portant le même numéro d’assurance maladie est déjà présent dans le système.
-        /// Lors de l’ajout d’un patient, celui-ci est associé au médecin actif ayant le plus petit nombre de patients déjà associés.
-        /// En cas d’égalité, l'un des deux médecins est choisi. 
-        /// </summary>
-        /// <param name="Medecins">Liste des objets Medecin</param>
-        /// <param name="Patients">Liste des objets Patient</param>
-        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        {
-            int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
-            int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
-
-            Console.WriteLine();
-            Console.WriteLine("Ajout d'un patient");
-            Console.WriteLine("------------------");
-            string prenom = DemanderTexte("Prénom");
-            List<string> donnees = new List<string>();
-            donnees.Add(prenom);
-            string nom = DemanderTexte("Nom");
-            donnees.Add(nom);
-
-            string texte = "Numéro d'assurance maladie: ";
-            int numero = DemanderCode(texte, 1000, 9999);// Numéro d'assurance maladie du patient
-
-            foreach (Patient item in Patients)
-            {
-                if (numero == item._assMaladie)
-                {
-                    Console.WriteLine("Impossible d'ajouter le patient, Le numéro d'assurance maladie existe déjà.");
-                    Pause();
-                    MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-                }
-            }
-            donnees.Add(Convert.ToString(numero));
-
-            foreach (Medecin item in Medecins)
-            {
-                if (item._dateRetraite == item._nonRetraite)
-                {
-                    if (item._ListePatient.Count < minimumPatient)
-                    {
-                        minimumPatient = item._ListePatient.Count;
-                        medecinAvecMinPatient = item._matricule;
-                    }
-                }
-            }
-            foreach (Medecin item in Medecins)
-            {
-                if (item._matricule == medecinAvecMinPatient)
-                {
-                    item.AjouterPatient(numero);//******************************ÉTRANGE VÉRIFIER
-                }
-            }
-            donnees.Add(Convert.ToString(medecinAvecMinPatient));
-
-            donnees.Add("3000/01/01");
-            // Construction d'un objet Patient dans la liste d'objets List<Patient>
-            Patients.Add(new Patient(donnees[0], donnees[1], numero, donnees[3], donnees[4]));
-
-            Console.WriteLine("Patient ajouté");
-
-            Pause();
-            MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-        }
-        #endregion
-
-        #region         static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        /// <summary>
-        /// Il est possible pour un patient de décéder. Le système demande alors le numéro d’assurance maladie du patient.
-        /// Celui-ci doit être valide et correspondre à un patient du système. Sinon, un message d’erreur est affiché et l’opération est annulée. 
-        /// Lorsqu’un numéro valide est donné, la date du décès est demandée, en format Année/Mois/Jour.La date doit être valide.
-        /// Lorsqu’une date valide est donnée, le patient est marqué comme décédé.Il demeure quand même dans le système, il n’est pas effacé.
-        /// Il est par contre enlevé de la liste des patients du médecin auquel il était associé. Il n’est plus considéré comme suivi par un médecin. 
-        /// </summary>
-        /// <param name="Medecins">Liste des objets Medecin</param>
-        /// <param name="Patients">Liste des objets Patient</param>
-        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        static void DecesPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        {
-            bool matchNumeroAssMaladie = false;// Booléen de match de numéro d'assurance maladie trouvé
-
-            string texte = "Numero d'assurance maladie: ";// Message à l'utilisateur
-            int numeroAssMaladie = DemanderCode(texte, 1000, 9999);// Validation de la valeur entrée par l'utilisateur
-
-            Console.WriteLine();// Saut d'une ligne 
-            foreach (Patient item in Patients)// Pour chaque patient de la liste de patients
-            {
-                if (item._assMaladie == numeroAssMaladie)// Si le numéro d'assurance maladie est trouvé dans la liste des patients
-                {
-                    matchNumeroAssMaladie = true;// Le booléen de match est activé
-                    Console.WriteLine("Indiquer décès");// Affichage à l'écran
-                    Console.WriteLine("--------------");
-                    Console.Write("Date du décès (AAAA/MM/JJ): ");
-                    //DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
-                    DateTime dateDeces = DateTime.Parse(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
-
-                    foreach (Medecin itemMedecin in Medecins)
-                    {
-                        if (itemMedecin._matricule == item._matriculeMedecin)
-                        {
-                            itemMedecin.EnleverPatient(item._assMaladie);
-                            item._matriculeMedecin = 0;
-                            item._dateDeces = dateDeces;
-                            Pause();
-                            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-                        }
-                    }
-                }
-            }
-            if (matchNumeroAssMaladie == false)
-            {
-                Console.WriteLine($"Il n'y a pas de patient avec le numéro d'assurance maladie {numeroAssMaladie}");
-                Pause();
-            }
-            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-        }
-        #endregion
-
-        #region         static int DemanderCode(string texte, int minimum, int maximum)
+        #region         public static int DemanderCode(string texte, int minimum, int maximum)
 
         /// <summary>
         /// Demande à l'utilisateur d'entrer une valeur
@@ -458,7 +105,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static string DemanderTexte(string texte)
+        #region         public static string DemanderTexte(string texte)
         /// <summary>
         /// Demande à l'utilisateur d'entrer un nom ou un prénom et assure que l'entrée est valide.
         /// Le programme continu à demander à l'utilisateur tant que l'entrée n'est pas valide.
@@ -768,11 +415,11 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void Pause()
+        #region         public static void Pause()
         /// <summary>
         /// Pour pauser le programme jusqu'à ce que l'utilisateur appuie sur une touche
         /// </summary>
-        static void Pause()
+        public static void Pause()
         {
             Console.WriteLine("Appuyez sur une touche pour continuer");
             Console.ReadKey(true);
@@ -825,115 +472,6 @@ namespace TravailPratique1
                     }
                 }
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-        #endregion
-
-        #region         static void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        /// <summary>
-        /// Il est possible pour un médecin de partir à la retraite.
-        /// Il est par contre impossible de ne plus avoir de médecins actifs dans le système. (Cette condition est vérifiée avant l'entrée dans cette méthode).
-        /// Donc s’il n’y a qu’un seul médecin actif, il est impossible pour lui de partir à la retraite (et ceci même si aucun patient n’est défini).
-        /// Lors d’un départ à la retraite, le système demande le code d’identification du médecin.Celui-ci doit être valide et correspondre à un médecin du système.
-        /// Sinon, un message d’erreur est affiché et l’opération est annulée.
-        /// Lorsqu’un code valide est donné, la date du départ à la retraite est demandée, en format Année/Mois/Jour.
-        /// La date est validée. Lorsqu’une date valide est donnée, le médecin est alors marqué comme retraité.
-        /// Il demeure quand même dans le système, il n’est pas effacé.
-        /// Tous les patients associés à ce médecin sont alors redistribués un par un aux médecins actifs, selon le même critère lors d’un ajout,
-        /// c’est-à-dire en choisissant le (ou l’un des) médecin ayant le moins de patients.
-        /// </summary>
-        /// <param name="Medecins">Liste des objets Medecin</param>
-        /// <param name="Patients">Liste des objets Patient</param>
-        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        static void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        {
-            try
-            {
-                int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
-                int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
-                bool match = false;
-                int nombreMedecinActifDebut = nombreMedecinActif;
-
-                string texte = "Code d'identification: ";
-                int matricule = DemanderCode(texte, 100, 999);// matricule est celui du médecin que l'utilisateur désire retraiter
-                Console.WriteLine();
-
-                foreach (Medecin itemMedecin in Medecins)// Pour chaque médecin dans la liste des médecins
-                {
-                    if (itemMedecin._matricule == matricule)// Si le médecin existe dans le registre des médecins
-                    {
-                        match = true;// Oui le médecin existe
-                        if (itemMedecin._dateRetraite != itemMedecin._nonRetraite)// Si le médecin en question est déjà à la retraite
-                        {
-                            Console.WriteLine($"Le médecin matricule {itemMedecin._matricule} est déja retraité");// Oui il est déjà retraité
-                            Pause();
-                            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);// Retour au menu modifier
-                        }
-                    }
-                }
-
-                if (match == false)// S'il n'y a pas de médecin avec le matricule choisi par l'utilisateur
-                {
-                    Console.WriteLine($"Il n'y a pas de médecin avec le code D'identification {matricule}");// Message à l'utilisateur
-                    Pause();
-                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);// Retour au menu modifier
-                }
-
-                foreach (Medecin itemMedecin in Medecins)// Pour chaque médecin dans la liste des médecins
-                {
-                    if (itemMedecin._matricule == matricule)// Si un des médecins (qui n'est pas déjà à la retraite) a le matricule recherché 
-                    {
-                        Console.WriteLine("Indiquer retraite");
-                        Console.WriteLine("-----------------");
-                        Console.Write("Date de la retraite (AAAA/MM/JJ): ");// La date de la retraite est demandée
-                                                                            //DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());//************************DATETIME
-                        DateTime dateRetraite = DateTime.Parse(Console.ReadLine());//************************DATETIME valider ????
-
-                        nombreMedecinActif -= 1;// Le nombre de médecins actifs est réduit de 1
-
-                        foreach (Patient itemPatient in Patients)// Pour chacun des patient de la liste des patients
-                        {
-                            if (itemPatient._matriculeMedecin == itemMedecin._matricule)// Si le patient a comme médecin celui qui vient d'être retraité
-                            {
-                                foreach (Medecin medecinListe in Medecins)// Pour chaque médecin dans la liste des médecins
-                                {
-                                    // Si le médecin de la liste n'est pas retraité et que son matricule est différent de celui qui vient d'être retraité
-                                    if (medecinListe._dateRetraite == medecinListe._nonRetraite && medecinListe._matricule != itemPatient._matriculeMedecin)
-                                    {
-                                        if (medecinListe._ListePatient.Count < minimumPatient)// Si le nombre de patient(s) du médecin de la liste est inférieur au compteur du minimum de patients
-                                        {
-                                            minimumPatient = medecinListe._ListePatient.Count;// Alors le compteur minimum de patient prend la valeur du nombre de patient(s) du médecin
-                                            medecinAvecMinPatient = medecinListe._matricule;// Et le matricule du médecin est entré dans la variable avec le minimum de patient
-                                        }
-                                    }
-                                }
-
-                                itemPatient._matriculeMedecin = medecinAvecMinPatient;// Le patient est assigné au médecin avec le minimum de patient(s)
-
-                                itemMedecin.EnleverPatient(itemPatient._assMaladie);// Le patient est retiré de la liste des patients du médecin retraité
-
-                                foreach (Medecin item in Medecins)// Pour chaque médecin dans la liste des médecins
-                                {
-                                    if (item._matricule == medecinAvecMinPatient)// Si le matricule du médecin est celue qui a le moins de patients
-                                    {
-                                        item.AjouterPatient(itemPatient._assMaladie);// Le patient retiré de la liste du médecin retraité est ajouté à la liste du médecin ayant le moins de patients
-                                    }
-                                }
-                            }
-                            minimumPatient = 1000;// Remise des variables aux valeurs initiales
-                            medecinAvecMinPatient = 0;
-                        }
-                        // Tous les patients on été réassignés
-                        itemMedecin._dateRetraite = dateRetraite;// Alors la date de la retraite du médecin est entrée au registre
-                        MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);// Retour au menu Modifier
-                    }
-                }
-                Pause();
-                MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
             }
             catch (Exception e)
             {

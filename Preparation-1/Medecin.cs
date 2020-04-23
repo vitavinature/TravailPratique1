@@ -31,7 +31,7 @@ namespace TravailPratique1
             _nombreMedecinActif = nombreMedecinActif;
         }
 
-        public void AjouterPatient(int patient)
+        public void AjouterPatient(Patient patient)
         {
             if (_dateRetraite == _nonRetraite)
             {
@@ -39,11 +39,40 @@ namespace TravailPratique1
             }
         }
 
-        public void EnleverPatient(int patient)
+        public void EnleverPatient(Patient patient)
         {
             _ListePatient.Remove(patient);
 
         }
+        public void Afficher2()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Medecin");
+            Console.WriteLine("-------");
+            Console.WriteLine($"Code d'identification: {_matricule}");
+            Console.WriteLine($"Nom: {_prenom} {_nom}");
+            if (_ListePatient.Count > 0)
+            {
+                Console.WriteLine("Patients:");
+                foreach (Patient itemPatient in _ListePatient)
+                {
+                        itemPatient.Afficher2();
+                }
+            }
+            else
+            {
+                if (_dateRetraite == _nonRetraite)
+                {
+                    Console.WriteLine("Aucun patients");
+                }
+                else
+                {
+                    Console.WriteLine($"Retraité le {_dateRetraite.ToLongDateString()}");
+                }
+            }
+        }
+
+
         public void Afficher()
         {
             Console.Write($"{_matricule} {_prenom} {_nom}, ");
@@ -59,12 +88,17 @@ namespace TravailPratique1
                 Console.WriteLine();
             }
         }
+        public int Matricule { get { return _matricule; } }
+        public DateTime DateRetraite { get { return _dateRetraite; } }
+        public DateTime NonRetraite { get { return _nonRetraite; } }
+        public int NombreMedecinActif { get { return _nombreMedecinActif; } }
 
-        public int _matricule;
-        public DateTime _dateRetraite = new DateTime();
-        public DateTime _nonRetraite = new DateTime();
-        public int _nombreMedecinActif;
-        public List<int> _ListePatient = new List<int>();
+
+        private int _matricule;
+        private DateTime _dateRetraite = new DateTime();
+        private DateTime _nonRetraite = new DateTime();
+        private int _nombreMedecinActif;
+        private List<Patient> _ListePatient = new List<Patient>();
     }
 
 }

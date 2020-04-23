@@ -26,6 +26,12 @@ namespace TravailPratique1
                 _dateDeces = _nonDecede;
             }
         }
+        public void Afficher2()
+        {
+            Console.WriteLine($"{_assMaladie} {_prenom} {_nom}");
+
+        }
+
         public void Afficher()
         {
             Console.Write($"{_assMaladie} {_prenom} {_nom}, ");
@@ -38,9 +44,16 @@ namespace TravailPratique1
                 Console.Write($"Medecin: {_matriculeMedecin} ");
             }
         }
-        public readonly int _assMaladie;
-        public int _matriculeMedecin;
-        public DateTime _dateDeces = new DateTime();
-        public readonly DateTime _nonDecede = new DateTime(3000, 1, 1);
+        public int AssMaladie { get { return _assMaladie; } }
+        public int MatriculeMedecin { get { return _matriculeMedecin; } }
+        public DateTime DateDeces { get { return _dateDeces; } }
+        public DateTime NonDecede { get { return _nonDecede; } }
+
+
+
+        private readonly int _assMaladie;
+        private int _matriculeMedecin;
+        private DateTime _dateDeces = new DateTime();
+        private readonly DateTime _nonDecede = new DateTime(3000/1/1);
     }
 }
