@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeFile1.cs" />
+    <Compile Include="GestionnaireDeMedecins.cs" />
     <Compile Include="Medecin.cs" />
     <Compile Include="Patient.cs" />
     <Compile Include="Personne.cs" />

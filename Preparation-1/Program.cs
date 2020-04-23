@@ -1,8 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic; // Pour la classe List
-using System.Text;
+﻿// Programme permettant de gérer des dossiers médicaux. Il permet de créer, afficher et modifier une liste de médecins et une liste de patients. 
+// Travail Pratique No.1 du Cours Programmation orientée objet 420-2C6-JR
+// Enseignant Jooël Beaudet
+// Par Richard Wayne Lussier 7532254 gr. 102
+// Date 20 Avril 2020
+// Fichiers liés au programme: Programme.cs, Personne.cs, Patient.cs et Medecin.cs
 
+using System;
+using System.IO; // pour les fichiers (input output stream)
+using System.Collections.Generic; // Pour la classe List
+using Preparation_1;
 
 namespace TravailPratique1
 {
@@ -10,79 +16,11 @@ namespace TravailPratique1
     {
         static void Main(string[] args)
         {
-            int nombreMedecinActif = 0;
 
-            string dateDefaut = "3000-01-01";
-            List<Medecin> Medecins = new List<Medecin>();
             List<Patient> Patients = new List<Patient>();
 
-            # region Lecture du fichier des médecins
+            GestionnaireDeMedecins gestionMedecin = new GestionnaireDeMedecins();
 
-            try
-            {
-                string fichierMedecins = "medecins.txt";
-                // Ouverture du canalLectureMed pour l'accès au fichier "medecins.txt"
-                using (StreamReader canalLectureMed = new StreamReader(fichierMedecins))
-                {
-                    // Lit la première ligne qui identifie le médecin
-                    string ligneMed = canalLectureMed.ReadLine();
-
-                    while (ligneMed != null)
-                    {
-                        // Extrait les valeurs individuelles de la ligne
-                        List<string> donnees = new List<string>(ligneMed.Split(';'));
-                        if (donnees.Count < 3)
-                        {
-                            throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
-                        }
-                        if (donnees.Count == 3)
-                        {
-                            nombreMedecinActif += 1;
-                            donnees.Add(dateDefaut);
-                        }
-                        if (donnees.Count > 4)
-                        {
-                            throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
-                        }
-                        if (donnees[0].Length < 3 || donnees[0].Length > 3)
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide; le numéro du médecin n'est pas conforme.");
-                        }
-                        if (donnees[1].Length < 2)
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide, le prénom du médecin est invalide.");
-                        }
-                        if (donnees[2].Length < 2)
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide, le nom du médecin est invalide.");
-                        }
-
-                        int matricule = Convert.ToInt32(donnees[0]);
-                        if (matricule < 100 || matricule > 999)
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide; le matricule du médecin est invalide.");
-                        }
-                        foreach (Medecin item in Medecins)
-                        {
-                            if (item._matricule == matricule)
-                            {
-                                throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de médecin identiques.");
-                            }
-                        }
-
-                        // Construction d'un objet Medecin dans la liste d'objets LIST<Medecin>
-                        Medecins.Add(new Medecin(donnees[1], donnees[2], matricule, donnees[3], ref nombreMedecinActif));
-
-                        ligneMed = canalLectureMed.ReadLine(); // Lecture d'une autre ligne dans le fichier
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Pause();
-            }
-            #endregion
 
             #region Lecture du fichier des patients
 
@@ -157,11 +95,13 @@ namespace TravailPratique1
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.WriteLine();
+                Console.WriteLine("Un fichier patients.txt sera créé");
                 Pause();
             }
             #endregion
 
-            Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
+            Menu1(ref _listeMedecins, ref Patients, ref _nombreMedecinActif);
 
             // Le programme est terminé rendu ici.
         }
@@ -288,7 +228,7 @@ namespace TravailPratique1
                         }
                         else
                         {
-                            Console.WriteLine($"Retraité le {itemMedecin._dateRetraite}");
+                            Console.WriteLine($"Retraité le {itemMedecin._dateRetraite.ToLongDateString()}");
                         }
                     }
                 }
@@ -333,7 +273,7 @@ namespace TravailPratique1
                     }
                     else
                     {
-                        Console.WriteLine($"Décédé le {Convert.ToDateTime(itemPatient._dateDeces)}");
+                        Console.WriteLine($"Décédé le {Convert.ToDateTime(itemPatient._dateDeces.ToLongDateString)}");
                     }
                 }
             }
@@ -383,6 +323,7 @@ namespace TravailPratique1
                 donnees.Add(Convert.ToString(matricule));
                 donnees.Add("3000/01/01");
                 // Construction d'un objet Medecin dans la liste d'objets List<Medecin>
+                nombreMedecinActif += 1;
                 Medecins.Add(new Medecin(donnees[0], donnees[1], matricule, donnees[3], ref nombreMedecinActif));
 
                 Console.WriteLine("Médecin ajouté");
@@ -535,7 +476,7 @@ namespace TravailPratique1
         /// <param name="minimum">valeur minimale que la valeur entrée pa</param>
         /// <param name="maximum"></param>
         /// <returns></returns>
-        static int DemanderCode(string texte, int minimum, int maximum)
+        public static int DemanderCode(string texte, int minimum, int maximum)
         {
             int entier = 0;
             bool erreur = true;
@@ -570,13 +511,13 @@ namespace TravailPratique1
         #endregion
 
         #region         static string DemanderTexte(string texte)
-/// <summary>
-/// Demande à l'utilisateur d'entrer un nom ou un prénom et assure que l'entrée est valide.
-/// Le programme continu à demander à l'utilisateur tant que l'entrée n'est pas valide.
-/// </summary>
-/// <param name="texte">Ce qui est demandé à l'utilisateur.</param>
-/// <returns></returns>
-        static string DemanderTexte(string texte)
+        /// <summary>
+        /// Demande à l'utilisateur d'entrer un nom ou un prénom et assure que l'entrée est valide.
+        /// Le programme continu à demander à l'utilisateur tant que l'entrée n'est pas valide.
+        /// </summary>
+        /// <param name="texte">Ce qui est demandé à l'utilisateur.</param>
+        /// <returns></returns>
+        public static string DemanderTexte(string texte)
         {
             string texteValide = "";
             bool valide = false;
@@ -632,45 +573,49 @@ namespace TravailPratique1
         /// <param name="nombreMedecinActif">Nombre des médecin(s) actif(s)</param>
         static void Menu1(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            Console.Clear();
-            char choixChar = '0';
-            ImprimeLigne(73, '=');
-            Console.WriteLine("= Gestion des dossiers médicaux                                         =");
-            ImprimeLigne(73, '=');
-            Console.WriteLine();
-            Console.WriteLine(" 1) Ajouter");
-            Console.WriteLine(" 2) Modifier");
-            Console.WriteLine(" 3) Afficher");
-            Console.WriteLine(" Q) Quitter");
-            Console.WriteLine();
-            Console.Write("> ");
+            while (true)
+            {
+                Console.Clear();
+                char choixChar = '0';
+                ImprimeLigne(73, '=');
+                Console.WriteLine("= Gestion des dossiers médicaux                                         =");
+                ImprimeLigne(73, '=');
+                Console.WriteLine();
+                Console.WriteLine(" 1) Ajouter");
+                Console.WriteLine(" 2) Modifier");
+                Console.WriteLine(" 3) Afficher");
+                Console.WriteLine(" Q) Quitter");
+                Console.WriteLine();
+                Console.Write("> ");
 
-            string choix = Console.ReadLine();
-            if (choix.Length == 1 && ValiderChoix(choix, "123qQ") == true)
-            {
-                choixChar = Convert.ToChar(choix);
-            }
-            else
-            {
-                Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
-            }
-            switch (choixChar)
-            {
-                case '1':
-                    MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
-                case '2':
-                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
-                case '3':
-                    MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
-                case 'q':
-                case 'Q':
-                    Quitter(ref Medecins, ref Patients);
-                    Console.WriteLine("Sauvegarde des données et fin du programme");
-                    Pause();
-                    break;
+                string choix = Console.ReadLine();
+                if (choix.Length == 1 && ValiderChoix(choix, "123qQ") == true)
+                {
+                    choixChar = Convert.ToChar(choix);
+                }
+                else
+                {
+                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
+                }
+                switch (choixChar)
+                {
+                    case '1':
+                        MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        break;
+                    case '2':
+                        MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        break;
+                    case '3':
+                        MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        break;
+                    case 'q':
+                    case 'Q':
+                        Quitter(ref Medecins, ref Patients);
+                        Console.WriteLine("Sauvegarde des données et fin du programme");
+                        Pause();
+                        return;
+
+                }
             }
         }
         #endregion
@@ -686,59 +631,59 @@ namespace TravailPratique1
         /// <param name="nombreMedecinActif">Nombre de médecins actifs</param>
         static void MenuAfficher(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            try
+            while (true)
             {
-                Console.Clear();
-
-                char choixChar = '0';
-                ImprimeLigne(73, '=');
-                Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
-                ImprimeLigne(73, '=');
-                Console.WriteLine();
-                Console.WriteLine(" 1) Afficher les statistiques");
-                Console.WriteLine(" 2) Afficher la liste de médecins");
-                Console.WriteLine(" 3) Afficher un médecin");
-                Console.WriteLine(" 4) Afficher la liste de patients");
-                Console.WriteLine(" 5) Afficher un patient");
-                Console.WriteLine(" R) Retour au menu principal");
-                Console.WriteLine();
-                Console.Write("> ");
-                string choix = Console.ReadLine();
-                if (choix.Length == 1 && ValiderChoix(choix, "12345rR") == true)
+                try
                 {
-                    choixChar = Convert.ToChar(choix);
+                    Console.Clear();
+                    char choixChar = '0';
+                    ImprimeLigne(73, '=');
+                    Console.WriteLine("= Gestion des dossiers médicaux - Affichage                            =");
+                    ImprimeLigne(73, '=');
+                    Console.WriteLine();
+                    Console.WriteLine(" 1) Afficher les statistiques");
+                    Console.WriteLine(" 2) Afficher la liste de médecins");
+                    Console.WriteLine(" 3) Afficher un médecin");
+                    Console.WriteLine(" 4) Afficher la liste de patients");
+                    Console.WriteLine(" 5) Afficher un patient");
+                    Console.WriteLine(" R) Retour au menu principal");
+                    Console.WriteLine();
+                    Console.Write("> ");
+                    string choix = Console.ReadLine();
+                    if (choix.Length == 1 && ValiderChoix(choix, "12345rR") == true)
+                    {
+                        choixChar = Convert.ToChar(choix);
+                    }
+                    else
+                    {
+                        MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    }
+                    switch (choixChar)
+                    {
+                        case '1':
+                            AfficherLesStatistiques(ref Medecins, ref Patients);
+                            break;
+                        case '2':
+                            AfficherListeMedecins(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            break;
+                        case '3':
+                            AfficherUnMedecin(ref Medecins, ref Patients);
+                            break;
+                        case '4':
+                            AfficherListePatients(ref Medecins, ref Patients);
+                            break;
+                        case '5':
+                            AfficherUnPatient(ref Medecins, ref Patients);
+                            break;
+                        case 'r':
+                        case 'R':
+                            return;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    Console.WriteLine(e.Message);
                 }
-                switch (choixChar)
-                {
-                    case '1':
-                        AfficherLesStatistiques(ref Medecins, ref Patients);
-                        break;
-                    case '2':
-                        AfficherListeMedecins(ref Medecins, ref Patients, ref nombreMedecinActif);
-                        break;
-                    case '3':
-                        AfficherUnMedecin(ref Medecins, ref Patients);
-                        break;
-                    case '4':
-                        AfficherListePatients(ref Medecins, ref Patients);
-                        break;
-                    case '5':
-                        AfficherUnPatient(ref Medecins, ref Patients);
-                        break;
-                    case 'r':
-                    case 'R':
-                        Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
-                        break;
-                }
-                MenuAfficher(ref Medecins, ref Patients, ref nombreMedecinActif);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
             }
         }
         #endregion
@@ -754,46 +699,56 @@ namespace TravailPratique1
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
         static void MenuAjouter(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            Console.Clear();
+            while (true)
+            {
+                try
+                {
+                    Console.Clear();
 
-            char choixChar = '0';
+                    char choixChar = '0';
 
-            ImprimeLigne(73, '=');
-            Console.WriteLine("= Gestion des dossiers médicaux - Ajout                                 =");
-            ImprimeLigne(73, '=');
-            Console.WriteLine();
-            Console.WriteLine(" 1) Ajouter un médecin");
-            Console.WriteLine(" 2) Ajouter un patient");
-            Console.WriteLine(" R) Retour au menu principal");
-            Console.WriteLine();
-            Console.Write("> ");
-            string choix = Console.ReadLine();
-            if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
-            {
-                choixChar = Convert.ToChar(choix);
-            }
-            else
-            {
-                MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-            }
-            switch (choixChar)
-            {
-                case '1':
-                    AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
-                case '2':
-                    if (nombreMedecinActif == 0)
+                    ImprimeLigne(73, '=');
+                    Console.WriteLine("= Gestion des dossiers médicaux - Ajout                                 =");
+                    ImprimeLigne(73, '=');
+                    Console.WriteLine();
+                    Console.WriteLine(" 1) Ajouter un médecin");
+                    Console.WriteLine(" 2) Ajouter un patient");
+                    Console.WriteLine(" R) Retour au menu principal");
+                    Console.WriteLine();
+                    Console.Write("> ");
+                    string choix = Console.ReadLine();
+                    if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
                     {
-                        Console.WriteLine("Il n'y a aucun médecin actif présentement. Veuillez ressayer plus tard.");
-                        Pause();
-                        AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                        choixChar = Convert.ToChar(choix);
                     }
-                    AjouterPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
-                case 'r':
-                case 'R':
-                    Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    break;
+                    else
+                    {
+                        MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    }
+                    switch (choixChar)
+                    {
+                        case '1':
+                            AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            break;
+                        case '2':
+                            if (nombreMedecinActif == 0)
+                            {
+                                Console.WriteLine("Il n'y a aucun médecin actif présentement. Veuillez ressayer plus tard.");
+                                Pause();
+                                AjouterMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            }
+                            AjouterPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            break;
+                        case 'r':
+                        case 'R':
+                            Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
         #endregion
@@ -810,58 +765,57 @@ namespace TravailPratique1
         /// <param name="nombreMedecinActif">Nombre de médecins actifs</param>
         static void MenuModifier(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         {
-            Console.Clear();
-            char choixChar = '0';
-            try
+            while (true)
             {
-                ImprimeLigne(73, '=');
-                Console.WriteLine("= Gestion des dossiers médicaux - Modification                          =");
-                ImprimeLigne(73, '=');
-                Console.WriteLine();
-                Console.WriteLine(" 1) Indiquer un départ à la retraite d'un médecin");
-                Console.WriteLine(" 2) Indiquer un décès d'un patient");
-                Console.WriteLine(" R) Retour au menu principal");
-                Console.WriteLine();
-                Console.Write("> ");
+                try
+                {
+                    Console.Clear();
+                    char choixChar = '0';
+                    ImprimeLigne(73, '=');
+                    Console.WriteLine("= Gestion des dossiers médicaux - Modification                          =");
+                    ImprimeLigne(73, '=');
+                    Console.WriteLine();
+                    Console.WriteLine(" 1) Indiquer un départ à la retraite d'un médecin");
+                    Console.WriteLine(" 2) Indiquer un décès d'un patient");
+                    Console.WriteLine(" R) Retour au menu principal");
+                    Console.WriteLine();
+                    Console.Write("> ");
 
-                string choix = Console.ReadLine();
-                if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
-                {
-                    choixChar = Convert.ToChar(choix);
-                }
-                else
-                {
-                    MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-                }
-                switch (choixChar)
-                {
-                    case '1':
-                        if (nombreMedecinActif <= 1)
-                        {
-                            Console.WriteLine("Il est présentement impossible de mettre un médecin à la retraite,");
-                            Console.WriteLine($"Puisqu'il n'y a que {nombreMedecinActif} médecin actif.");
-                            Console.WriteLine("Veuillez tenter à nouveau plus tard.");
-                            Console.WriteLine();
-                            Pause();
-                            MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-                        }
-                        RetraitMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                    string choix = Console.ReadLine();
+                    if (choix.Length == 1 && ValiderChoix(choix, "12rR") == true)
+                    {
+                        choixChar = Convert.ToChar(choix);
+                    }
+                    else
+                    {
                         MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-
-                        break;
-                    case '2':
-                        DecesPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
-                        MenuModifier(ref Medecins, ref Patients, ref nombreMedecinActif);
-                        break;
-                    case 'r':
-                    case 'R':
-                        Menu1(ref Medecins, ref Patients, ref nombreMedecinActif);
-                        break;
+                    }
+                    switch (choixChar)
+                    {
+                        case '1':
+                            if (nombreMedecinActif <= 1)
+                            {
+                                Console.WriteLine("Il est présentement impossible de mettre un médecin à la retraite,");
+                                Console.WriteLine($"Puisqu'il n'y a que {nombreMedecinActif} médecin actif.");
+                                Console.WriteLine("Veuillez tenter à nouveau plus tard.");
+                                Console.WriteLine();
+                                Pause();
+                                return;
+                            }
+                            RetraitMedecin(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            break;
+                        case '2':
+                            DecesPatient(ref Medecins, ref Patients, ref nombreMedecinActif);
+                            break;
+                        case 'r':
+                        case 'R':
+                            return;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
         #endregion
@@ -988,7 +942,7 @@ namespace TravailPratique1
                         Console.WriteLine("Indiquer retraite");
                         Console.WriteLine("-----------------");
                         Console.Write("Date de la retraite (AAAA/MM/JJ): ");// La date de la retraite est demandée
-                        //DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());//************************DATETIME
+                                                                            //DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());//************************DATETIME
                         DateTime dateRetraite = DateTime.Parse(Console.ReadLine());//************************DATETIME valider ????
 
                         nombreMedecinActif -= 1;// Le nombre de médecins actifs est réduit de 1
@@ -1059,20 +1013,3 @@ namespace TravailPratique1
         #endregion
     }
 }
-
-
-/*
-Exemples de manipulation de dates:
-
-La méthode static Parse de la classe DateTime retourne un objet DateTime contenant la conversion de la valeur textuelle
-            string s1 = "2020/2/25 10:45";
-            DateTime date = DateTime.Parse(s1);
-
-            string s2 = "2020/2/24 16:30";
-            DateTime dateRemise = DateTime.Parse(s2);
-
-La classe TimeSpan contient une durée, obtenue en faisant la soustraction de 2 dates
-            TimeSpan retard = dateRemise - date;
-            Console.WriteLine("Nombre de jours: " + retard.Days);
-            Console.WriteLine("Nombre de jours total: " + retard.TotalDays);
-*/
