@@ -285,58 +285,6 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        /// <summary>
-        /// Demande le (Prénom et le Nom qui sont des chaines de caractères), et le (Code d’identification, un entier) du médecin
-        /// Un message d’erreur indique que l’ajout est impossible si un médecin portant le même code d’identification est déjà présent dans le système 
-        /// </summary>
-        /// <param name="Medecins">Liste des objets Medecin</param>
-        /// <param name="Patients">Liste des objets Patients</param>
-        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        static void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
-        {
-            try
-            {
-                List<string> donnees = new List<string>();
-
-                Console.WriteLine();
-                Console.WriteLine("Ajout d'un médecin");
-                Console.WriteLine("------------------");
-                string prenom = DemanderTexte("Prénom");
-                donnees.Add(prenom);
-
-                string nom = DemanderTexte("Nom");
-                donnees.Add(nom);
-
-                string texte = "Code d'identification: ";
-                int matricule = DemanderCode(texte, 100, 999);
-
-                foreach (Medecin item in Medecins)
-                {
-                    if (matricule == item._matricule)
-                    {
-                        Console.WriteLine("Impossible d'ajouter le médecin, Le  code d'identification existe déjà.");
-                        Pause();
-                        MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-                    }
-                }
-                donnees.Add(Convert.ToString(matricule));
-                donnees.Add("3000/01/01");
-                // Construction d'un objet Medecin dans la liste d'objets List<Medecin>
-                nombreMedecinActif += 1;
-                Medecins.Add(new Medecin(donnees[0], donnees[1], matricule, donnees[3], ref nombreMedecinActif));
-
-                Console.WriteLine("Médecin ajouté");
-                //}
-                Pause();
-                MenuAjouter(ref Medecins, ref Patients, ref nombreMedecinActif);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-        #endregion
 
         #region static void AjouterPatient(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
         /// <summary>
