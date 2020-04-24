@@ -122,6 +122,29 @@ namespace Preparation_1
         }
         #endregion
 
+        #region         public void AfficherLeMedecinDUnPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int assuranceMaladie, int matriculeMedecin)
+        /// <summary>
+        /// Affiche les informations du médecin d'un patient: prénom, nom, matricule
+        /// </summary>
+        /// <param name="gestionMedecin"></param>
+        /// <param name="gestionPatient"></param>
+        /// <param name="assuranceMaladie"></param>
+        /// <param name="matriculeMedecin"></param>
+        public void AfficherUnMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int assuranceMaladie, int matriculeMedecin)
+        {
+            foreach (Medecin item in _listeMedecins)
+            {
+                if (item.Matricule == matriculeMedecin)
+                {
+                    Console.WriteLine($"{item.Matricule} {item.Prenom} {item.Nom}");
+                }
+            }
+            Program.Pause();
+        }
+        #endregion
+
+
+
         #region         public void AfficherUnMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Affiche les informations d'un médecin: prénom, nom, matricule et la liste des ses patients, s'il n'est pas retraité.
@@ -196,7 +219,34 @@ namespace Preparation_1
         }
         #endregion
 
-       public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
+        /// <summary>
+        /// Retrait d'un patient décédé de la liste de patients d'un médecin
+        /// </summary>
+        /// <param name="gestionMedecin"></param>
+        /// <param name="gestionPatient"></param>
+        /// <param name="matriculeMedecin"></param>
+        /// <param name="numeroAssMaladie"></param>
+        public void RetraitDUnPatientDecede(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
+        {
+
+
+            foreach (Medecin item in _listeMedecins)
+            {
+                if (item.Matricule == matriculeMedecin)
+                {
+                    _listePatient.Remove(numeroAssMaladie);
+
+                    gestionPatient.IndiquerDeces(item.DateDeces);
+                    item.MatriculeMedecin = 0;
+                    //item.Patient._dateDeces = dateDeces;
+                    item.DateDeces = dateDeces;
+                    Program.Pause();
+                }
+            }
+
+
+}
+public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
         {
             foreach (Medecin item in _listeMedecins)
             {
@@ -283,6 +333,7 @@ public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref Gestio
                                         }
                                     }
                                 }
+
 
                                 itemPatient.MatriculeMedecin = medecinAvecMinPatient;// Le patient est assigné au médecin avec le minimum de patient(s)
 

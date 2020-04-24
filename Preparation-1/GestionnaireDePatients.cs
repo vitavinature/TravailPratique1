@@ -76,7 +76,7 @@ namespace Preparation_1
 
 
                         GestionnaireDeMedecins.AjouterPatientALaListeDunMedecin(ref gestionMedecin, ref gestionPatient, matriculeMedecin, numeroAssMaladie);
-                            //************************************************************
+                        //************************************************************
                         foreach (Medecin item in gestionMedecin)
                         {
                             if (matriculeMedecin == item.Matricule && item.Matricule != 0)
@@ -111,7 +111,7 @@ namespace Preparation_1
             Console.WriteLine();
             Console.WriteLine("Liste des patients");
             Console.WriteLine("------------------");
-            foreach (Patient itemPatient in gestionPatient)
+            foreach (Patient itemPatient in _listePatients)
             {
                 itemPatient.Afficher();
                 if (itemPatient.DateDeces == itemPatient.NonDecede)
@@ -145,7 +145,7 @@ namespace Preparation_1
             string texte = "Numéro d'assurance maladie: ";
             int numeroAssuranceMaladie = Program.DemanderCode(texte, 1000, 9999);
 
-            foreach (Patient itemPatient in gestionPatient)
+            foreach (Patient itemPatient in _listePatients)
             {
                 if (itemPatient.AssMaladie == numeroAssuranceMaladie)
                 {
@@ -157,6 +157,9 @@ namespace Preparation_1
                     if (itemPatient.MatriculeMedecin != 0)
                     {
                         Console.Write("Medecin:");
+
+                        gestionMedecin.AfficherUnMedecin(ref gestionMedecin, ref gestionPatient, itemPatient.AssMaladie, itemPatient.MatriculeMedecin);
+
                         foreach (Medecin itemMedecin in gestionMedecin)
                         {
                             if (itemPatient.MatriculeMedecin == itemMedecin.Matricule)
@@ -218,7 +221,7 @@ namespace Preparation_1
                 }
             }
             donnees.Add(Convert.ToString(numero));
-           
+
             //************************************************
             int medecinAvecMinPatient = gestionMedecin.TrouverMedecinAvecMinPatient();
 
@@ -227,7 +230,7 @@ namespace Preparation_1
             donnees.Add("3000/01/01");
             // Construction d'un objet Patient dans la liste d'objets List<Patient>
             _listePatients.Add(new Patient(donnees[0], donnees[1], numero, donnees[3], donnees[4]));
-            
+
             gestionPatient._matriculeMedecin = medecinAvecMinPatient;
 
             Console.WriteLine("Patient ajouté");
@@ -266,17 +269,13 @@ namespace Preparation_1
                     //DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
                     DateTime dateDeces = DateTime.Parse(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
 
-                    foreach (Medecin itemMedecin in gestionMedecin)
-                    {
-                        if (itemMedecin.Matricule == item.MatriculeMedecin)
-                        {
-                            itemMedecin.EnleverPatient(item.AssMaladie);
-                            item.MatriculeMedecin = 0;
-                            //item.Patient._dateDeces = dateDeces;
-                            item.DateDeces = dateDeces;
-                            Program.Pause();
-                        }
-                    }
+                    gestionMedecin.RetraitDUnPatientDecede(ref gestionMedecin, ref gestionPatient, item.MatriculeMedecin, numeroAssMaladie);
+                    gestionPatient.MatriculeMedecin = 0;
+
+                    //item.Patient._dateDeces = dateDeces;
+                    gestionPatient.DateDeces = dateDeces;
+                    Program.Pause();
+
                 }
             }
             if (matchNumeroAssMaladie == false)
@@ -302,12 +301,13 @@ namespace Preparation_1
             Console.WriteLine($"  {compteurPatient} Patients, dont {compteurPatientDecede} décédés");
         }
 
-
+        public int MatriculeMedecin { get { return _matriculeMedecin; } set { _matriculeMedecin = value; } }
+        public DateTime DateDeces { get { return _dateDeces; } set { _dateDeces = value; } }
 
         const string _dateDefaut = "3000/1/1";
         private List<Patient> _listePatients;
         private DateTime _dateDeces = new DateTime();
-        private DateTime _nonDeces = new DateTime(3000,1,1);
+        private DateTime _nonDeces = new DateTime(3000, 1, 1);
         private int _matriculeMedecin;
 
     }

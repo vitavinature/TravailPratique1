@@ -44,6 +44,13 @@ namespace TravailPratique1
                 Console.Write($"Medecin: {_matriculeMedecin} ");
             }
         }
+        public void IndiquerDeces(DateTime dateDeces)
+        {
+            _matriculeMedecin = 0;
+            _dateDeces = dateDeces;
+        }
+
+
         public int AssMaladie { get { return _assMaladie; } }
         public int MatriculeMedecin { get { return _matriculeMedecin; } }
         public DateTime DateDeces { get { return _dateDeces; } }
