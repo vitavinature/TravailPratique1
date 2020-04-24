@@ -231,7 +231,7 @@ namespace Preparation_1
             // Construction d'un objet Patient dans la liste d'objets List<Patient>
             _listePatients.Add(new Patient(donnees[0], donnees[1], numero, donnees[3], donnees[4]));
 
-            gestionPatient._matriculeMedecin = medecinAvecMinPatient;
+            gestionPatient._matriculeMedecin = medecinAvecMinPatient;// Le patient est assigné au médecin avec le minimum de patient(s)
 
             Console.WriteLine("Patient ajouté");
 

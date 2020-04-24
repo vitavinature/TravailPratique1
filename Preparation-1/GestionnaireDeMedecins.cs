@@ -228,25 +228,15 @@ namespace Preparation_1
         /// <param name="numeroAssMaladie"></param>
         public void RetraitDUnPatientDecede(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
         {
-
-
             foreach (Medecin item in _listeMedecins)
             {
                 if (item.Matricule == matriculeMedecin)
                 {
                     _listePatient.Remove(numeroAssMaladie);
-
-                    gestionPatient.IndiquerDeces(item.DateDeces);
-                    item.MatriculeMedecin = 0;
-                    //item.Patient._dateDeces = dateDeces;
-                    item.DateDeces = dateDeces;
-                    Program.Pause();
                 }
             }
-
-
-}
-public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
+        }
+        public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
         {
             foreach (Medecin item in _listeMedecins)
             {
@@ -257,23 +247,23 @@ public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionM
             }
         }
 
-#region         public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
-/// <summary>
-/// Il est possible pour un médecin de partir à la retraite.
-/// Il est par contre impossible de ne plus avoir de médecins actifs dans le système. (Cette condition est vérifiée avant l'entrée dans cette méthode).
-/// Donc s’il n’y a qu’un seul médecin actif, il est impossible pour lui de partir à la retraite (et ceci même si aucun patient n’est défini).
-/// Lors d’un départ à la retraite, le système demande le code d’identification du médecin.Celui-ci doit être valide et correspondre à un médecin du système.
-/// Sinon, un message d’erreur est affiché et l’opération est annulée.
-/// Lorsqu’un code valide est donné, la date du départ à la retraite est demandée, en format Année/Mois/Jour.
-/// La date est validée. Lorsqu’une date valide est donnée, le médecin est alors marqué comme retraité.
-/// Il demeure quand même dans le système, il n’est pas effacé.
-/// Tous les patients associés à ce médecin sont alors redistribués un par un aux médecins actifs, selon le même critère lors d’un ajout,
-/// c’est-à-dire en choisissant le (ou l’un des) médecin ayant le moins de patients.
-/// </summary>
-/// <param name="Medecins">Liste des objets Medecin</param>
-/// <param name="Patients">Liste des objets Patient</param>
-/// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+        #region         public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+        /// <summary>
+        /// Il est possible pour un médecin de partir à la retraite.
+        /// Il est par contre impossible de ne plus avoir de médecins actifs dans le système. (Cette condition est vérifiée avant l'entrée dans cette méthode).
+        /// Donc s’il n’y a qu’un seul médecin actif, il est impossible pour lui de partir à la retraite (et ceci même si aucun patient n’est défini).
+        /// Lors d’un départ à la retraite, le système demande le code d’identification du médecin.Celui-ci doit être valide et correspondre à un médecin du système.
+        /// Sinon, un message d’erreur est affiché et l’opération est annulée.
+        /// Lorsqu’un code valide est donné, la date du départ à la retraite est demandée, en format Année/Mois/Jour.
+        /// La date est validée. Lorsqu’une date valide est donnée, le médecin est alors marqué comme retraité.
+        /// Il demeure quand même dans le système, il n’est pas effacé.
+        /// Tous les patients associés à ce médecin sont alors redistribués un par un aux médecins actifs, selon le même critère lors d’un ajout,
+        /// c’est-à-dire en choisissant le (ou l’un des) médecin ayant le moins de patients.
+        /// </summary>
+        /// <param name="Medecins">Liste des objets Medecin</param>
+        /// <param name="Patients">Liste des objets Patient</param>
+        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
+        public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         {
             try
             {
@@ -334,8 +324,7 @@ public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref Gestio
                                     }
                                 }
 
-
-                                itemPatient.MatriculeMedecin = medecinAvecMinPatient;// Le patient est assigné au médecin avec le minimum de patient(s)
+//*********************************************************************************************************************************************************************************************
 
                                 itemMedecin.EnleverPatient(itemPatient);// Le patient est retiré de la liste des patients du médecin retraité
 
