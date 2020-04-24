@@ -36,7 +36,7 @@ namespace Preparation_1
                         if (donnees.Count == 3)
                         {
                             _nombreMedecinActif += 1;
-                            donnees.Add(_dateDefaut);
+                            donnees.Add(Convert.ToString(_dateDefaut));
                         }
                         if (donnees.Count > 4)
                         {
@@ -88,7 +88,7 @@ namespace Preparation_1
             int compteurPatientDecede = 0;
 
             Console.WriteLine("Le système contient:");
-            foreach (Medecin itemMedecin in _listeMedecins )
+            foreach (Medecin itemMedecin in _listeMedecins)
             {
                 compteurMedecin += 1;
                 if (itemMedecin.DateRetraite != itemMedecin.NonRetraite)
@@ -96,17 +96,9 @@ namespace Preparation_1
                     compteurMedecinRetraite += 1;
                 }
             }
-            Console.WriteLine($"  {compteurMedecin} médecins, dont {compteurMedecinRetraite} à la retraite");
+            Console.WriteLine($"{compteurMedecin} médecins, dont {compteurMedecinRetraite} à la retraite");
 
-            foreach (Patient itemPatient in gestionPatient)
-            {
-                compteurPatient += 1;
-                if (itemPatient.DateDeces != itemPatient.NonDecede)
-                {
-                    compteurPatientDecede += 1;
-                }
-            }
-            Console.WriteLine($"  {compteurPatient} Patients, dont {compteurPatientDecede} décédés");
+            gestionPatient.StatistiquesPatients();
 
             Program.Pause();
         }
@@ -170,7 +162,7 @@ namespace Preparation_1
                 Console.WriteLine();
                 Console.WriteLine("Ajout d'un médecin");
                 Console.WriteLine("------------------");
-                string prenom = Program.DemanderTexte("Prénom"); 
+                string prenom = Program.DemanderTexte("Prénom");
                 donnees.Add(prenom);
 
                 string nom = Program.DemanderTexte("Nom");
@@ -298,7 +290,7 @@ namespace Preparation_1
                         }
                         // Tous les patients on été réassignés
                         _dateRetraite = dateRetraite;// Alors la date de la retraite du médecin est entrée au registre
-}
+                    }
                 }
                 Program.Pause();
             }
@@ -316,7 +308,7 @@ namespace Preparation_1
 
         private int _nombreMedecinActif = 0;
 
-        private DateTime _dateDefaut = new DateTime(3000,01,01);
+        private DateTime _dateDefaut = new DateTime(3000, 01, 01);
         private DateTime _dateRetraite = new DateTime();
     }
 }

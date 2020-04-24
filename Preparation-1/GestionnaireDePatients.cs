@@ -305,6 +305,23 @@ namespace Preparation_1
         }
         #endregion
 
+        public void StatistiquesPatients()
+        {
+            int compteurPatient = 0;
+            int compteurPatientDecede = 0;
+            foreach (Patient item in _listePatients)
+            {
+                compteurPatient += 1;
+                if (item.DateDeces != item.NonDecede)
+                {
+                    compteurPatientDecede += 1;
+                }
+            }
+            Console.WriteLine($"  {compteurPatient} Patients, dont {compteurPatientDecede} décédés");
+        }
+
+
+
 
         private List<Patient> _listePatients;
         private DateTime _dateDeces = new DateTime();
