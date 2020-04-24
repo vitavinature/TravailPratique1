@@ -97,7 +97,7 @@ namespace TravailPratique1
 
         private int _matricule;
         private DateTime _dateRetraite = new DateTime();
-        private DateTime _nonRetraite = new DateTime();
+        private readonly DateTime _nonRetraite = new DateTime(3000,1,1);
         private int _nombreMedecinActif;
         private List<Patient> _ListePatient = new List<Patient>();
     }

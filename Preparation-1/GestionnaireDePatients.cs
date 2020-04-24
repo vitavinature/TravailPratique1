@@ -37,7 +37,9 @@ namespace Preparation_1
                         if (donnees.Count == 4)
                         {
                             int matriculeMedecin = Convert.ToInt32(donnees[3]);
-                            foreach (Medecin item in _listeMedecins)
+
+                            //************************************************************
+                            foreach (Medecin item in gestionMedecin)
                             {
                                 if (matriculeMedecin == item.Matricule && item.Matricule != 0)
                                 {
@@ -94,14 +96,14 @@ namespace Preparation_1
             #endregion
         }
 
-        #region         static void AfficherListePatients(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
+        #region         static void AfficherListePatients(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Affiche la liste des patients (numéro d'assurance maladie, prénom et nom) et leur médecin respectifs (matricule, prénom, nom).
         /// Si le patient est décédé, la mention décédé remplace l'information du médecin.
         /// </summary>
         /// <param name="Medecins"></param>
         /// <param name="Patients"></param>
-        static void AfficherListePatients(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
+        static void AfficherListePatients(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             Console.WriteLine();
             Console.WriteLine("Liste des patients");
@@ -126,7 +128,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         static void AfficherUnPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
+        #region         static void AfficherUnPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Affiche les informations d'un patient: numéro d'assurance maladie, prénom, nom et matricule de son médecin.
         /// Si le patient est décédé, aucun matricule de médecin n'est affiché. La date sdu décès est affichée à la place.
@@ -134,7 +136,7 @@ namespace Preparation_1
         /// </summary>
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
-        public void AfficherUnPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
+        public void AfficherUnPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             int patientMatch = 0;// Pour vérifier que le patient demandé fait bien parti du registre des patients.
             string texte = "Numéro d'assurance maladie: ";
@@ -174,7 +176,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region static void AjouterPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
+        #region static void AjouterPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Pour pouvoir ajouter un patient, au moins un médecin actif doit être défini.
         /// Si aucun médecin actif n’est défini, un message informe l’utilisateur et l’ajout du patient est impossible.
@@ -189,7 +191,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void AjouterPatient(ref List<Medecin> gestionMedecins, ref List<Patient> gestionPatients)
+        public void AjouterPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
             int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
@@ -215,8 +217,11 @@ namespace Preparation_1
                 }
             }
             donnees.Add(Convert.ToString(numero));
+           
+            //************************************************
+            gestionMedecins.TrouverMedecinAvecMinPatient();
 
-            foreach (Medecin item in gestionMedecin.ListeMedecins)
+            foreach (Medecin item in gestionMedecin._listeMedecins)
             {
                 if (item.DateRetraite == item.NonRetraite)
                 {
@@ -234,6 +239,9 @@ namespace Preparation_1
                     item.AjouterPatient(numero);//******************************ÉTRANGE VÉRIFIER
                 }
             }
+
+
+            //******************************************
             donnees.Add(Convert.ToString(medecinAvecMinPatient));
 
             donnees.Add("3000/01/01");
@@ -246,7 +254,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         public void DecesPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        #region         public void DecesPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Il est possible pour un patient de décéder. Le système demande alors le numéro d’assurance maladie du patient.
         /// Celui-ci doit être valide et correspondre à un patient du système. Sinon, un message d’erreur est affiché et l’opération est annulée. 
@@ -257,7 +265,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void DecesPatient(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        public void DecesPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         {
             bool matchNumeroAssMaladie = false;// Booléen de match de numéro d'assurance maladie trouvé
 
@@ -276,7 +284,7 @@ namespace Preparation_1
                     //DateTime dateDeces = Convert.ToDateTime(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
                     DateTime dateDeces = DateTime.Parse(Console.ReadLine());// Une date de décès est demandée à l'utilisateur
 
-                    foreach (Medecin itemMedecin in gestionMedecin.)
+                    foreach (Medecin itemMedecin in gestionMedecin)
                     {
                         if (itemMedecin.Matricule == item.MatriculeMedecin)
                         {

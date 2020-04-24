@@ -17,7 +17,7 @@ namespace TravailPratique1
         public string Nom { get { return _nom; } }
 
         protected readonly string _prenom;
-        protected readonly string _nom;
+        protected  string _nom;
     }
 }
 

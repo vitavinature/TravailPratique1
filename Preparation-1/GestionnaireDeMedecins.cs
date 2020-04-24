@@ -78,9 +78,9 @@ namespace Preparation_1
             #endregion
         }
 
-        #region         public void AfficherLesStatistiques(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        #region         public void AfficherLesStatistiques(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
 
-        public void AfficherLesStatistiques(ref GestionnaireDeMedecins getionMedecin, ref GestionnaireDePatients gestionPatient)
+        public void AfficherLesStatistiques(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             int compteurMedecin = 0;
             int compteurMedecinRetraite = 0;
@@ -98,7 +98,7 @@ namespace Preparation_1
             }
             Console.WriteLine($"  {compteurMedecin} médecins, dont {compteurMedecinRetraite} à la retraite");
 
-            foreach (Patient itemPatient in Patient.ListePatients)
+            foreach (Patient itemPatient in gestionPatient)
             {
                 compteurPatient += 1;
                 if (itemPatient.DateDeces != itemPatient.NonDecede)
@@ -130,14 +130,14 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         public void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        #region         public void AfficherUnMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Affiche les informations d'un médecin: prénom, nom, matricule et la liste des ses patients, s'il n'est pas retraité.
         /// S'il est retraité, la date du début de sa retraite est affichée.
         /// </summary>
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
-        public void AfficherUnMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients)
+        public void AfficherUnMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             string texte = "Code d'identification: ";
             int codeIdentification = Program.DemanderCode(texte, 100, 999);
@@ -153,7 +153,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         public void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         public void AjouterMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Demande le (Prénom et le Nom qui sont des chaines de caractères), et le (Code d’identification, un entier) du médecin
         /// Un message d’erreur indique que l’ajout est impossible si un médecin portant le même code d’identification est déjà présent dans le système 
@@ -161,7 +161,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patients</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void AjouterMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        public void AjouterMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         {
             try
             {
@@ -204,7 +204,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         public void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        #region         public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Il est possible pour un médecin de partir à la retraite.
         /// Il est par contre impossible de ne plus avoir de médecins actifs dans le système. (Cette condition est vérifiée avant l'entrée dans cette méthode).
@@ -220,7 +220,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void RetraitMedecin(ref List<Medecin> Medecins, ref List<Patient> Patients, ref int nombreMedecinActif)
+        public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         {
             try
             {
@@ -285,7 +285,7 @@ namespace Preparation_1
 
                                 itemMedecin.EnleverPatient(itemPatient);// Le patient est retiré de la liste des patients du médecin retraité
 
-                                foreach (Medecin item in Medecins)// Pour chaque médecin dans la liste des médecins
+                                foreach (Medecin item in gestionMedecin.ListeMedecins)// Pour chaque médecin dans la liste des médecins
                                 {
                                     if (item.Matricule == medecinAvecMinPatient)// Si le matricule du médecin est celue qui a le moins de patients
                                     {
@@ -297,7 +297,7 @@ namespace Preparation_1
                             medecinAvecMinPatient = 0;
                         }
                         // Tous les patients on été réassignés
-                        itemMedecin.DateRetraite = dateRetraite;// Alors la date de la retraite du médecin est entrée au registre
+                        _dateRetraite = dateRetraite;// Alors la date de la retraite du médecin est entrée au registre
 }
                 }
                 Program.Pause();

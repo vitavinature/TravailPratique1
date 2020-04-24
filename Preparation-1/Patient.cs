@@ -51,7 +51,7 @@ namespace TravailPratique1
 
         
 
-        private readonly int _assMaladie;
+        private  int _assMaladie;
         private int _matriculeMedecin;
         private DateTime _dateDeces = new DateTime();
         private readonly DateTime _nonDecede = new DateTime(3000,1,1);

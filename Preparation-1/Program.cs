@@ -122,7 +122,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void Menu1(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        #region         static void Menu1(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Affiche le menu d'entré lorsque l'application est lancée.
         /// Le menu offre les choix d'ajouter, modifier, afficher médecins et patients ou de quitter le programme.
@@ -132,7 +132,7 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets patient</param>
         /// <param name="nombreMedecinActif">Nombre des médecin(s) actif(s)</param>
-        static void Menu1(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        static void Menu1(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif) 
         {
             while (true)
             {
@@ -160,6 +160,8 @@ namespace TravailPratique1
                 }
                 switch (choixChar)
                 {
+                    //************************************************************
+
                     case '1':
                         MenuAjouter(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                         break;
@@ -179,8 +181,9 @@ namespace TravailPratique1
             }
         }
         #endregion
+        //************************************************************
 
-        #region         static void MenuAfficher(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        #region         static void MenuAfficher(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Affiche le Menu Afficher où l'information concernant médecins et patients peut être vu sous différentes façon.
         /// Le choix de l'utilisateur est validé
@@ -189,7 +192,7 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecins actifs</param>
-        static void MenuAfficher(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        static void MenuAfficher(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         {
             while (true)
             {
@@ -221,19 +224,19 @@ namespace TravailPratique1
                     switch (choixChar)
                     {
                         case '1':
-                            AfficherLesStatistiques(ref gestionMedecin, ref gestionPatient);
+                            gestionMedecin.AfficherLesStatistiques(ref gestionMedecin, ref gestionPatient);
                             break;
                         case '2':
-                            AfficherListeMedecins(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
+                            gestionMedecin.AfficherListeMedecins();
                             break;
                         case '3':
-                            AfficherUnMedecin(ref gestionMedecin, ref gestionPatient);
+                            gestionMedecin.AfficherUnMedecin(ref gestionMedecin, ref gestionPatient);
                             break;
                         case '4':
-                            AfficherListePatients(ref gestionMedecin, ref gestionPatient);
+                            gestionPatient.AfficherListePatients(ref gestionMedecin, ref gestionPatient);
                             break;
                         case '5':
-                            AfficherUnPatient(ref gestionMedecin, ref gestionPatient);
+                            gestionPatient.AfficherUnPatient(ref gestionMedecin, ref gestionPatient);
                             break;
                         case 'r':
                         case 'R':
@@ -248,7 +251,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void MenuAjouter(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        #region         static void MenuAjouter(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Permet de choisir l’élément à ajouter, un médecin ou un patient.
         /// Pour pouvoir ajouter un patient, au moins un médecin actif doit être défini.
@@ -257,7 +260,9 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        static void MenuAjouter(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+                              //************************************************************
+
+        static void MenuAjouter(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         {
             while (true)
             {
@@ -288,7 +293,7 @@ namespace TravailPratique1
                     switch (choixChar)
                     {
                         case '1':
-                            AjouterMedecin(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
+                            gestionMedecin.AjouterMedecin(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             break;
                         case '2':
                             if (nombreMedecinActif == 0)
@@ -297,7 +302,7 @@ namespace TravailPratique1
                                 Pause();
                                 AjouterMedecin(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             }
-                            AjouterPatient(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
+                            gestionPatient.AjouterPatient(ref gestionMedecin, ref gestionPatient, ref nombreMedecinActif);
                             break;
                         case 'r':
                         case 'R':
@@ -313,7 +318,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region     static void MenuModifier(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        #region     static void MenuModifier(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         /// <summary>
         /// Affiche le Menu Modifier où un médecin peut être mis à la retraite ou le décès d'un patient peut être enregistré
         /// Le choix est validé
@@ -323,7 +328,7 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecins actifs</param>
-        static void MenuModifier(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient, ref int nombreMedecinActif)
+        static void MenuModifier(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         {
             while (true)
             {
@@ -391,7 +396,7 @@ namespace TravailPratique1
         }
         #endregion
 
-        #region         static void Quitter(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
+        #region         static void Quitter(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Ouvre le canal d'écriture de fichierMedecins
         /// Écrit le contenu des informations des médecins
@@ -400,7 +405,7 @@ namespace TravailPratique1
         /// </summary>
         /// <param name="Medecins">nom de la List<Medecin> passé en paramètre référence</param>
         /// <param name="Patients">nom de la List<Patient> passé en paramètre référence</param>
-        static void Quitter(ref List<Medecin> gestionMedecin, ref List<Patient> gestionPatient)
+        static void Quitter(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             try
             {
