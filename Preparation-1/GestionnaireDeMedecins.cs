@@ -62,7 +62,7 @@ namespace Preparation_1
                         }
 
                         // Construction d'un objet Medecin dans la liste d'objets LIST<Medecin>
-                        _listeMedecins.Add(new Medecin(donnees[1], donnees[2], matricule, donnees[3], ref _nombreMedecinActif));
+                        _listeMedecins.Add(new Medecin(donnees[1], donnees[2], matricule, donnees[3], _nombreMedecinActif));
 
                         ligneMed = canalLectureMed.ReadLine(); // Lecture d'une autre ligne dans le fichier
                     }
@@ -84,8 +84,6 @@ namespace Preparation_1
         {
             int compteurMedecin = 0;
             int compteurMedecinRetraite = 0;
-            int compteurPatient = 0;
-            int compteurPatientDecede = 0;
 
             Console.WriteLine("Le système contient:");
             foreach (Medecin itemMedecin in gestionMedecin._listeMedecins)
@@ -103,8 +101,6 @@ namespace Preparation_1
             Program.Pause();
         }
         #endregion
-
-
 
         #region         public void AfficherListeMedecins()
 
@@ -130,7 +126,7 @@ namespace Preparation_1
         /// <param name="gestionPatient"></param>
         /// <param name="assuranceMaladie"></param>
         /// <param name="matriculeMedecin"></param>
-        public void AfficherUnMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int assuranceMaladie, int matriculeMedecin)
+        public void AfficherLeMedecinDUnPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int assuranceMaladie, int matriculeMedecin)
         {
             foreach (Medecin item in _listeMedecins)
             {
@@ -168,7 +164,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         public void AjouterMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+        #region         public void AjouterMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Demande le (Prénom et le Nom qui sont des chaines de caractères), et le (Code d’identification, un entier) du médecin
         /// Un message d’erreur indique que l’ajout est impossible si un médecin portant le même code d’identification est déjà présent dans le système 
@@ -176,7 +172,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patients</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void AjouterMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+        public void AjouterMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             try
             {
@@ -207,7 +203,7 @@ namespace Preparation_1
                 // Construction d'un objet Medecin dans la liste d'objets List<Medecin>
                 _nombreMedecinActif += 1;
                 //_medecins.Add(new Medecin(donnees[0], donnees[1], matricule, donnees[3], ref _nombreMedecinActif));
-                _listeMedecins.Add(new Medecin(donnees[0], donnees[1], matricule, donnees[3], ref _nombreMedecinActif));
+                _listeMedecins.Add(new Medecin(donnees[0], donnees[1], matricule, donnees[3], _nombreMedecinActif));
 
                 Console.WriteLine("Médecin ajouté");
 
@@ -218,6 +214,8 @@ namespace Preparation_1
             }
         }
         #endregion
+
+        #region         public void RetraitDUnPatientDecede(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
 
         /// <summary>
         /// Retrait d'un patient décédé de la liste de patients d'un médecin
@@ -236,7 +234,9 @@ namespace Preparation_1
                 }
             }
         }
-        public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
+        #endregion
+
+        public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, int matriculeMedecin, int numeroAssMaladie)
         {
             foreach (Medecin item in _listeMedecins)
             {
@@ -247,7 +247,7 @@ namespace Preparation_1
             }
         }
 
-        #region         public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+        #region         public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Il est possible pour un médecin de partir à la retraite.
         /// Il est par contre impossible de ne plus avoir de médecins actifs dans le système. (Cette condition est vérifiée avant l'entrée dans cette méthode).
@@ -263,14 +263,14 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+        public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             try
             {
                 int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
                 int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
                 bool match = false;
-                int nombreMedecinActifDebut = nombreMedecinActif;
+                int nombreMedecinActifDebut = _nombreMedecinActif;
 
                 string texte = "Code d'identification: ";
                 int matricule = Program.DemanderCode(texte, 100, 999);// matricule est celui du médecin que l'utilisateur désire retraiter
@@ -305,7 +305,7 @@ namespace Preparation_1
                                                                             //DateTime dateRetraite = Convert.ToDateTime(Console.ReadLine());//************************DATETIME
                         DateTime dateRetraite = DateTime.Parse(Console.ReadLine());//************************DATETIME valider ????
 
-                        nombreMedecinActif -= 1;// Le nombre de médecins actifs est réduit de 1
+                        _nombreMedecinActif -= 1;// Le nombre de médecins actifs est réduit de 1
 
                         foreach (Patient itemPatient in itemMedecin.ListePatient)// Pour chacun des patient de la liste des patients
                         {
@@ -324,7 +324,7 @@ namespace Preparation_1
                                     }
                                 }
 
-//*********************************************************************************************************************************************************************************************
+                                //*********************************************************************************************************************************************************************************************
 
                                 itemMedecin.EnleverPatient(itemPatient);// Le patient est retiré de la liste des patients du médecin retraité
 
@@ -352,23 +352,43 @@ namespace Preparation_1
         }
         #endregion
 
-        public int TrouverMedecinAvecMinPatient()
+        public void SauvegarderMedecins(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
-            int minimumPatient = 1000;
-
-            foreach (Medecin item in ListeMedecins)
+            string fichierMedecins = "medecins.txt";
+            // Ouverture du canalEcritureMed pour l'écriture dans le fichier "medecins.txt"
+            using (StreamWriter canalEcritureMed = new StreamWriter(fichierMedecins))
             {
-                if (item.DateRetraite == item.NonRetraite)
+                foreach (Medecin item in ListeMedecins)
                 {
-                    if (item.ListePatient.Count < minimumPatient)
+                    if (item.DateRetraite != item.NonRetraite)
                     {
-                        minimumPatient = item.ListePatient.Count;
-                        _medecinAvecMinimumPatient = item.Matricule;
+                        canalEcritureMed.WriteLine($"{item.Matricule};{item.Prenom};{item.Nom};{item.DateRetraite}");
+                    }
+                    else
+                    {
+                        canalEcritureMed.WriteLine($"{item.Matricule};{item.Prenom};{item.Nom}");
                     }
                 }
             }
-            return _medecinAvecMinimumPatient;
         }
+
+            public int TrouverMedecinAvecMinPatient()
+            {
+                int minimumPatient = 1000;
+
+                foreach (Medecin item in ListeMedecins)
+                {
+                    if (item.DateRetraite == item.NonRetraite)
+                    {
+                        if (item.ListePatient.Count < minimumPatient)
+                        {
+                            minimumPatient = item.ListePatient.Count;
+                            _medecinAvecMinimumPatient = item.Matricule;
+                        }
+                    }
+                }
+                return _medecinAvecMinimumPatient;
+            }
 
 
 

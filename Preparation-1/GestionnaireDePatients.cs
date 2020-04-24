@@ -11,7 +11,7 @@ namespace Preparation_1
 {
     class GestionnaireDePatients
     {
-        public GestionnaireDePatients()
+        public GestionnaireDePatients(GestionnaireDeMedecins gestionMedecin)
         {
             _listePatients = new List<Patient>();
 
@@ -24,7 +24,7 @@ namespace Preparation_1
                 {
                     // Lit la première ligne qui identifie le patient
                     string lignePat = canalLecturePat.ReadLine();
-
+                    int matriculeMedecin = 0;
                     while (lignePat != null)
                     {
                         // Extrait les valeurs individuelles de la ligne
@@ -36,7 +36,7 @@ namespace Preparation_1
                         }
                         if (donnees.Count == 4)
                         {
-                            int matriculeMedecin = Convert.ToInt32(donnees[3]);
+                            matriculeMedecin = Convert.ToInt32(donnees[3]);
 
                             donnees.Add(_dateDefaut);
                         }
@@ -75,15 +75,9 @@ namespace Preparation_1
                         _listePatients.Add(new Patient(donnees[1], donnees[2], numeroAssMaladie, donnees[3], donnees[4]));
 
 
-                        GestionnaireDeMedecins.AjouterPatientALaListeDunMedecin(ref gestionMedecin, ref gestionPatient, matriculeMedecin, numeroAssMaladie);
+                        gestionMedecin.AjouterPatientALaListeDunMedecin(ref gestionMedecin,  matriculeMedecin, numeroAssMaladie);
                         //************************************************************
-                        foreach (Medecin item in gestionMedecin)
-                        {
-                            if (matriculeMedecin == item.Matricule && item.Matricule != 0)
-                            {
-                                item.AjouterPatient(Convert.ToInt32(donnees[0]));
-                            }
-                        }
+
 
                         lignePat = canalLecturePat.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
@@ -106,7 +100,7 @@ namespace Preparation_1
         /// </summary>
         /// <param name="Medecins"></param>
         /// <param name="Patients"></param>
-        static void AfficherListePatients(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
+        public void AfficherListePatients(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             Console.WriteLine();
             Console.WriteLine("Liste des patients");
@@ -116,13 +110,8 @@ namespace Preparation_1
                 itemPatient.Afficher();
                 if (itemPatient.DateDeces == itemPatient.NonDecede)
                 {
-                    foreach (Medecin itemMedecin in gestionMedecin)
-                    {
-                        if (itemMedecin.Matricule == itemPatient.MatriculeMedecin)
-                        {
-                            Console.Write($"{itemMedecin.Prenom} {itemMedecin.Nom}");
-                        }
-                    }
+                    gestionMedecin.AfficherLeMedecinDUnPatient(ref gestionMedecin, ref gestionPatient, itemPatient.AssMaladie, itemPatient.MatriculeMedecin);
+                    //*******************************************************
                 }
 
                 Console.WriteLine();
@@ -158,15 +147,9 @@ namespace Preparation_1
                     {
                         Console.Write("Medecin:");
 
-                        gestionMedecin.AfficherUnMedecin(ref gestionMedecin, ref gestionPatient, itemPatient.AssMaladie, itemPatient.MatriculeMedecin);
+                        gestionMedecin.AfficherLeMedecinDUnPatient(ref gestionMedecin, ref gestionPatient, itemPatient.AssMaladie, itemPatient.MatriculeMedecin);
 
-                        foreach (Medecin itemMedecin in gestionMedecin)
-                        {
-                            if (itemPatient.MatriculeMedecin == itemMedecin.Matricule)
-                            {
-                                Console.WriteLine($"{itemMedecin.Matricule} {itemMedecin.Prenom} {itemMedecin.Nom}");
-                            }
-                        }
+ 
                     }
                     else
                     {
@@ -239,7 +222,7 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         public void DecesPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+        #region         public void DecesPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Il est possible pour un patient de décéder. Le système demande alors le numéro d’assurance maladie du patient.
         /// Celui-ci doit être valide et correspondre à un patient du système. Sinon, un message d’erreur est affiché et l’opération est annulée. 
@@ -250,7 +233,7 @@ namespace Preparation_1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets Patient</param>
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void DecesPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+        public void DecesPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             bool matchNumeroAssMaladie = false;// Booléen de match de numéro d'assurance maladie trouvé
 
@@ -285,6 +268,27 @@ namespace Preparation_1
             }
         }
         #endregion
+
+        public void SauvegarderPatients(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
+        {
+            string fichierPatients = "patients.txt";
+            // Ouverture du canalEcriturePat pour l'écriture dans le fichier "patients.txt"
+            using (StreamWriter canalEcriturePat = new StreamWriter(fichierPatients))
+            {
+                foreach (Patient item in _listePatients)
+                {
+                    if (item.DateDeces != item.NonDecede)
+                    {
+                        canalEcriturePat.WriteLine($"{item.AssMaladie};{item.Prenom};{item.Nom};{0};{item.DateDeces}");
+                    }
+                    else
+                    {
+                        canalEcriturePat.WriteLine($"{item.AssMaladie};{item.Prenom};{item.Nom};{item.MatriculeMedecin}");
+                    }
+                }
+            }
+        }
+
 
         public void StatistiquesPatients()
         {

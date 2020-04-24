@@ -9,7 +9,7 @@ namespace TravailPratique1
 {
     class Medecin : Personne
     {
-        public Medecin(string prenom, string nom, int matricule, string retraite, ref int nombreMedecinActif) : base(prenom, nom)
+        public Medecin(string prenom, string nom, int matricule, string retraite, int nombreMedecinActif) : base(prenom, nom)
         {
             //_nonRetraite = new DateTime(3000, 1, 1);
             _nonRetraite = DateTime.Parse("3000/1/1");
