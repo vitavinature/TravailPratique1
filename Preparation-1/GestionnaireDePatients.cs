@@ -38,14 +38,6 @@ namespace Preparation_1
                         {
                             int matriculeMedecin = Convert.ToInt32(donnees[3]);
 
-                            //************************************************************
-                            foreach (Medecin item in gestionMedecin)
-                            {
-                                if (matriculeMedecin == item.Matricule && item.Matricule != 0)
-                                {
-                                    item.AjouterPatient(Convert.ToInt32(donnees[0]));
-                                }
-                            }
                             donnees.Add(_dateDefaut);
                         }
                         if (donnees.Count > 5)
@@ -81,6 +73,17 @@ namespace Preparation_1
 
                         // Construction d'un objet Patient
                         _listePatients.Add(new Patient(donnees[1], donnees[2], numeroAssMaladie, donnees[3], donnees[4]));
+
+
+                        GestionnaireDeMedecins.AjouterPatientALaListeDunMedecin(ref gestionMedecin, ref gestionPatient, matriculeMedecin, numeroAssMaladie);
+                            //************************************************************
+                        foreach (Medecin item in gestionMedecin)
+                        {
+                            if (matriculeMedecin == item.Matricule && item.Matricule != 0)
+                            {
+                                item.AjouterPatient(Convert.ToInt32(donnees[0]));
+                            }
+                        }
 
                         lignePat = canalLecturePat.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
@@ -193,8 +196,6 @@ namespace Preparation_1
         /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
         public void AjouterPatient(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
-            int minimumPatient = 1000;// Nombre de patient minimum qu'un des médecins actifs a
-            int medecinAvecMinPatient = 0;// Matricule du médecin actif ayant le moins de patient
 
             Console.WriteLine();
             Console.WriteLine("Ajout d'un patient");
@@ -219,36 +220,17 @@ namespace Preparation_1
             donnees.Add(Convert.ToString(numero));
            
             //************************************************
-            gestionMedecins.TrouverMedecinAvecMinPatient();
+            int medecinAvecMinPatient = gestionMedecin.TrouverMedecinAvecMinPatient();
 
-            foreach (Medecin item in gestionMedecin._listeMedecins)
-            {
-                if (item.DateRetraite == item.NonRetraite)
-                {
-                    if (item.ListePatient.Count < minimumPatient)
-                    {
-                        minimumPatient = item.ListePatient.Count;
-                        medecinAvecMinPatient = item.Matricule;
-                    }
-                }
-            }
-            foreach (Medecin item in _listeMedecins)
-            {
-                if (item.Matricule == medecinAvecMinPatient)
-                {
-                    item.AjouterPatient(numero);//******************************ÉTRANGE VÉRIFIER
-                }
-            }
-
-
-            //******************************************
             donnees.Add(Convert.ToString(medecinAvecMinPatient));
 
             donnees.Add("3000/01/01");
             // Construction d'un objet Patient dans la liste d'objets List<Patient>
             _listePatients.Add(new Patient(donnees[0], donnees[1], numero, donnees[3], donnees[4]));
+            
+            gestionPatient._matriculeMedecin = medecinAvecMinPatient;
 
- Console.WriteLine("Patient ajouté");
+            Console.WriteLine("Patient ajouté");
 
             Program.Pause();
         }
@@ -322,7 +304,7 @@ namespace Preparation_1
 
 
 
-
+        const string _dateDefaut = "3000/1/1";
         private List<Patient> _listePatients;
         private DateTime _dateDeces = new DateTime();
         private DateTime _nonDeces = new DateTime(3000,1,1);

@@ -88,7 +88,7 @@ namespace Preparation_1
             int compteurPatientDecede = 0;
 
             Console.WriteLine("Le système contient:");
-            foreach (Medecin itemMedecin in _listeMedecins)
+            foreach (Medecin itemMedecin in gestionMedecin._listeMedecins)
             {
                 compteurMedecin += 1;
                 if (itemMedecin.DateRetraite != itemMedecin.NonRetraite)
@@ -196,23 +196,34 @@ namespace Preparation_1
         }
         #endregion
 
-        #region         public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
-        /// <summary>
-        /// Il est possible pour un médecin de partir à la retraite.
-        /// Il est par contre impossible de ne plus avoir de médecins actifs dans le système. (Cette condition est vérifiée avant l'entrée dans cette méthode).
-        /// Donc s’il n’y a qu’un seul médecin actif, il est impossible pour lui de partir à la retraite (et ceci même si aucun patient n’est défini).
-        /// Lors d’un départ à la retraite, le système demande le code d’identification du médecin.Celui-ci doit être valide et correspondre à un médecin du système.
-        /// Sinon, un message d’erreur est affiché et l’opération est annulée.
-        /// Lorsqu’un code valide est donné, la date du départ à la retraite est demandée, en format Année/Mois/Jour.
-        /// La date est validée. Lorsqu’une date valide est donnée, le médecin est alors marqué comme retraité.
-        /// Il demeure quand même dans le système, il n’est pas effacé.
-        /// Tous les patients associés à ce médecin sont alors redistribués un par un aux médecins actifs, selon le même critère lors d’un ajout,
-        /// c’est-à-dire en choisissant le (ou l’un des) médecin ayant le moins de patients.
-        /// </summary>
-        /// <param name="Medecins">Liste des objets Medecin</param>
-        /// <param name="Patients">Liste des objets Patient</param>
-        /// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
-        public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+       public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, int matriculeMedecin, int numeroAssMaladie)
+        {
+            foreach (Medecin item in _listeMedecins)
+            {
+                if (item.Matricule == matriculeMedecin)
+                {
+                    _listePatient.Add(numeroAssMaladie);
+                }
+            }
+        }
+
+#region         public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
+/// <summary>
+/// Il est possible pour un médecin de partir à la retraite.
+/// Il est par contre impossible de ne plus avoir de médecins actifs dans le système. (Cette condition est vérifiée avant l'entrée dans cette méthode).
+/// Donc s’il n’y a qu’un seul médecin actif, il est impossible pour lui de partir à la retraite (et ceci même si aucun patient n’est défini).
+/// Lors d’un départ à la retraite, le système demande le code d’identification du médecin.Celui-ci doit être valide et correspondre à un médecin du système.
+/// Sinon, un message d’erreur est affiché et l’opération est annulée.
+/// Lorsqu’un code valide est donné, la date du départ à la retraite est demandée, en format Année/Mois/Jour.
+/// La date est validée. Lorsqu’une date valide est donnée, le médecin est alors marqué comme retraité.
+/// Il demeure quand même dans le système, il n’est pas effacé.
+/// Tous les patients associés à ce médecin sont alors redistribués un par un aux médecins actifs, selon le même critère lors d’un ajout,
+/// c’est-à-dire en choisissant le (ou l’un des) médecin ayant le moins de patients.
+/// </summary>
+/// <param name="Medecins">Liste des objets Medecin</param>
+/// <param name="Patients">Liste des objets Patient</param>
+/// <param name="nombreMedecinActif">Nombre de médecin(s) actif(s)</param>
+public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient, ref int nombreMedecinActif)
         {
             try
             {
@@ -301,13 +312,36 @@ namespace Preparation_1
         }
         #endregion
 
+        public int TrouverMedecinAvecMinPatient()
+        {
+            int minimumPatient = 1000;
+
+            foreach (Medecin item in ListeMedecins)
+            {
+                if (item.DateRetraite == item.NonRetraite)
+                {
+                    if (item.ListePatient.Count < minimumPatient)
+                    {
+                        minimumPatient = item.ListePatient.Count;
+                        _medecinAvecMinimumPatient = item.Matricule;
+                    }
+                }
+            }
+            return _medecinAvecMinimumPatient;
+        }
+
+
+
+
         public int NombreMedecinActif { get { return _nombreMedecinActif; } }
         public List<Medecin> ListeMedecins { get { return _listeMedecins; } }
 
         private List<Medecin> _listeMedecins;
 
-        private int _nombreMedecinActif = 0;
+        private int _medecinAvecMinimumPatient;
 
+        private int _nombreMedecinActif = 0;
+        private List<int> _listePatient;
         private DateTime _dateDefaut = new DateTime(3000, 01, 01);
         private DateTime _dateRetraite = new DateTime();
     }
