@@ -34,7 +34,7 @@ namespace TPSynthese
 
 
         /// <summary>
-        /// Arrête l'exécution du programme pour permttre à l'utilisateur de lire la console.
+        /// Arrête l'exécution du programme pour permettre à l'utilisateur de lire la console.
         /// Attend une action de l'utilisateur avant de continuer.
         /// Doit être static car utilisée par la méthode <c>Main</c>
         /// </summary>
@@ -59,10 +59,10 @@ namespace TPSynthese
         {
             _laBanque = new Banque();  // TODO - Définition du constructeur de la classe Banque
         }
-
+//*********************************************************************************************************
 
         /// <summary>
-        /// Utilitaire pour afficher une titre dans le haut de la console
+        /// Utilitaire pour afficher un titre dans le haut de la console
         /// </summary>
         /// <param name="titre">Le titre à afficher</param>
         private void AfficherTitre(string titre)
@@ -145,6 +145,7 @@ namespace TPSynthese
             int numero = _laBanque.AjouterCompte(type, prenom, nom, montant);  // TODO - Définition de la méthode 'AjouterCompte' dans la classe Banque
             Pause("Le compte " + numero + " a été ajouté");
         }
+        //************************************************ %% *********************************************************
 
 
         /// <summary>
@@ -206,6 +207,8 @@ namespace TPSynthese
             // Obtient la liste à afficher sous forme d'une liste de chaine de caractère
             List<string> liste = _laBanque.ListeDeComptes();  // TODO - Définition de la méthode 'ListeDeComptes' dans la classe Banque
 
+//***************************************************** %% ****************************************************
+
             if (liste.Count == 0)
             {
                 Pause("Aucun compte n'a encore été créé!");
@@ -237,6 +240,9 @@ namespace TPSynthese
                 int numeroCompte = Convert.ToInt32(ligne);
                 // ValiderExistence va lancer un ArgumentException si le compte donné n'existe pas dans la banque
                 _laBanque.ValiderExistence(numeroCompte);  // TODO - Définition de la méthode 'ValiderExistence' dans la classe Banque
+
+//*************************************************** %% ******************************************************
+
                 // Si aucune exception n'a été lancée, le compte existe.
                 AccederCompte(numeroCompte);
             }
@@ -276,7 +282,7 @@ namespace TPSynthese
 
 
         /// <summary>
-        /// Affiche le menu utilisé par le méthode <c>AccederCompte</c>
+        /// Affiche le menu utilisé par la méthode <c>AccederCompte</c>
         /// </summary>
         /// <param name="numeroCompte">Le numéro du compte auquel le programme accède actuellement</param>
         /// <returns>Le choix de l'utilisateur en lettres majuscules</returns>
@@ -301,6 +307,7 @@ namespace TPSynthese
             Console.WriteLine("\n\nSolde du compte: {0,12:C}", _laBanque.Solde(numeroCompte));  // TODO - Définition de la méthode 'Solde' dans la classe Banque
             Pause();
         }
+//************************************************** %% *******************************************************
 
 
         /// <summary>
@@ -357,6 +364,8 @@ namespace TPSynthese
             // 'Deposer' retourne le nouveau solde après le dépôt
             double solde = _laBanque.Deposer(numeroCompte, montant);  // TODO - Définition de la méthode 'Deposer' dans la classe Banque
 
+//*************************************************** %% ******************************************************
+
             Console.WriteLine("\nDépôt effectué, nouveau solde du compte: {0,12:C}", solde);
             Pause();
         }
@@ -375,6 +384,8 @@ namespace TPSynthese
             {
                 // 'Retirer' retourne le nouveau solde après le retrait
                 double solde = _laBanque.Retirer(numeroCompte, montant);  // TODO - Définition de la méthode 'Retirer' dans la classe Banque
+
+//*************************************************** %% ******************************************************
 
                 Console.WriteLine("\nRetrait effectué, nouveau solde du compte: {0,12:C}", solde);
                 Pause();
@@ -397,6 +408,7 @@ namespace TPSynthese
             Console.WriteLine("\nIntérêts sur le compte: {0,12:C}", _laBanque.CalculerInterets(numeroCompte));  // TODO - Définition de la méthode 'CalculerInterets' dans la classe Banque
             Pause();
         }
+//********************************************** %%% ***********************************************************
 
 
         /// <summary>
@@ -404,4 +416,6 @@ namespace TPSynthese
         /// </summary>
         private Banque _laBanque;  // TODO - Définition de la classe Banque
     }
+//************************************************* %% ********************************************************
+
 }
