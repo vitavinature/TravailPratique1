@@ -18,7 +18,7 @@ namespace TP_Synthese_RWL_7532254
         {
 
         }
-        public void AjouterCompte(Compte type, string prenom, string nom, double montant)
+        public void AjouterCompte(string type, string prenom, string nom, double montant)
         {
             // TODO
         }
