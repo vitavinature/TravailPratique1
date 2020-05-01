@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TP_Synthese_RWL_7532254
+namespace TPSynthese
 {
     class Depot : Transaction
     {

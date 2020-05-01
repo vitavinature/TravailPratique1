@@ -6,7 +6,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TP_Synthese_RWL_7532254
+namespace TPSynthese
 {
     class Banque
     {
@@ -29,6 +29,7 @@ namespace TP_Synthese_RWL_7532254
 
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
+            Compte(type, numero, prenom, nom, solde);
             // TODO
             // Ici un numéro de compte doit être généré
             return 123;

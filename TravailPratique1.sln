@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravailPratique1-1", "Preparation-1\TravailPratique1-1.csproj", "{1BD0884E-993C-4A98-BA15-2266CF12725D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TP_Synthese_RWL_7532254", "TP_Synthese_RWL_7532254\TP_Synthese_RWL_7532254.csproj", "{7381E376-7C4D-4927-B25E-BC2042FF4DEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPSynthese", "TP_Synthese_RWL_7532254\TPSynthese.csproj", "{7381E376-7C4D-4927-B25E-BC2042FF4DEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
