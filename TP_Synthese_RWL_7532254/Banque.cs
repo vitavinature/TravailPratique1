@@ -35,24 +35,24 @@ namespace TP_Synthese_RWL_7532254
         }
         #endregion
 
-        #region public double CalculerInterest(Compte numeroCompte)
+        #region public double CalculerInterets(int numeroCompte)
 
-        public double CalculerInterest(Compte numeroCompte)
+        public double CalculerInterets(int numeroCompte)
         {
             // TODO
             return 0.25;
         }
         #endregion
 
-        #region public double Deposer(Compte numeroCompte, double montant)
+        #region public double Deposer(int numeroCompte, double montant)
 
-        public double Deposer(Compte numeroCompte, double montant)
+        public double Deposer(int numeroCompte, double montant)
         {
             return 23.45;
         }
         #endregion
 
-        #region public void ListeDeComptes()
+        #region public List<string> ListeDeComptes()
 
         public List<string> ListeDeComptes()
         {
@@ -63,23 +63,23 @@ namespace TP_Synthese_RWL_7532254
         }
         #endregion
 
-        #region public double Retirer(Compte numeroCompte, double montant)
-        public double Retirer(Compte numeroCompte, double montant)
+        #region public double Retirer(int numeroCompte, double montant)
+        public double Retirer(int numeroCompte, double montant)
         {
             // TODO
             return 13.23;
         }
         #endregion
 
-        #region public double Solde(Compte numeroCompte)
+        #region public double Solde(int numeroCompte)
 
-        public double Solde(Compte numeroCompte)
+        public double Solde(int numeroCompte)
         {
             return 34.23;
         }
         #endregion
 
-        #region public void ValiderExistence(Compte numeroCompte)
+        #region public void ValiderExistence(int numeroCompte)
 
         public void ValiderExistence(int numeroCompte)
         {
