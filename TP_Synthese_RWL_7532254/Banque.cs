@@ -29,10 +29,10 @@ namespace TPSynthese
 
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
-            Compte(type, numero, prenom, nom, solde);
+        _compte.Compte(type, numero, prenom, nom, solde);
             // TODO
             // Ici un numéro de compte doit être généré
-            return 123;
+            return _compte._numero;
         }
         #endregion
 
