@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TP_Synthese_RWL_7532254
+namespace TPSynthese
 {
     class Credit : Compte
     {
-
+        public Credit(int numero, string prenom, string nom, double solde, string type) : base()
+        {
+                
+        }
     }
 }

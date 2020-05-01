@@ -10,7 +10,7 @@ namespace TPSynthese
 {
     abstract class Compte : IComparable<Compte>
     {
-        public Compte(string type, int numero, string prenom, string nom, double solde)
+        public Compte(int numero, string prenom, string nom, double solde, string type)
         {
             _type = type;
             _prenom = prenom;
