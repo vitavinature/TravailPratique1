@@ -29,7 +29,10 @@ namespace TPSynthese
 
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
-        _compte.Compte(type, numero, prenom, nom, solde);
+            int numero = Compte.DernierNumero();
+            
+            Compte(numero, prenom, nom, montant, type);
+
             // TODO
             // Ici un numéro de compte doit être généré
             return _compte._numero;
@@ -37,11 +40,38 @@ namespace TPSynthese
         #endregion
 
         #region public double CalculerInterets(int numeroCompte)
-
+        /// <summary>
+        /// Cette option calcule les intérêts courants du compte. Le solde est inchangé par cette opération.
+        /// Le calcul effectué dépend du type de compte. 
+        /// </summary>
+        /// <param name="numeroCompte"></param>
+        /// <returns></returns>
         public double CalculerInterets(int numeroCompte)
         {
-            // TODO
-            return 0.25;
+            string typeDeCompte = "C"; // C = cheques , E = epargne , R = credit;
+            double interet = 0; //********************** TODO
+            double solde = 100;
+            if (typeDeCompte=="C")
+            {
+                interet = 0.001 * solde;
+            }
+            if (typeDeCompte == "E")
+            {
+                interet = 0.01 * solde;
+            }
+            if (typeDeCompte == "R")
+            {
+                if (solde < 0)
+                {
+                    interet = 0.045 * solde;
+                }
+                else
+                {
+                    interet = 0;
+                }
+            }
+
+            return interet;
         }
         #endregion
 
@@ -49,6 +79,7 @@ namespace TPSynthese
 
         public double Deposer(int numeroCompte, double montant)
         {
+            _compte.CompareTo(numeroCompte);
             return 23.45;
         }
         #endregion

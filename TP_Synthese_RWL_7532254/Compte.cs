@@ -16,7 +16,7 @@ namespace TPSynthese
             _prenom = prenom;
             _nom = nom;
             _solde = solde;
-            _numero = ++_dernierNumero;
+            _numero = numero;
         }
         public int CompareTo(Compte that)
         {
