@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -12,9 +13,81 @@ namespace TPSynthese
     {
         #region public Banque()
 
-        public Banque()
+        public Banque(Compte compte)
         {
             // TODO
+            List<Compte> listeDesComptes = new List<Compte>();
+
+            #region Lecture du fichier des comptes
+            try
+            {
+                string fichierComptes = "comptes.txt";
+                // Ouverture du canalRead pour l'accès au fichier "comptes.txt"
+                using (StreamReader canalRead = new StreamReader(fichierComptes))
+                {
+                    // Lit la première ligne qui identifie le compte
+                    string ligne = canalRead.ReadLine();
+                    int numeroCompte = 0;
+                    while (ligne != null)
+                    {
+                        // Extrait les valeurs individuelles de la ligne
+                        List<string> donnees = new List<string>(ligne.Split(';'));
+
+                        if (donnees.Count < 4)
+                        {
+                            throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
+                        }
+                        if (donnees.Count == 4)
+                        {
+                            donnees.Add(_creditDefaut);
+                        }
+                        if (donnees.Count > 5)
+                        {
+                            throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
+                        }
+                        if (donnees[0].Length > 1 || donnees[0].Length < 1 || !donnees[0].Contains("E") || !donnees[0].Contains("C") || !donnees[0].Contains("R"))
+                        {
+                            throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
+                        }
+                        if (donnees[1].Length < 3)
+                        {
+                            throw new Exception("Erreur, le numéro de compte est invalide.");
+                        }
+
+                        numeroCompte = Convert.ToInt32(donnees[1]);
+
+                        if (numeroCompte < 100 || numeroCompte > 9999)
+                        {
+                            throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
+                        }
+                        foreach (Compte item in _listeDesComptes)
+                        {
+                            if (item.AssMaladie == numeroAssMaladie)
+                            {
+                                throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro d'assurance maladie identiques.");
+                            }
+                        }
+
+                        // Construction d'un objet Patient
+                        _listePatients.Add(new Patient(donnees[1], donnees[2], numeroAssMaladie, donnees[3], donnees[4]));
+
+
+                        gestionMedecin.AjouterPatientALaListeDunMedecin(ref gestionMedecin, matriculeMedecin, numeroAssMaladie);
+                        //************************************************************
+
+
+                        lignePat = canalLecturePat.ReadLine(); // Lecture de la ligne suivante dans le fichier
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine();
+                Console.WriteLine("Un fichier patients.txt sera créé");
+                Program.Pause();
+            }
+            #endregion
         }
         #endregion
 
@@ -29,10 +102,10 @@ namespace TPSynthese
 
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
-            
+
             int numero = Compte.DernierNumero();
-                        
-           // _compte = Compte(numero, prenom, nom, montant, type);
+
+            // _compte = Compte(numero, prenom, nom, montant, type);
 
             // TODO
             // Ici un numéro de compte doit être généré
@@ -52,7 +125,7 @@ namespace TPSynthese
             string typeDeCompte = "C"; // C = cheques , E = epargne , R = credit;
             double interet = 0; //********************** TODO
             double solde = 100;
-            if (typeDeCompte=="C")
+            if (typeDeCompte == "C")
             {
                 interet = 0.001 * solde;
             }
@@ -81,7 +154,7 @@ namespace TPSynthese
         public double Deposer(int numeroCompte, double montant)
         {
             //int oui = Compte.CompareTo();
-            
+
             double solde = +montant;
             return solde;
         }
@@ -123,5 +196,7 @@ namespace TPSynthese
         #endregion
 
         private Compte _compte;
+        private List<Compte> _listeDesComptes;//c'est pas sur que ça va ici;
+        const string _creditDefaut = "0";
     }
 }
