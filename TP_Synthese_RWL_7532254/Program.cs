@@ -196,7 +196,7 @@ namespace TPSynthese
             }
         }
 
-
+        #region        private void ListerComptes()
         /// <summary>
         /// Option "L" du menu principal
         /// Affiche la liste de tous les comptes de la banque
@@ -223,8 +223,9 @@ namespace TPSynthese
 
             Pause();
         }
+        #endregion
 
-
+        #region        private void DemanderCompte()
         /// <summary>
         /// Option "A" du menu principal
         /// Demande le numéro du compte à l'utilisateur.
@@ -256,8 +257,9 @@ namespace TPSynthese
                 Pause("Ce compte n'existe pas");
             }
         }
+        #endregion
 
-
+        #region         private void AccederCompte(int numeroCompte)
         /// <summary>
         /// Suite de l'option "A" du menu principal
         /// Appellée par <c>DemanderCompte</c> une fois la validation faite
@@ -280,8 +282,9 @@ namespace TPSynthese
                 }
             }
         }
+        #endregion
 
-
+        #region        private string AfficherMenuCompte(int numeroCompte)
         /// <summary>
         /// Affiche le menu utilisé par la méthode <c>AccederCompte</c>
         /// </summary>
@@ -296,8 +299,9 @@ namespace TPSynthese
             Console.Write("\n> ");
             return Console.ReadLine().ToUpper();
         }
+        #endregion
 
-
+        #region        private void AfficherSolde(int numeroCompte)
         /// <summary>
         /// Option "S" du menu compte
         /// Affiche le solde du compte donné
@@ -308,9 +312,10 @@ namespace TPSynthese
             Console.WriteLine("\n\nSolde du compte: {0,12:C}", _laBanque.Solde(numeroCompte));  // TODO - Définition de la méthode 'Solde' dans la classe Banque
             Pause();
         }
-//************************************************** %% *******************************************************
+        #endregion
+        //************************************************** %% *******************************************************
 
-
+        #region        private void EffectuerTransaction(int numeroCompte)
         /// <summary>
         /// Option "T" du menu compte
         /// Boucle dans le sous-menu tant que l'utilisateur ne choisi pas de retourner au menu du compte
@@ -333,8 +338,9 @@ namespace TPSynthese
                 }
             }
         }
+        #endregion
 
-
+        #region        private string AfficherMenuTransaction(int numeroCompte)
         /// <summary>
         /// Affiche le menu utilisé par le méthode <c>EffectuerTransaction</c>
         /// </summary>
@@ -351,8 +357,9 @@ namespace TPSynthese
             Console.Write("\n> ");
             return Console.ReadLine().ToUpper();
         }
+        #endregion
 
-
+        #region        private void Deposer(int numeroCompte)
         /// <summary>
         /// Option "D" du menu transaction
         /// Effectue un dépôt dans le compte donné
@@ -370,8 +377,9 @@ namespace TPSynthese
             Console.WriteLine("\nDépôt effectué, nouveau solde du compte: {0,12:C}", solde);
             Pause();
         }
+        #endregion
 
-
+        #region        private void Retirer(int numeroCompte)
         /// <summary>
         /// Option "R" du menu transaction
         /// Tente d'effectuer un retrait du le compte donné
@@ -396,8 +404,9 @@ namespace TPSynthese
                 Pause("Retrait impossible, " + e.Message);
             }
         }
+        #endregion
 
-
+        #region        private void CalculerInterets(int numeroCompte)
         /// <summary>
         /// Option "I" du menu transaction
         /// Affiche les intérêts calculés sur le compte donné
@@ -409,8 +418,8 @@ namespace TPSynthese
             Console.WriteLine("\nIntérêts sur le compte: {0,12:C}", _laBanque.CalculerInterets(numeroCompte));  // TODO - Définition de la méthode 'CalculerInterets' dans la classe Banque
             Pause();
         }
-//********************************************** %%% ***********************************************************
-
+        //********************************************** %%% ***********************************************************
+        #endregion
 
         /// <summary>
         /// La banque qui contient tous les comptes et dans laquelle toute les opérations sont effectuées

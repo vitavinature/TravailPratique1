@@ -8,7 +8,7 @@ namespace TPSynthese
 {
     class Credit : Compte
     {
-        public Credit(int numero, string prenom, string nom, double solde, string type) : base()
+        public Credit(int numero, string prenom, string nom, double solde, string type) : base(numero, prenom, nom, solde, type)
         {
                 
         }

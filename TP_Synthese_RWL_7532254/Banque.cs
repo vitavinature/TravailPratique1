@@ -29,13 +29,14 @@ namespace TPSynthese
 
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
-            int numero = Compte.DernierNumero();
             
-            Compte(numero, prenom, nom, montant, type);
+            int numero = Compte.DernierNumero();
+                        
+           // _compte = Compte(numero, prenom, nom, montant, type);
 
             // TODO
             // Ici un numéro de compte doit être généré
-            return _compte._numero;
+            return numero;
         }
         #endregion
 
@@ -79,14 +80,16 @@ namespace TPSynthese
 
         public double Deposer(int numeroCompte, double montant)
         {
-            _compte.CompareTo(numeroCompte);
-            return 23.45;
+            //int oui = Compte.CompareTo();
+            
+            double solde = +montant;
+            return solde;
         }
         #endregion
 
-        #region public List<string> ListeDeComptes()
+        #region public List<string> ListeDeComptes(List<Compte> listeCompte)
 
-        public List<string> ListeDeComptes()
+        public List<string> ListeDeComptes(Banque banque)
         {
             // Ici, surement une liste des numéro de compte déjà existants
             List<string> liste = new List<string>();

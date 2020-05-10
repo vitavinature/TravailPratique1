@@ -10,7 +10,7 @@ namespace TPSynthese
 {
     abstract class Compte : IComparable<Compte>
     {
-        public Compte(int numero, string prenom, string nom, double solde, string type)
+        public Compte(int numero, string prenom, string nom, double solde, string type) 
         {
             _type = type;
             _prenom = prenom;
@@ -62,12 +62,13 @@ namespace TPSynthese
         // Le mot clé readonly est similaire à const, mais la valeur n'a pas besoin d'être connue à la déclaration
         // l'initialisation se fera dans le constructeur, puis la valeur ne pourra plus être modifiée
         // Permet de protéger le code d'erreurs éventuelles en indiquant que la valeur ne devrait pas changer
-        private string _type;
+        private readonly string _type;
         private readonly string _prenom;
         private readonly string _nom;
-        private double _solde;
+        private readonly double _solde;
 
         // Numéro qui identifie le compte de manière unique
         private readonly int _numero;
+        private List<Compte> _listeComptes;
     }
 }

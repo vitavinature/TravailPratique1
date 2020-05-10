@@ -21,7 +21,7 @@ namespace TravailPratique1
 
 
             Menu1(ref gestionMedecin, ref gestionPatient);
-            
+
             // Le programme est terminé rendu ici.
         }
 
@@ -132,7 +132,7 @@ namespace TravailPratique1
         /// <param name="Medecins">Liste des objets Medecin</param>
         /// <param name="Patients">Liste des objets patient</param>
         /// <param name="nombreMedecinActif">Nombre des médecin(s) actif(s)</param>
-        static void Menu1(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient) 
+        static void Menu1(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             while (true)
             {
@@ -409,8 +409,8 @@ namespace TravailPratique1
         {
             try
             {
-               
-                    gestionMedecin.SauvegarderMedecins(ref gestionMedecin, ref gestionPatient);
+
+                gestionMedecin.SauvegarderMedecins(ref gestionMedecin, ref gestionPatient);
 
                 gestionPatient.SauvegarderPatients(ref gestionMedecin, ref gestionPatient);
 
