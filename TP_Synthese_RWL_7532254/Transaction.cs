@@ -8,6 +8,10 @@ namespace TPSynthese
 {
     abstract class Transaction
     {
+        public Transaction()
+        {
+
+        }
         public void LimiteDeCredit(string numeroDeCompte, string typeDeCompte, string limiteDeCredit)
         {
 

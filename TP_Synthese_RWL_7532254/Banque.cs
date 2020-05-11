@@ -17,7 +17,7 @@ namespace TPSynthese
         {
             // TODO
             _listeDesComptes = new List<Compte>();
-
+//Transaction transaction = 
             #region Lecture du fichier des comptes
             try
             {
@@ -32,6 +32,11 @@ namespace TPSynthese
                     {
                         // Extrait les valeurs individuelles de la ligne
                         List<string> donnees = new List<string>(ligne.Split(';'));
+                        string type = donnees[0];
+                        string numero = donnees[1];
+                        string prenom = donnees[2];
+                        string nom = donnees[3];
+                        string limite;
 
                         if (donnees.Count < 4)
                         {
@@ -40,6 +45,7 @@ namespace TPSynthese
                         if (donnees.Count == 4)
                         {
                             donnees.Add(_creditDefaut);
+                            limite = donnees[4];
                         }
                         if (donnees.Count > 5)
                         {
@@ -56,7 +62,7 @@ namespace TPSynthese
 
                         numeroCompte = Convert.ToInt32(donnees[1]);
 
-                        if (numeroCompte < 100 || numeroCompte > 9999)
+                        if (numeroCompte < 101 || numeroCompte > 9999)
                         {
                             throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
                         }
@@ -67,13 +73,17 @@ namespace TPSynthese
                                 throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de comptes identiques.");
                             }
                         }
-
-                        // Construction d'un objet Compte
-                        _listeDesComptes.Add(new Compte(numeroCompte, donnees[2], donnees[3], donnees[0]));
+                        switch (type)
+                        {
+                            case "C": _listeDesComptes.Add(new CompteCheque(numeroCompte, prenom, nom, type)); break;
+                            case "E": _listeDesComptes.Add(new CompteEpargne(numeroCompte, prenom, nom, type)); break;
+                            case "R": _listeDesComptes.Add(new CompteCredit(numeroCompte, prenom, nom, type)); break;
+                            default: throw new Exception("Type de compte invalide");
+                        }
 
 // DateTime dateDAujourdhui = DateTime.Today;
                        // string date = Convert.ToString(dateDAujourdhui);
-                        Transaction.LimiteDeCredit(donnees[1], donnees[0], donnees[4]);
+                        transaction.LimiteDeCredit(donnees[1], donnees[0], donnees[4]);
                         //************************************************************
 
 

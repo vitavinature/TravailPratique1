@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace TPSynthese
 {
-    class Epargne : Compte
+    class CompteCheque : Compte
     {
-        public Epargne(int numero, string prenom, string nom, string type) : base(numero, prenom, nom, type)
+        public CompteCheque(int numero, string prenom, string nom, string type) : base(numero, prenom, nom, type)
         {
 
         }
     }
+
 }

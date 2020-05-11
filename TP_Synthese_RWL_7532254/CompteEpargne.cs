@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TPSynthese
 {
-    class Credit : Compte
+    class CompteEpargne : Compte
     {
-        public Credit(int numero, string prenom, string nom, string type) : base(numero, prenom, nom, type)
+        public CompteEpargne(int numero, string prenom, string nom, string type) : base(numero, prenom, nom, type)
         {
 
         }
