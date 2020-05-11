@@ -17,7 +17,7 @@ namespace TPSynthese
         {
             // TODO
             _listeDesComptes = new List<Compte>();
-//Transaction transaction = 
+            //Transaction transaction = 
             #region Lecture du fichier des comptes
             try
             {
@@ -36,7 +36,7 @@ namespace TPSynthese
                         string numero = donnees[1];
                         string prenom = donnees[2];
                         string nom = donnees[3];
-                        string limite;
+                        double limiteCredit = 0;
 
                         if (donnees.Count < 4)
                         {
@@ -45,7 +45,10 @@ namespace TPSynthese
                         if (donnees.Count == 4)
                         {
                             donnees.Add(_creditDefaut);
-                            limite = donnees[4];
+                        }
+                        if (donnees.Count == 5)
+                        {
+                            limiteCredit = Convert.ToDouble(donnees[4]);
                         }
                         if (donnees.Count > 5)
                         {
@@ -77,13 +80,13 @@ namespace TPSynthese
                         {
                             case "C": _listeDesComptes.Add(new CompteCheque(numeroCompte, prenom, nom, type)); break;
                             case "E": _listeDesComptes.Add(new CompteEpargne(numeroCompte, prenom, nom, type)); break;
-                            case "R": _listeDesComptes.Add(new CompteCredit(numeroCompte, prenom, nom, type)); break;
+                            case "R": _listeDesComptes.Add(new CompteCredit(numeroCompte, prenom, nom, type, limiteCredit)); break;
                             default: throw new Exception("Type de compte invalide");
                         }
 
-// DateTime dateDAujourdhui = DateTime.Today;
-                       // string date = Convert.ToString(dateDAujourdhui);
-                        transaction.LimiteDeCredit(donnees[1], donnees[0], donnees[4]);
+                        // DateTime dateDAujourdhui = DateTime.Today;
+                        // string date = Convert.ToString(dateDAujourdhui);
+                        Transaction.LimiteDeCredit(donnees[1], donnees[0], donnees[4]);
                         //************************************************************
 
 
