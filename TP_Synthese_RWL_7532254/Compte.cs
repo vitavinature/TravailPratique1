@@ -10,12 +10,13 @@ namespace TPSynthese
 {
     abstract class Compte : IComparable<Compte>
     {
-        public Compte(int numero, string prenom, string nom, double solde, string type) 
+        //public Compte(int numero, string prenom, string nom, double solde, string type) 
+        public Compte(int numero, string prenom, string nom, string type) 
         {
             _type = type;
             _prenom = prenom;
             _nom = nom;
-            _solde = solde;
+           // _solde = solde;
             _numero = numero;
         }
         public int CompareTo(Compte that)
@@ -38,6 +39,9 @@ namespace TPSynthese
             // ... 
             return 0;
         }
+
+        public int NumeroCompte { get { return _numero; } set { _numero = DernierNumero(); } }
+
 
         #region public static int DernierNumero()
         /// <summary>
@@ -65,10 +69,10 @@ namespace TPSynthese
         private readonly string _type;
         private readonly string _prenom;
         private readonly string _nom;
-        private readonly double _solde;
+       // private readonly double _solde;
 
         // Numéro qui identifie le compte de manière unique
-        private readonly int _numero;
+        private int _numero;
         private List<Compte> _listeComptes;
     }
 }

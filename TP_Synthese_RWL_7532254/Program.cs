@@ -40,7 +40,7 @@ namespace TPSynthese
         /// Doit être static car utilisée par la méthode <c>Main</c>
         /// </summary>
         /// <param name="s">Chaine de caractères optionnelle. Si elle est fournie, elle est affichée dans la console.</param>
-        private static void Pause(string s = null)
+        public static void Pause(string s = null)
         {
             Console.WriteLine();
             if (s != null)

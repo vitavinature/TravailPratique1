@@ -13,10 +13,10 @@ namespace TPSynthese
     {
         #region public Banque()
 
-        public Banque(Compte compte)
+        public Banque()
         {
             // TODO
-            List<Compte> listeDesComptes = new List<Compte>();
+            _listeDesComptes = new List<Compte>();
 
             #region Lecture du fichier des comptes
             try
@@ -45,7 +45,7 @@ namespace TPSynthese
                         {
                             throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
                         }
-                        if (donnees[0].Length > 1 || donnees[0].Length < 1 || !donnees[0].Contains("E") || !donnees[0].Contains("C") || !donnees[0].Contains("R"))
+                        if (donnees[0].Length > 1 || !donnees[0].Contains("E") && !donnees[0].Contains("C") && !donnees[0].Contains("R"))
                         {
                             throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
                         }
@@ -62,21 +62,22 @@ namespace TPSynthese
                         }
                         foreach (Compte item in _listeDesComptes)
                         {
-                            if (item.AssMaladie == numeroAssMaladie)
+                            if (item.NumeroCompte == numeroCompte)
                             {
-                                throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro d'assurance maladie identiques.");
+                                throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de comptes identiques.");
                             }
                         }
 
-                        // Construction d'un objet Patient
-                        _listePatients.Add(new Patient(donnees[1], donnees[2], numeroAssMaladie, donnees[3], donnees[4]));
+                        // Construction d'un objet Compte
+                        _listeDesComptes.Add(new Compte(numeroCompte, donnees[2], donnees[3], donnees[0]));
 
-
-                        gestionMedecin.AjouterPatientALaListeDunMedecin(ref gestionMedecin, matriculeMedecin, numeroAssMaladie);
+// DateTime dateDAujourdhui = DateTime.Today;
+                       // string date = Convert.ToString(dateDAujourdhui);
+                        Transaction.LimiteDeCredit(donnees[1], donnees[0], donnees[4]);
                         //************************************************************
 
 
-                        lignePat = canalLecturePat.ReadLine(); // Lecture de la ligne suivante dans le fichier
+                        ligne = canalRead.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
                 }
             }
@@ -160,9 +161,9 @@ namespace TPSynthese
         }
         #endregion
 
-        #region public List<string> ListeDeComptes(List<Compte> listeCompte)
+        #region public List<string> ListeDeComptes()
 
-        public List<string> ListeDeComptes(Banque banque)
+        public List<string> ListeDeComptes()
         {
             // Ici, surement une liste des numéro de compte déjà existants
             List<string> liste = new List<string>();
@@ -195,7 +196,7 @@ namespace TPSynthese
         }
         #endregion
 
-        private Compte _compte;
+        //private Compte _compte;
         private List<Compte> _listeDesComptes;//c'est pas sur que ça va ici;
         const string _creditDefaut = "0";
     }

@@ -8,7 +8,7 @@ namespace TPSynthese
 {
     class Cheques : Compte
     {
-        public Cheques(int numero, string prenom, string nom, double solde, string type) : base(numero, prenom, nom, solde, type)
+        public Cheques(int numero, string prenom, string nom, string type) : base(numero, prenom, nom, type)
         {
 
         }
