@@ -10,21 +10,21 @@ namespace TPSynthese
 {
     abstract class Compte : IComparable<Compte>
     {
-        public Compte(string type, string prenom, string nom, double montant) 
+        public Compte(string type, string prenom, string nom, double depotInitial)
         {
             _type = type;
             _prenom = prenom;
             _nom = nom;
-           _solde = montant;
-            _numero = ++_dernierNumero;
+            _depotInitial = depotInitial;
+            _numeroDeCompte = ++_dernierNumero;
         }
-        public Compte(string type, string prenom, string nom, double montant, int numero)
+        public Compte(string type, string prenom, string nom, double limiteCredit, int numero)
         {
             _type = type;
             _prenom = prenom;
             _nom = nom;
-            _solde = montant;
-            _numero = numero;
+            _limiteCredit = limiteCredit;
+            _numeroDeCompte = numero;
         }
 
 
@@ -49,11 +49,11 @@ namespace TPSynthese
             return 0;
         }
 
-        public int NumeroCompte { get { return _numero; } set { _numero = DernierNumero(); } }
-        public string Type { get { return _type; } set {  } }
-        public string Prenom { get { return _prenom; } set {} }
+        public int NumeroCompte { get { return _numeroDeCompte; } set { _numeroDeCompte = DernierNumero(); } }
+        public string Type { get { return _type; } set { } }
+        public string Prenom { get { return _prenom; } set { } }
 
-        public string Nom { get { return _nom; } set {} }
+        public string Nom { get { return _nom; } set { } }
 
         #region public static int DernierNumero()
         /// <summary>
@@ -70,7 +70,7 @@ namespace TPSynthese
             return _dernierNumero;
         }
         #endregion
-        public int Numero { get { return _numero; } }
+        public static int NumeroDeCompte { get { return _numeroDeCompte; } }
 
         // Un attribut static est dit un "attribut de classe", par opposition à un attribut d'objet pour les attributs ordinaires
         // Tous les objets de la classe partage la même variable
@@ -82,10 +82,10 @@ namespace TPSynthese
         private readonly string _type;
         private readonly string _prenom;
         private readonly string _nom;
-       private readonly double _solde;
-
+        private readonly double _limiteCredit;
+        private readonly double _depotInitial;
         // Numéro qui identifie le compte de manière unique
-        private int _numero;
+        private static int _numeroDeCompte;
         private List<Compte> _listeComptes;
     }
 }

@@ -120,7 +120,7 @@ namespace TPSynthese
                 default: throw new Exception("Type de compte invalide");
             }
 
-            _compte = Compte(type, prenom, nom, montant);
+            int numero = Compte.NumeroDeCompte;
 
             // TODO
             // Ici un numéro de compte doit être généré
@@ -241,7 +241,7 @@ namespace TPSynthese
         }
         #endregion
 
-        //private Compte _compte;
+        private Compte _compte;
         private List<Compte> _listeDesComptes;//c'est pas sur que ça va ici;
         const string _creditDefaut = "0";
     }
