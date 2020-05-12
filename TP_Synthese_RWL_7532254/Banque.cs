@@ -17,7 +17,7 @@ namespace TPSynthese
         {
             // TODO
             _listeDesComptes = new List<Compte>();
-            //Transaction transaction = 
+
             #region Lecture du fichier des comptes
             try
             {
@@ -83,12 +83,6 @@ namespace TPSynthese
                             case "R": _listeDesComptes.Add(new CompteCredit(numeroCompte, prenom, nom, type, limiteCredit)); break;
                             default: throw new Exception("Type de compte invalide");
                         }
-
-                        // DateTime dateDAujourdhui = DateTime.Today;
-                        // string date = Convert.ToString(dateDAujourdhui);
-                        Transaction.LimiteDeCredit(donnees[1], donnees[0], donnees[4]);
-                        //************************************************************
-
 
                         ligne = canalRead.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
@@ -181,6 +175,37 @@ namespace TPSynthese
             // Ici, surement une liste des numéro de compte déjà existants
             List<string> liste = new List<string>();
             //TODO
+            foreach (var item in _listeDesComptes)
+            {
+                string type;
+                string limiteCredit;
+
+                switch (item.Type)
+                {
+                    case "C":
+                        {
+                            type = "Chèques";
+                            limiteCredit = "";
+                        }
+                        break;
+                    case "E":
+                        {
+                            type = "Épargne";
+                            limiteCredit = "";
+                        }
+                        break;
+                    case "R":
+                        {
+                            type = "Crédit";
+                            limiteCredit = $"          Limite de crédit:  {Convert.ToString(item.NumeroCompte)} $";
+                        }
+                        break;
+                    default: throw new Exception("Type de compte invalide");
+
+                }
+
+                liste.Add($"{Convert.ToString(item.NumeroCompte)}  {type}   {item.Nom}, {item.Prenom}{limiteCredit}");
+            }
             return liste;
         }
         #endregion

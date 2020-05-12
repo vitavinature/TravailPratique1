@@ -12,7 +12,8 @@ namespace TPSynthese
         {
 
         }
+        private List<double> _limiteCredit;
     }
 
-    private List<double> _limiteCredit;
+
 }

@@ -41,7 +41,10 @@ namespace TPSynthese
         }
 
         public int NumeroCompte { get { return _numero; } set { _numero = DernierNumero(); } }
+        public string Type { get { return _type; } set {  } }
+        public string Prenom { get { return _prenom; } set {} }
 
+        public string Nom { get { return _nom; } set {} }
 
         #region public static int DernierNumero()
         /// <summary>
