@@ -10,15 +10,24 @@ namespace TPSynthese
 {
     abstract class Compte : IComparable<Compte>
     {
-        //public Compte(int numero, string prenom, string nom, double solde, string type) 
-        public Compte(int numero, string prenom, string nom, string type) 
+        public Compte(string type, string prenom, string nom, double montant) 
         {
             _type = type;
             _prenom = prenom;
             _nom = nom;
-           // _solde = solde;
+           _solde = montant;
+            _numero = ++_dernierNumero;
+        }
+        public Compte(string type, string prenom, string nom, double montant, int numero)
+        {
+            _type = type;
+            _prenom = prenom;
+            _nom = nom;
+            _solde = montant;
             _numero = numero;
         }
+
+
         public int CompareTo(Compte that)
         {
             /*Une classe qui implémente l’interface « IComparable » doit définir la méthode « CompareTo » et déterminer si l’objet reçu en paramètre est plus petit, égal ou plus grand que l’objet courrant.Les valeurs de retour possibles sont : 
@@ -61,7 +70,7 @@ namespace TPSynthese
             return _dernierNumero;
         }
         #endregion
-
+        public int Numero { get { return _numero; } }
 
         // Un attribut static est dit un "attribut de classe", par opposition à un attribut d'objet pour les attributs ordinaires
         // Tous les objets de la classe partage la même variable
@@ -73,7 +82,7 @@ namespace TPSynthese
         private readonly string _type;
         private readonly string _prenom;
         private readonly string _nom;
-       // private readonly double _solde;
+       private readonly double _solde;
 
         // Numéro qui identifie le compte de manière unique
         private int _numero;

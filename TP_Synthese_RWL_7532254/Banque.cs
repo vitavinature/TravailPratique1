@@ -80,9 +80,9 @@ namespace TPSynthese
                             }
                             switch (type)
                             {
-                                case "C": _listeDesComptes.Add(new CompteCheque(numeroCompte, prenom, nom, type)); break;
-                                case "E": _listeDesComptes.Add(new CompteEpargne(numeroCompte, prenom, nom, type)); break;
-                                case "R": _listeDesComptes.Add(new CompteCredit(numeroCompte, prenom, nom, type, limiteCredit)); break;
+                                case "C": _listeDesComptes.Add(new CompteCheque(type, prenom, nom, limiteCredit, numeroCompte)); break;
+                                case "E": _listeDesComptes.Add(new CompteEpargne(type, prenom, nom, limiteCredit, numeroCompte)); break;
+                                case "R": _listeDesComptes.Add(new CompteCredit(type, prenom, nom, limiteCredit, numeroCompte)); break;
                                 default: throw new Exception("Type de compte invalide");
                             }
                         }
@@ -112,10 +112,15 @@ namespace TPSynthese
 
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
+            switch (type)
+            {
+                case "C": _listeDesComptes.Add(new CompteCheque(type, prenom, nom, montant)); break;
+                case "E": _listeDesComptes.Add(new CompteEpargne(type, prenom, nom, montant)); break;
+                case "R": _listeDesComptes.Add(new CompteCredit(type, prenom, nom, montant)); break;
+                default: throw new Exception("Type de compte invalide");
+            }
 
-            int numero = Compte.DernierNumero();
-
-            // _compte = Compte(numero, prenom, nom, montant, type);
+            _compte = Compte(type, prenom, nom, montant);
 
             // TODO
             // Ici un numéro de compte doit être généré

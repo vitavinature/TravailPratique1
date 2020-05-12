@@ -12,6 +12,7 @@ namespace TPSynthese
     /// </summary>
     class Program
     {
+        #region        static void Main()
         /// <summary>
         /// Méthode principale du programme
         /// </summary>
@@ -32,8 +33,9 @@ namespace TPSynthese
                 Pause("Fin du programme dûe à une exception: " + e.Message);
             }
         }
+        #endregion
 
-
+        #region        public static void Pause(string s = null)
         /// <summary>
         /// Arrête l'exécution du programme pour permettre à l'utilisateur de lire la console.
         /// Attend une action de l'utilisateur avant de continuer.
@@ -47,12 +49,12 @@ namespace TPSynthese
             {
                 Console.WriteLine(s);
             }
-
             Console.WriteLine("Appuyez sur une touche pour continuer");
             Console.ReadKey(true);
         }
+        #endregion
 
-
+        #region        private Program()
         /// <summary>
         /// Constructeur
         /// </summary>
@@ -60,9 +62,12 @@ namespace TPSynthese
         {
             _laBanque = new Banque();  // TODO - Définition du constructeur de la classe Banque
         }
-//*********************************************** %% **********************************************************
+        #endregion
+        //*********************************************** %% **********************************************************
 
+        #region        private void AfficherTitre(string titre)
         /// <summary>
+        /// private void AfficherTitre(string titre)
         /// Utilitaire pour afficher un titre dans le haut de la console
         /// </summary>
         /// <param name="titre">Le titre à afficher</param>
@@ -78,8 +83,9 @@ namespace TPSynthese
             Console.Clear();
             Console.WriteLine("{0}\n{1}\n{0}\n", ligne, texte);
         }
+        #endregion
 
-
+        #region        private void Executer()
         /// <summary>
         /// Boucle principale du programme
         /// </summary>
@@ -101,8 +107,9 @@ namespace TPSynthese
                 }
             }
         }
+        #endregion
 
-
+        #region        private string AfficherMenuPrincipal()
         /// <summary>
         /// Affiche le menu principal utilisé par le méthode <c>Executer</c>
         /// </summary>
@@ -117,8 +124,9 @@ namespace TPSynthese
             Console.Write("\n> ");
             return Console.ReadLine().ToUpper();
         }
+        #endregion
 
-
+        #region        private void OuvrirCompte()
         /// <summary>
         /// Option "O" du menu principal
         /// Crée un nouveau compte dans la banque
@@ -143,12 +151,14 @@ namespace TPSynthese
             }
 
             // 'AjouterCompte' retourne le numéro du nouveau compte créé
-            int numero = _laBanque.AjouterCompte(type, prenom, nom, montant);  // TODO - Définition de la méthode 'AjouterCompte' dans la classe Banque
+            int numero = _laBanque.AjouterCompte(type, prenom, nom, montant);
+            // TODO - Définition de la méthode 'AjouterCompte' dans la classe Banque
             Pause("Le compte " + numero + " a été ajouté");
         }
+        #endregion
         //************************************************ %% *********************************************************
 
-
+        #region        private string DemanderType()
         /// <summary>
         /// Demande un type de compte voulu à l'utilisateur.
         /// Boucle et redemande tant que le type donné est invalide
@@ -167,8 +177,9 @@ namespace TPSynthese
                 Console.WriteLine("Choix invalide");
             }
         }
+        #endregion
 
-
+        #region        private double DemanderMontant(string titre)
         /// <summary>
         /// Demande un montant à l'utilisateur
         /// Boucle et redemande tant que le montant donné est invalide
@@ -195,6 +206,7 @@ namespace TPSynthese
                 }
             }
         }
+        #endregion
 
         #region        private void ListerComptes()
         /// <summary>
@@ -208,7 +220,7 @@ namespace TPSynthese
             // Obtient la liste à afficher sous forme d'une liste de chaine de caractère
             List<string> liste = _laBanque.ListeDeComptes();  // TODO - Définition de la méthode 'ListeDeComptes' dans la classe Banque
 
-//***************************************************** %% ****************************************************
+            //***************************************************** %% ****************************************************
 
             if (liste.Count == 0)
             {
@@ -243,7 +255,7 @@ namespace TPSynthese
                 // ValiderExistence va lancer un ArgumentException si le compte donné n'existe pas dans la banque
                 _laBanque.ValiderExistence(numeroCompte);  // TODO - Définition de la méthode 'ValiderExistence' dans la classe Banque
 
-//*************************************************** %% ******************************************************
+                //*************************************************** %% ******************************************************
 
                 // Si aucune exception n'a été lancée, le compte existe.
                 AccederCompte(numeroCompte);
@@ -372,7 +384,7 @@ namespace TPSynthese
             // 'Deposer' retourne le nouveau solde après le dépôt
             double solde = _laBanque.Deposer(numeroCompte, montant);  // TODO - Définition de la méthode 'Deposer' dans la classe Banque
 
-//*************************************************** %% ******************************************************
+            //*************************************************** %% ******************************************************
 
             Console.WriteLine("\nDépôt effectué, nouveau solde du compte: {0,12:C}", solde);
             Pause();
@@ -394,7 +406,7 @@ namespace TPSynthese
                 // 'Retirer' retourne le nouveau solde après le retrait
                 double solde = _laBanque.Retirer(numeroCompte, montant);  // TODO - Définition de la méthode 'Retirer' dans la classe Banque
 
-//*************************************************** %% ******************************************************
+                //*************************************************** %% ******************************************************
 
                 Console.WriteLine("\nRetrait effectué, nouveau solde du compte: {0,12:C}", solde);
                 Pause();
@@ -426,6 +438,6 @@ namespace TPSynthese
         /// </summary>
         private Banque _laBanque;  // TODO - Définition de la classe Banque
     }
-//************************************************* %% ********************************************************
+    //************************************************* %% ********************************************************
 
 }
