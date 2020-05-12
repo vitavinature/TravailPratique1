@@ -10,9 +10,9 @@ namespace TPSynthese
     {
         public CompteCredit(int numero, string prenom, string nom, string type, double limiteCredit) : base(numero, prenom, nom, type)
         {
-
+            _limiteCredit = limiteCredit;
         }
-        private List<double> _limiteCredit;
+        private double _limiteCredit = 0;
     }
 
 

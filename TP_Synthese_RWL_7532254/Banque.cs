@@ -30,60 +30,62 @@ namespace TPSynthese
                     int numeroCompte = 0;
                     while (ligne != null)
                     {
-                        // Extrait les valeurs individuelles de la ligne
                         List<string> donnees = new List<string>(ligne.Split(';'));
-                        string type = donnees[0];
-                        string numero = donnees[1];
-                        string prenom = donnees[2];
-                        string nom = donnees[3];
-                        double limiteCredit = 0;
+                        if (donnees.Count >= 4)
+                        {
+                            // Extrait les valeurs individuelles de la ligne
+                           
+                            string type = donnees[0];
+                            string numero = donnees[1];
+                            string prenom = donnees[2];
+                            string nom = donnees[3];
+                            string typeComptePossible = "ECR";
+                            double limiteCredit = 0;
 
-                        if (donnees.Count < 4)
-                        {
-                            throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
-                        }
-                        if (donnees.Count == 4)
-                        {
-                            donnees.Add(_creditDefaut);
-                        }
-                        if (donnees.Count == 5)
-                        {
-                            limiteCredit = Convert.ToDouble(donnees[4]);
-                        }
-                        if (donnees.Count > 5)
-                        {
-                            throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
-                        }
-                        if (donnees[0].Length > 1 || !donnees[0].Contains("E") && !donnees[0].Contains("C") && !donnees[0].Contains("R"))
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
-                        }
-                        if (donnees[1].Length < 3)
-                        {
-                            throw new Exception("Erreur, le numéro de compte est invalide.");
-                        }
-
-                        numeroCompte = Convert.ToInt32(donnees[1]);
-
-                        if (numeroCompte < 101 || numeroCompte > 9999)
-                        {
-                            throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
-                        }
-                        foreach (Compte item in _listeDesComptes)
-                        {
-                            if (item.NumeroCompte == numeroCompte)
+                            if (donnees.Count < 4)
                             {
-                                throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de comptes identiques.");
+                                throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
+                            }
+
+                            if (donnees.Count == 5)
+                            {
+                                limiteCredit = Convert.ToDouble(donnees[4]);
+                            }
+                            if (donnees.Count > 5)
+                            {
+                                throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
+                            }
+
+                            if (donnees[0].Length > 1 || !typeComptePossible.Contains(donnees[0]))
+                            {
+                                throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
+                            }
+                            if (donnees[1].Length < 3)
+                            {
+                                throw new Exception("Erreur, le numéro de compte est invalide.");
+                            }
+
+                            numeroCompte = Convert.ToInt32(donnees[1]);
+
+                            if (numeroCompte < 101 || numeroCompte > 9999)
+                            {
+                                throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
+                            }
+                            foreach (Compte item in _listeDesComptes)
+                            {
+                                if (item.NumeroCompte == numeroCompte)
+                                {
+                                    throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de comptes identiques.");
+                                }
+                            }
+                            switch (type)
+                            {
+                                case "C": _listeDesComptes.Add(new CompteCheque(numeroCompte, prenom, nom, type)); break;
+                                case "E": _listeDesComptes.Add(new CompteEpargne(numeroCompte, prenom, nom, type)); break;
+                                case "R": _listeDesComptes.Add(new CompteCredit(numeroCompte, prenom, nom, type, limiteCredit)); break;
+                                default: throw new Exception("Type de compte invalide");
                             }
                         }
-                        switch (type)
-                        {
-                            case "C": _listeDesComptes.Add(new CompteCheque(numeroCompte, prenom, nom, type)); break;
-                            case "E": _listeDesComptes.Add(new CompteEpargne(numeroCompte, prenom, nom, type)); break;
-                            case "R": _listeDesComptes.Add(new CompteCredit(numeroCompte, prenom, nom, type, limiteCredit)); break;
-                            default: throw new Exception("Type de compte invalide");
-                        }
-
                         ligne = canalRead.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
                 }
@@ -92,7 +94,7 @@ namespace TPSynthese
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine();
-                Console.WriteLine("Un fichier patients.txt sera créé");
+                Console.WriteLine("Un fichier comptes.txt sera créé");
                 Program.Pause();
             }
             #endregion

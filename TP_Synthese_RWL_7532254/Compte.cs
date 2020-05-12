@@ -56,6 +56,7 @@ namespace TPSynthese
         // Il n'est pas nécessaire d'avoir un objet de la classe pour appeller la méthode
         public static int DernierNumero()
         {
+            _dernierNumero = ++_dernierNumero;
             // Une méthode statique ne peut utiliser que des attributs statics
             return _dernierNumero;
         }
@@ -64,7 +65,7 @@ namespace TPSynthese
 
         // Un attribut static est dit un "attribut de classe", par opposition à un attribut d'objet pour les attributs ordinaires
         // Tous les objets de la classe partage la même variable
-        private static int _dernierNumero = 101; // Les numéros de compte débutent à 101
+        private static int _dernierNumero = 100; // Les numéros de compte débutent à 101
 
         // Le mot clé readonly est similaire à const, mais la valeur n'a pas besoin d'être connue à la déclaration
         // l'initialisation se fera dans le constructeur, puis la valeur ne pourra plus être modifiée

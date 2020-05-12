@@ -24,6 +24,7 @@ namespace TPSynthese
         {
 
         }
+        private List<Transaction> _listeDesTransactions;
     }
-    private List<Transaction> _listeDesTransactions;
+  
 }

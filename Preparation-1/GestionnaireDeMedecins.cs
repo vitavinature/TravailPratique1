@@ -139,8 +139,6 @@ namespace Preparation_1
         }
         #endregion
 
-
-
         #region         public void AfficherUnMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
         /// Affiche les informations d'un médecin: prénom, nom, matricule et la liste des ses patients, s'il n'est pas retraité.
