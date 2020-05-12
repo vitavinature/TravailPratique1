@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -10,21 +11,25 @@ namespace TPSynthese
 {
     abstract class Compte : IComparable<Compte>
     {
-        public Compte(string type, string prenom, string nom, double depotInitial)
+        public Compte(string type, string prenom, string nom)
         {
             _type = type;
             _prenom = prenom;
             _nom = nom;
-            _depotInitial = depotInitial;
-            _numeroDeCompte = DernierNumero();
+            _solde = 0;
+            _numeroDeCompte = ++_dernierNumero;
         }
-        public Compte(string type, string prenom, string nom, double limiteCredit, int numero)
+        public Compte(string type, string prenom, string nom, int numero)
         {
             _type = type;
             _prenom = prenom;
             _nom = nom;
-            _limiteCredit = limiteCredit;
+            _solde = 0;
             _numeroDeCompte = numero;
+            if (numero > _dernierNumero­­­)
+            {
+                _dernierNumero = numero;
+            }
         }
 
 
@@ -49,52 +54,29 @@ namespace TPSynthese
             return 0;
         }
 
-        public int NumeroCompte { get { return _numeroDeCompte; } set { _numeroDeCompte = DernierNumero(); } }
-        public string Type { get { return _type; } set { } }
-        public string Prenom { get { return _prenom; } set { } }
+       // public abstract void Sauvegarder(StreamWriter fichier);
 
-        public string Nom { get { return _nom; } set { } }
+    public string Type { get { return _type; } set { } }
+    public string Prenom { get { return _prenom; } set { } }
 
-        #region public static int DernierNumero()
-        /// <summary>
-        /// Accesseur du dernier numéro utilisé
-        /// </summary>
-        /// <returns></returns>
-        // Accesseur du dernier numéro utilisé
-        // Une Méthode static est une méthode de classe, et non une méthode d'objet
-        // Il n'est pas nécessaire d'avoir un objet de la classe pour appeller la méthode
-        public int DernierNumero()
-        {
-            if (_dernierNumero == Banque.PlusGrandNumeroDeBanque)
-            {
-                _dernierNumero = ++_dernierNumero;
-            }
-            else
-            {
-                _dernierNumero = Banque.PlusGrandNumeroDeBanque;
+    public string Nom { get { return _nom; } set { } }
 
-            }
+    public int NumeroDeCompte { get { return _numeroDeCompte; } }
 
-            // Une méthode statique ne peut utiliser que des attributs statics
-            return _dernierNumero;
-        }
-        #endregion
-        public int NumeroDeCompte { get { return _numeroDeCompte; } }
+    // Un attribut static est dit un "attribut de classe", par opposition à un attribut d'objet pour les attributs ordinaires
+    // Tous les objets de la classe partage la même variable
+    private static int _dernierNumero = 100; // Les numéros de compte débutent à 101
 
-        // Un attribut static est dit un "attribut de classe", par opposition à un attribut d'objet pour les attributs ordinaires
-        // Tous les objets de la classe partage la même variable
-        private static int _dernierNumero = 100; // Les numéros de compte débutent à 101
+    // Le mot clé readonly est similaire à const, mais la valeur n'a pas besoin d'être connue à la déclaration
+    // l'initialisation se fera dans le constructeur, puis la valeur ne pourra plus être modifiée
+    // Permet de protéger le code d'erreurs éventuelles en indiquant que la valeur ne devrait pas changer
+    private readonly string _type;
+    private readonly string _prenom;
+    private readonly string _nom;
+    private readonly double _solde;
+    // Numéro qui identifie le compte de manière unique
+    private int _numeroDeCompte;
+    //private List<Compte> _listeDesComptes;
 
-        // Le mot clé readonly est similaire à const, mais la valeur n'a pas besoin d'être connue à la déclaration
-        // l'initialisation se fera dans le constructeur, puis la valeur ne pourra plus être modifiée
-        // Permet de protéger le code d'erreurs éventuelles en indiquant que la valeur ne devrait pas changer
-        private readonly string _type;
-        private readonly string _prenom;
-        private readonly string _nom;
-        private readonly double _limiteCredit;
-        private readonly double _depotInitial;
-        // Numéro qui identifie le compte de manière unique
-        private int _numeroDeCompte;
-        //private List<Compte> _listeDesComptes;
-    }
+}
 }

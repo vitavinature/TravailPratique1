@@ -17,7 +17,6 @@ namespace TPSynthese
         {
             // TODO
             _listeDesComptes = new List<Compte>();
-            int plusGrandNumeroDeCompte = 0;
             #region Lecture du fichier des comptes
             try
             {
@@ -73,13 +72,10 @@ namespace TPSynthese
                             {
                                 throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
                             }
-                            if (numeroCompte > plusGrandNumeroDeCompte)
-                            {
-                                plusGrandNumeroDeCompte = numeroCompte;
-                            }
+
                             foreach (Compte item in _listeDesComptes)
                             {
-                                if (item.NumeroCompte == numeroCompte)
+                                if (item.NumeroDeCompte == numeroCompte)
                                 {
                                     throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de comptes identiques.");
                                 }
@@ -87,8 +83,8 @@ namespace TPSynthese
 
                             switch (type)
                             {
-                                case "C": _listeDesComptes.Add(new CompteCheque(type, prenom, nom, limiteCredit, numeroCompte)); break;
-                                case "E": _listeDesComptes.Add(new CompteEpargne(type, prenom, nom, limiteCredit, numeroCompte)); break;
+                                case "C": _listeDesComptes.Add(new CompteCheque(type, prenom, nom, numeroCompte)); break;
+                                case "E": _listeDesComptes.Add(new CompteEpargne(type, prenom, nom, numeroCompte)); break;
                                 case "R": _listeDesComptes.Add(new CompteCredit(type, prenom, nom, limiteCredit, numeroCompte)); break;
                                 default: throw new Exception("Type de compte invalide");
                             }
@@ -104,45 +100,51 @@ namespace TPSynthese
                 Console.WriteLine("Un fichier comptes.txt sera créé");
                 Program.Pause();
             }
+            //listeDe Comptes.sort(
+            // Lecture du fichier transactions
+
             #endregion
-            _plusGrandNumeroDeCompte = plusGrandNumeroDeCompte;
-            Console.WriteLine(plusGrandNumeroDeCompte);
-            Console.WriteLine(_plusGrandNumeroDeCompte);
             Program.Pause();
         }
         #endregion
 
-        #region public void Action(DbTransaction transaction)
-        public void Action(DbTransaction transaction)
-        {
-
-        }
-        #endregion
 
         #region public int AjouterCompte(string type, string prenom, string nom, double montant)
 
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
+            Compte nouveauCompte;
             switch (type)
             {
-                case "C":
-                    { _listeDesComptes.Add(new CompteCheque(type, prenom, nom, montant));
-                      
-                        _plusGrandNumeroDeCompte = numero;
-                    }
-                    break;
-                case "E": _listeDesComptes.Add(new CompteEpargne(type, prenom, nom, montant)); break;
-                case "R": _listeDesComptes.Add(new CompteCredit(type, prenom, nom, montant)); break;
+                case "C": nouveauCompte = new CompteCheque(type, prenom, nom); break;
+                case "E": nouveauCompte = new CompteEpargne(type, prenom, nom); break;
+                case "R": nouveauCompte = new CompteCredit(type, prenom, nom, 1000 /* Générer un nombre aléatoire */); break;
                 default: throw new Exception("Type de compte invalide");
             }
 
-            int numero = Compte.NumeroDeCompte;
+            if (montant > 0)
+            {
+                // Faire une transaction de dépôt dans le compte du montant initial
+                // Sauvegarder la transaction dans le fichier des transactions
+            }
 
-            // TODO
-            // Ici un numéro de compte doit être généré
-            return numero;
+
+            _listeDesComptes.Add(nouveauCompte);
+
+            SauvegarderCompte(nouveauCompte);
+
+            return nouveauCompte.NumeroDeCompte;//pcq est défini public dans compte
+
         }
         #endregion
+
+        private void SauvegarderCompte(Compte compte)
+        {
+            using (StreamWriter fichier = new StreamWriter("comptes.txt", true))
+            {
+                //compte.Sauvegarder(fichier);
+            }
+        }
 
         #region public double CalculerInterets(int numeroCompte)
         /// <summary>
@@ -220,14 +222,14 @@ namespace TPSynthese
                     case "R":
                         {
                             type = "Crédit";
-                            limiteCredit = $"          Limite de crédit:  {Convert.ToString(item.NumeroCompte)} $";
+                            limiteCredit = $"          Limite de crédit:  {Convert.ToString(item.NumeroDeCompte)} $";
                         }
                         break;
                     default: throw new Exception("Type de compte invalide");
 
                 }
 
-                liste.Add($"{Convert.ToString(item.NumeroCompte)}  {type}   {item.Nom}, {item.Prenom}{limiteCredit}");
+                liste.Add($"{Convert.ToString(item.NumeroDeCompte)}  {type}   {item.Nom}, {item.Prenom}{limiteCredit}");
             }
             return liste;
         }
@@ -257,12 +259,9 @@ namespace TPSynthese
         }
         #endregion
 
-        public static int PlusGrandNumeroDeBanque { get { return _plusGrandNumeroDeCompte; } set { } }
-
 
         private Compte _compte;
-        private List<Compte> _listeDesComptes;//c'est pas sur que ça va ici;
+        private List<Compte> _listeDesComptes;
         const string _creditDefaut = "0";
-        private static int _plusGrandNumeroDeCompte;
     }
 }

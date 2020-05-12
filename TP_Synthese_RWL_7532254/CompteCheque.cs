@@ -8,10 +8,10 @@ namespace TPSynthese
 {
     class CompteCheque : Compte
     {
-        public CompteCheque(string type, string prenom, string nom, double montant, int numero) : base(type, prenom, nom, montant, numero)
+        public CompteCheque(string type, string prenom, string nom, int numero) : base(type, prenom, nom, numero)
         {
         }
-        public CompteCheque(string type, string prenom, string nom, double montant) : base(type, prenom, nom, montant)
+        public CompteCheque(string type, string prenom, string nom) : base(type, prenom, nom)
         {
         }
     }
