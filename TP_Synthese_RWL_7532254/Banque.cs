@@ -104,10 +104,83 @@ namespace TPSynthese
             // Lecture du fichier transactions
 
             #endregion
-            Program.Pause();
+
+            #region Lecture du fichier des transactions
+            try
+            {
+                string fichierTransactions = "transactions.txt";
+                // Ouverture du canalRead pour l'accès au fichier "transactions.txt"
+                using (StreamReader canalRead = new StreamReader(fichierTransactions))
+                {
+                    // Lit la première ligne qui identifie le compte
+                    string ligne = canalRead.ReadLine();
+                    int numeroCompte = 0;
+
+                    while (ligne != null)
+                    {
+                        List<string> donnees = new List<string>(ligne.Split(';')); // Extrait les valeurs individuelles de la ligne
+
+                        if (donnees.Count == 4)
+                        {
+                            string numero = donnees[0];
+                            string type = donnees[1];
+
+                            double montant = Convert.ToDouble(donnees[2]);
+
+                            string date = donnees[3];
+                            string typeTransactionPossible = "DR";
+
+                            numeroCompte = Convert.ToInt32(donnees[0]);
+
+                            if (numeroCompte < 101 || numeroCompte > 9999)
+                            {
+                                throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
+                            }
+
+                            if (donnees[1].Length > 1 || !typeTransactionPossible.Contains(donnees[1]))
+                            {
+                                throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
+                            }
+
+                            foreach (Compte item in _listeDesComptes)
+                            {
+                                if (item.NumeroDeCompte == numeroCompte)
+                                {
+                                    ;
+                                }
+                            }
+
+                            switch (type)
+                            {
+                                case "D": Deposer(numeroCompte, montant); break;
+                                case "R": Retirer(numeroCompte, montant); break;
+                                default: throw new Exception("Type de compte invalide");
+                            }
+                        }
+                        if (donnees.Count < 4)
+                        {
+                            throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
+                        }
+
+                        if (donnees.Count > 5)
+                        {
+                            throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
+                        }
+                        ligne = canalRead.ReadLine(); // Lecture de la ligne suivante dans le fichier
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine();
+                Console.WriteLine("Un fichier transactions.txt sera créé");
+                Program.Pause();
+            }
+            #endregion
+            //listeDe Comptes.sort(
         }
         #endregion
-
 
         #region public int AjouterCompte(string type, string prenom, string nom, double montant)
 
