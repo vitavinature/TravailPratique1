@@ -16,7 +16,7 @@ namespace TPSynthese
             _prenom = prenom;
             _nom = nom;
             _depotInitial = depotInitial;
-            _numeroDeCompte = ++_dernierNumero;
+            _numeroDeCompte = DernierNumero();
         }
         public Compte(string type, string prenom, string nom, double limiteCredit, int numero)
         {
@@ -63,14 +63,23 @@ namespace TPSynthese
         // Accesseur du dernier numéro utilisé
         // Une Méthode static est une méthode de classe, et non une méthode d'objet
         // Il n'est pas nécessaire d'avoir un objet de la classe pour appeller la méthode
-        public static int DernierNumero()
+        public int DernierNumero()
         {
-            _dernierNumero = ++_dernierNumero;
+            if (_dernierNumero == Banque.PlusGrandNumeroDeBanque)
+            {
+                _dernierNumero = ++_dernierNumero;
+            }
+            else
+            {
+                _dernierNumero = Banque.PlusGrandNumeroDeBanque;
+
+            }
+
             // Une méthode statique ne peut utiliser que des attributs statics
             return _dernierNumero;
         }
         #endregion
-        public static int NumeroDeCompte { get { return _numeroDeCompte; } }
+        public int NumeroDeCompte { get { return _numeroDeCompte; } }
 
         // Un attribut static est dit un "attribut de classe", par opposition à un attribut d'objet pour les attributs ordinaires
         // Tous les objets de la classe partage la même variable
@@ -85,7 +94,7 @@ namespace TPSynthese
         private readonly double _limiteCredit;
         private readonly double _depotInitial;
         // Numéro qui identifie le compte de manière unique
-        private static int _numeroDeCompte;
-        private List<Compte> _listeComptes;
+        private int _numeroDeCompte;
+        //private List<Compte> _listeDesComptes;
     }
 }
