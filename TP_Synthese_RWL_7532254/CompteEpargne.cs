@@ -14,5 +14,9 @@ namespace TPSynthese
         public CompteEpargne(string type, string prenom, string nom) : base(type, prenom, nom)
         {
         }
+        public abstract void Sauvegarder(ref StreamWriter fichier)
+        {
+
+        }
     }
 }

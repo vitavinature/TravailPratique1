@@ -269,6 +269,7 @@ namespace Preparation_1
         }
         #endregion
 
+        #region        public void SauvegarderPatients(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         public void SauvegarderPatients(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             string fichierPatients = "patients.txt";
@@ -288,8 +289,9 @@ namespace Preparation_1
                 }
             }
         }
+        #endregion#
 
-
+        #region        public void StatistiquesPatients()
         public void StatistiquesPatients()
         {
             int compteurPatient = 0;
@@ -304,6 +306,7 @@ namespace Preparation_1
             }
             Console.WriteLine($"  {compteurPatient} Patients, dont {compteurPatientDecede} décédés");
         }
+        #endregion
 
         public int MatriculeMedecin { get { return _matriculeMedecin; } set { _matriculeMedecin = value; } }
         public DateTime DateDeces { get { return _dateDeces; } set { _dateDeces = value; } }

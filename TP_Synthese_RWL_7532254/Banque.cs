@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace TPSynthese
 {
-    class Banque
+    class Banque : Object //Classe de base de toutes les classes définies dans ce programme.
+        // Il d'est pas nécessaire d'indiquer l'héritage de la classe Objet puisqu'elle est implicite.
+        // J'ai décidé de l'indiquer pour essayer de comprendre.
     {
         #region public Banque()
 
@@ -122,7 +124,7 @@ namespace TPSynthese
 
                         if (donnees.Count == 4)
                         {
-                            string numero = donnees[0];
+                            //string numero = donnees[0];
                             string type = donnees[1];
 
                             double montant = Convert.ToDouble(donnees[2]);
@@ -137,7 +139,7 @@ namespace TPSynthese
                                 throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
                             }
 
-                            if (donnees[1].Length > 1 || !typeTransactionPossible.Contains(donnees[1]))
+                            if (type.Length > 1 || !typeTransactionPossible.Contains(type))
                             {
                                 throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
                             }
@@ -146,7 +148,7 @@ namespace TPSynthese
                             {
                                 if (item.NumeroDeCompte == numeroCompte)
                                 {
-                                    ;
+                                    throw new Exception("Erreur, le fichier n'est pas valide; Il y a deux numéros de compte identiques.");
                                 }
                             }
 

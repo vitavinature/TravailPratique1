@@ -8,6 +8,9 @@ namespace TPSynthese
 {
     class Depot : Transaction
     {
+        public Depot()
+        {
 
+        }
     }
 }

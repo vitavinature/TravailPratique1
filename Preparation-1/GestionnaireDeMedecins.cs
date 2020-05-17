@@ -234,6 +234,7 @@ namespace Preparation_1
         }
         #endregion
 
+        #region         public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, int matriculeMedecin, int numeroAssMaladie)
         public void AjouterPatientALaListeDunMedecin(ref GestionnaireDeMedecins gestionMedecin, int matriculeMedecin, int numeroAssMaladie)
         {
             foreach (Medecin item in _listeMedecins)
@@ -244,6 +245,7 @@ namespace Preparation_1
                 }
             }
         }
+        #endregion
 
         #region         public void RetraitMedecin(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         /// <summary>
@@ -350,6 +352,7 @@ namespace Preparation_1
         }
         #endregion
 
+        #region        public void SauvegarderMedecins(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         public void SauvegarderMedecins(ref GestionnaireDeMedecins gestionMedecin, ref GestionnaireDePatients gestionPatient)
         {
             string fichierMedecins = "medecins.txt";
@@ -369,26 +372,27 @@ namespace Preparation_1
                 }
             }
         }
+        #endregion
 
-            public int TrouverMedecinAvecMinPatient()
+        #region        public int TrouverMedecinAvecMinPatient()
+        public int TrouverMedecinAvecMinPatient()
+        {
+            int minimumPatient = 1000;
+
+            foreach (Medecin item in ListeMedecins)
             {
-                int minimumPatient = 1000;
-
-                foreach (Medecin item in ListeMedecins)
+                if (item.DateRetraite == item.NonRetraite)
                 {
-                    if (item.DateRetraite == item.NonRetraite)
+                    if (item.ListePatient.Count < minimumPatient)
                     {
-                        if (item.ListePatient.Count < minimumPatient)
-                        {
-                            minimumPatient = item.ListePatient.Count;
-                            _medecinAvecMinimumPatient = item.Matricule;
-                        }
+                        minimumPatient = item.ListePatient.Count;
+                        _medecinAvecMinimumPatient = item.Matricule;
                     }
                 }
-                return _medecinAvecMinimumPatient;
             }
-
-
+            return _medecinAvecMinimumPatient;
+        }
+        #endregion
 
 
         public int NombreMedecinActif { get { return _nombreMedecinActif; } }

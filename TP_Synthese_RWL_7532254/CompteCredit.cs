@@ -16,6 +16,10 @@ namespace TPSynthese
         {
             _limiteCredit = limiteCredit;
         }
+                public abstract void Sauvegarder(ref StreamWriter fichier)
+        {
+
+        }
 
         private readonly double _limiteCredit;
 
