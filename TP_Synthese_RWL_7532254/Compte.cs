@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace TPSynthese
 {
-    abstract class Compte : IComparable<Compte>
+    abstract class Compte : IComparable<Compte>// La classe compte est une classe abstraite. Il est impossible de créer un objet de ce type.
+        // Il est possible d'avoir une variable d'un type abstrait "Compte unCompte;"
+        // Il n'est pas possible de créer un simple compte: "unCompte = new Compte();"
     {
         public Compte(string type, string prenom, string nom)
         {

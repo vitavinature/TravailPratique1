@@ -21,7 +21,7 @@ namespace TPSynthese
 
         }
 
-        private readonly double _limiteCredit;
+        private double _limiteCredit;
 
     }
 

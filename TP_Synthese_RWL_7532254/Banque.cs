@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace TPSynthese
 {
     class Banque : Object //Classe de base de toutes les classes définies dans ce programme.
-        // Il d'est pas nécessaire d'indiquer l'héritage de la classe Objet puisqu'elle est implicite.
+        // Il n'est pas nécessaire d'indiquer l'héritage de la classe Objet puisqu'elle est implicite.
         // J'ai décidé de l'indiquer pour essayer de comprendre.
     {
         #region public Banque()
@@ -18,7 +18,8 @@ namespace TPSynthese
         public Banque()
         {
             // TODO
-            _listeDesComptes = new List<Compte>();
+            _listeDesComptes = new List<Compte>();// l'objet est créé. De la mémoire est allouée.
+            // À partir d'ici la variable peut être utilisée, elle existe, car elle a été créé avec l'instruction "new"
             #region Lecture du fichier des comptes
             try
             {
@@ -336,7 +337,10 @@ namespace TPSynthese
 
 
         private Compte _compte;
-        private List<Compte> _listeDesComptes;
+        private List<Compte> _listeDesComptes;// Ici le nom de la variable (attribut) est défini. 
+        // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable.
+        //                - l'objet n'a pas été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
+
         const string _creditDefaut = "0";
     }
 }
