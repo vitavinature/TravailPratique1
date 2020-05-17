@@ -10,16 +10,18 @@ using System.Threading.Tasks;
 namespace TPSynthese
 {
     class Banque : Object //Classe de base de toutes les classes définies dans ce programme.
-        // Il n'est pas nécessaire d'indiquer l'héritage de la classe Objet puisqu'elle est implicite.
-        // J'ai décidé de l'indiquer pour essayer de comprendre.
+                          // Il n'est pas nécessaire d'indiquer l'héritage de la classe Objet puisqu'elle est implicite.
+                          // J'ai décidé de l'indiquer pour essayer de comprendre.
     {
         #region public Banque()
 
         public Banque()
         {
+
             // TODO
             _listeDesComptes = new List<Compte>();// l'objet est créé. De la mémoire est allouée.
-            // À partir d'ici la variable peut être utilisée, elle existe, car elle a été créé avec l'instruction "new"
+                                                  // À partir d'ici la variable peut être utilisée, elle existe, car elle a été créé avec l'instruction "new"
+
             #region Lecture du fichier des comptes
             try
             {
@@ -103,10 +105,11 @@ namespace TPSynthese
                 Console.WriteLine("Un fichier comptes.txt sera créé");
                 Program.Pause();
             }
+            #endregion
+
             //listeDe Comptes.sort(
             // Lecture du fichier transactions
 
-            #endregion
 
             #region Lecture du fichier des transactions
             try
@@ -157,7 +160,7 @@ namespace TPSynthese
                             {
                                 case "D": Deposer(numeroCompte, montant); break;
                                 case "R": Retirer(numeroCompte, montant); break;
-                                default: throw new Exception("Type de compte invalide");
+                                default: throw new Exception("Type de transaction invalide");
                             }
                         }
                         if (donnees.Count < 4)
@@ -186,41 +189,93 @@ namespace TPSynthese
         #endregion
 
         #region public int AjouterCompte(string type, string prenom, string nom, double montant)
-
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
+            int min = 500;// Pour les « Comptes-Crédit », pour simuler l’enquête de crédit qu’une vraie banque ferait à l’ouverture,
+            //le programme génère un nombre aléatoire, multiple de 100$, entre 500$ et 3000$, qui sera la limite de crédit du compte. 
+            int max = 3000;
+            int multiple = 100;
+
             Compte nouveauCompte;
             switch (type)
             {
                 case "C": nouveauCompte = new CompteCheque(type, prenom, nom); break;
                 case "E": nouveauCompte = new CompteEpargne(type, prenom, nom); break;
-                case "R": nouveauCompte = new CompteCredit(type, prenom, nom, 1000 /* Générer un nombre aléatoire */); break;
+                case "R":
+                    {
+                        int limiteCredit = limiteCreditAleatoire(min, max);
+                        limiteCredit = limiteCredit - limiteCredit % multiple;
+                        nouveauCompte = new CompteCredit(type, prenom, nom, limiteCredit);
+                    }
+                    break;
                 default: throw new Exception("Type de compte invalide");
             }
 
             if (montant > 0)
             {
                 // Faire une transaction de dépôt dans le compte du montant initial
+                nouveauCompte.Solde = nouveauCompte.Solde + montant;
+
                 // Sauvegarder la transaction dans le fichier des transactions
+                string aujourDHui = DateTime.Today.ToString("yyyy'-'MM'-'dd");// Prendre la date du jour et la convertir en texte du bon format
+                SauvegarderTransaction(nouveauCompte.NumeroDeCompte, type, montant, aujourDHui);
             }
-
-
             _listeDesComptes.Add(nouveauCompte);
+            nouveauCompte.SauvegarderCompte(nouveauCompte);
 
-            SauvegarderCompte(nouveauCompte);
-
-            return nouveauCompte.NumeroDeCompte;//pcq est défini public dans compte
-
+            return nouveauCompte.NumeroDeCompte;// La propriété NumeroDeCompte est défini public dans Compte pour être accessible dans Banque
         }
         #endregion
 
-        private void SauvegarderCompte(Compte compte)
+        #region        private int limiteCreditAleatoire(int min, int max)
+        private int limiteCreditAleatoire(int min, int max)
         {
-            using (StreamWriter fichier = new StreamWriter("comptes.txt", true))
+            Random nom = new Random();
+            List<int> liste = new List<int>();
+            for (int i = 0; i < 5; i++)
             {
-                //compte.Sauvegarder(fichier);
+                liste.Add(nom.Next(min, max));
+            }
+
+            return liste[4];
+        }
+        #endregion
+
+        #region        private void SauvegarderCompte(Compte nouveauCompte)
+        /*   private void SauvegarderCompte(Compte nouveaucompte)
+           {
+               string fichier = "comptes.txt";
+
+               // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
+               using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
+               {
+
+                   if (nouveaucompte.Type == "R")
+                   {
+                       canalEcriture.WriteLine($"{nouveaucompte.Type};{nouveaucompte.NumeroDeCompte};{nouveaucompte.Prenom};{nouveaucompte.Nom};{nouveaucompte.LimiteCredit}");
+                   }
+                   else
+                   {
+                       canalEcriture.WriteLine($"{nouveaucompte.Type};{nouveaucompte.NumeroDeCompte};{nouveaucompte.Prenom};{nouveaucompte.Nom}");
+                   }
+               }
+            }
+           */
+        #endregion
+
+        public void SauvegarderTransaction(int numero, string type, double montant, string date)
+        {
+            string fichier = "transactions.txt";
+            // Ouverture du canalEcriture pour l'écriture dans le fichier "transactions.txt"
+            using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que la transaction soit ajoutée aux transactions existantes.
+            {
+                string numeroTexte = Convert.ToString(numero);// Conversion des valeurs numériques en valeurs textes pour passer à l'écriture du fichier transaction.
+                string montantTexte = Convert.ToString(montant);
+
+                canalEcriture.WriteLine($"{numeroTexte};{type};{montantTexte};{date}");
             }
         }
+
 
         #region public double CalculerInterets(int numeroCompte)
         /// <summary>
@@ -336,10 +391,9 @@ namespace TPSynthese
         #endregion
 
 
-        private Compte _compte;
         private List<Compte> _listeDesComptes;// Ici le nom de la variable (attribut) est défini. 
-        // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable.
-        //                - l'objet n'a pas été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
+                                              // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable.
+                                              //                - l'objet n'a pas été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
 
         const string _creditDefaut = "0";
     }
