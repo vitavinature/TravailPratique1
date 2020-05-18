@@ -16,12 +16,12 @@ namespace TPSynthese
         {
         }
         //public abstract void Sauvegarder(ref StreamWriter fichier)
-        public void Sauvegarder(CompteEpargne compteEpargne)
+        public override void SauvegarderCompte(Compte compte)
         {
             // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
             using (StreamWriter canalEcriture = new StreamWriter("comptes.txt", true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
             {
-                canalEcriture.WriteLine($"{compteEpargne.Type};{compteEpargne.NumeroDeCompte};{compteEpargne.Prenom};{compteEpargne.Nom}");
+                canalEcriture.WriteLine($"{compte.Type};{compte.NumeroDeCompte};{compte.Prenom};{compte.Nom}");
             }
         }
     }

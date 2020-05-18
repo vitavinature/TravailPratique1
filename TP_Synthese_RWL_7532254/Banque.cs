@@ -107,9 +107,7 @@ namespace TPSynthese
             }
             #endregion
 
-            //listeDe Comptes.sort(
-            // Lecture du fichier transactions
-
+            _listeDesComptes.Sort();
 
             #region Lecture du fichier des transactions
             try
@@ -128,7 +126,16 @@ namespace TPSynthese
 
                         if (donnees.Count == 4)
                         {
-                            //string numero = donnees[0];
+                            if (donnees.Count < 4)
+                            {
+                                throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
+                            }
+
+                            if (donnees.Count > 5)
+                            {
+                                throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
+                            }
+
                             string type = donnees[1];
 
                             double montant = Convert.ToDouble(donnees[2]);
@@ -148,14 +155,6 @@ namespace TPSynthese
                                 throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
                             }
 
-                            foreach (Compte item in _listeDesComptes)
-                            {
-                                if (item.NumeroDeCompte == numeroCompte)
-                                {
-                                    throw new Exception("Erreur, le fichier n'est pas valide; Il y a deux numéros de compte identiques.");
-                                }
-                            }
-
                             switch (type)
                             {
                                 case "D": Deposer(numeroCompte, montant); break;
@@ -163,15 +162,7 @@ namespace TPSynthese
                                 default: throw new Exception("Type de transaction invalide");
                             }
                         }
-                        if (donnees.Count < 4)
-                        {
-                            throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
-                        }
 
-                        if (donnees.Count > 5)
-                        {
-                            throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
-                        }
                         ligne = canalRead.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
                 }
@@ -306,7 +297,6 @@ namespace TPSynthese
         #endregion
 
         #region public double Deposer(int numeroCompte, double montant)
-
         public double Deposer(int numeroCompte, double montant)
         {
             double solde = 0;
@@ -326,8 +316,8 @@ namespace TPSynthese
 
         public List<string> ListeDeComptes()
         {
-     
             List<string> liste = new List<string>();
+
             //TODO
             foreach (var item in _listeDesComptes)
             {
@@ -351,7 +341,9 @@ namespace TPSynthese
                     case "R":
                         {
                             type = "Crédit";
-                            limiteCredit = $"          Limite de crédit:  {Convert.ToString(item.NumeroDeCompte)} $";
+                            //****************************************************************************************************************
+                           // limiteCredit = $"          Limite de crédit:  {Convert.ToString(item.LimiteCredit)} $";
+                            limiteCredit = $"          Limite de crédit:  {Convert.ToString(item.Solde)} $";// Solde n'est pas ce que je veux
                         }
                         break;
                     default: throw new Exception("Type de compte invalide");
@@ -367,8 +359,40 @@ namespace TPSynthese
         #region public double Retirer(int numeroCompte, double montant)
         public double Retirer(int numeroCompte, double montant)
         {
-            // TODO ***********************************************************************************************************
-            return 13.23;
+            double solde = 0;
+            foreach (Compte item in _listeDesComptes)
+            {
+                if (item.NumeroDeCompte == numeroCompte)
+                {
+                    if (item.Type == "C" || item.Type == "E")
+                    {
+                        if (item.Solde + montant < 0)
+                        {
+                            throw new Exception("Erreur le retrait est trop important; il y a insuffisance de fonds.");
+                        }
+                        else
+                        {
+                            item.Solde = +montant;
+                            solde = item.Solde;
+                        }
+                    }
+//**************************************************************************************************************************
+                    if (item.Type == "R")
+                    {
+                        if (item.Solde + montant < 0 - item.LimiteCredit)
+                        {
+                            throw new Exception("Erreur le retrait est trop important; La limite de crédit ne le permet pas.");
+                        }
+                        else
+                        {
+                            item.Solde = +montant;
+                            solde = item.Solde;
+                        }
+                    }
+
+                }
+            }
+            return solde;
         }
         #endregion
 

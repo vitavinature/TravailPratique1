@@ -20,10 +20,7 @@ namespace TPSynthese
         {
         
         }
-        public void Action2(Compte compte)
-        {
 
-        }
     }
   
 }

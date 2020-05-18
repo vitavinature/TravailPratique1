@@ -17,12 +17,12 @@ namespace TPSynthese
         {
             _limiteCredit = limiteCredit;
         }
-        public void Sauvegarder(CompteCredit compteCredit)
+        public override void SauvegarderCompte(Compte compte)
         {
             // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
             using (StreamWriter canalEcriture = new StreamWriter("comptes.txt", true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
             {
-                canalEcriture.WriteLine($"{compteCredit.Type};{compteCredit.NumeroDeCompte};{compteCredit.Prenom};{compteCredit.Nom};{compteCredit._limiteCredit}");
+                canalEcriture.WriteLine($"{compte.Type};{compte.NumeroDeCompte};{compte.Prenom};{compte.Nom};{compte._limiteCredit}");
             }
         }
         public int LimiteCredit { get { return _limiteCredit; } }// Pour que la limite de crédit soit accessible dans la banque, cette propriété est nécessaire.
