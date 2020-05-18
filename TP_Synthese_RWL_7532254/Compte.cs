@@ -13,6 +13,8 @@ namespace TPSynthese
         // Il est possible d'avoir une variable d'un type abstrait "Compte unCompte;"
         // Il n'est pas possible de créer un simple compte: "unCompte = new Compte();"
     {
+        #region        public Compte(string type, string prenom, string nom)// Constructeur qui crée un nouveau compte.
+
         public Compte(string type, string prenom, string nom)// Constructeur qui crée un nouveau compte.
         {
             _type = type;
@@ -23,6 +25,9 @@ namespace TPSynthese
             _numeroDeCompte = ++_dernierNumero;// Le prochain numéro (le dernier numéro attribué ou lu, incrémenté) est attribué à ce compte
             _dernierNumero = _numeroDeCompte;// _denierNumero est réinitialisé avec le dernier numéro de compte attribué
         }
+        #endregion
+
+        #region        public Compte(string type, string prenom, string nom, int numero)// Constructeur pour compte existant dans le fichier texte.
         public Compte(string type, string prenom, string nom, int numero)// Constructeur pour compte existant dans le fichier texte.
         {
             _type = type;
@@ -39,6 +44,7 @@ namespace TPSynthese
                 _dernierNumero = numero;
             }
         }
+        #endregion
 
         #region        public int CompareTo(Compte that)
         public int CompareTo(Compte that)
@@ -73,7 +79,7 @@ namespace TPSynthese
         }
         #endregion
 
-        public abstract void SauvegarderCompte(ref StreamWriter fichier);
+        public abstract void SauvegarderCompte(Compte nouveauCompte);
 
         public string Type { get { return _type; } set { } }
         public string Prenom { get { return _prenom; } set { } }

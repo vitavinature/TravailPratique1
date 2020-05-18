@@ -15,12 +15,13 @@ namespace TPSynthese
         public CompteEpargne(string type, string prenom, string nom) : base(type, prenom, nom)// Constructeur qui crée un nouveau compte.
         {
         }
-        public abstract void Sauvegarder(ref StreamWriter fichier)
+        //public abstract void Sauvegarder(ref StreamWriter fichier)
+        public void Sauvegarder(CompteEpargne compteEpargne)
         {
             // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
-            using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
+            using (StreamWriter canalEcriture = new StreamWriter("comptes.txt", true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
             {
-                canalEcriture.WriteLine($"{nouveaucompte.Type};{nouveaucompte.NumeroDeCompte};{nouveaucompte.Prenom};{nouveaucompte.Nom}");
+                canalEcriture.WriteLine($"{compteEpargne.Type};{compteEpargne.NumeroDeCompte};{compteEpargne.Prenom};{compteEpargne.Nom}");
             }
         }
     }

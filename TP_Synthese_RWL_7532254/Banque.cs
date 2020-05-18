@@ -46,7 +46,7 @@ namespace TPSynthese
                             string prenom = donnees[2];
                             string nom = donnees[3];
                             string typeComptePossible = "ECR";
-                            double limiteCredit = 0;
+                            int limiteCredit = 0;
 
                             if (donnees.Count < 4)
                             {
@@ -55,7 +55,7 @@ namespace TPSynthese
 
                             if (donnees.Count == 5)
                             {
-                                limiteCredit = Convert.ToDouble(donnees[4]);
+                                limiteCredit = Convert.ToInt32(donnees[4]);
                             }
                             if (donnees.Count > 5)
                             {
@@ -221,7 +221,9 @@ namespace TPSynthese
                 SauvegarderTransaction(nouveauCompte.NumeroDeCompte, type, montant, aujourDHui);// Appel de la méthode pour sauvegarder la transaction dans le fichier des transactions.
             }
             _listeDesComptes.Add(nouveauCompte);
-            nouveauCompte.SauvegarderCompte(nouveauCompte);// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
+            //********************************************************************************************************************************
+            //nouveauCompte.SauvegarderCompte(ref StreamWriter fichier, ref nouveauCompte);// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
+            //nouveauCompte.SauvegarderCompte(_listeDesComptes.Last());// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
 
             return nouveauCompte.NumeroDeCompte;// La propriété NumeroDeCompte est défini public dans Compte pour être accessible dans Banque
         }
@@ -365,7 +367,7 @@ namespace TPSynthese
         #region public double Retirer(int numeroCompte, double montant)
         public double Retirer(int numeroCompte, double montant)
         {
-            // TODO
+            // TODO ***********************************************************************************************************
             return 13.23;
         }
         #endregion
@@ -374,7 +376,7 @@ namespace TPSynthese
 
         public double Solde(int numeroCompte)
         {
-            return 34.23;
+            return 34.23;//***************************************************************************************
         }
         #endregion
 
