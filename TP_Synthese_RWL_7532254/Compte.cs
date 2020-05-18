@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 namespace TPSynthese
 {
     abstract class Compte : IComparable<Compte>// La classe compte est une classe abstraite. Il est impossible de créer un objet de ce type.
-        // Il est possible d'avoir une variable d'un type abstrait "Compte unCompte;"
-        // Il n'est pas possible de créer un simple compte: "unCompte = new Compte();"
+                                               // Il est possible d'avoir une variable d'un type abstrait "Compte unCompte;"
+                                               // Il n'est pas possible de créer un simple compte: "unCompte = new Compte();"
     {
         #region        public Compte(string type, string prenom, string nom)// Constructeur qui crée un nouveau compte.
 
@@ -37,9 +37,9 @@ namespace TPSynthese
             // (inclauant le dépôt initial) on trouve le solde du compte.
             _numeroDeCompte = numero;
             if (numero > _dernierNumero­­­)// Pour s'assurer de ne pas réutiliser un numéro de compte existant, il faut mettre à jour le dernier numéro.
-                // On conserve ainsi le  plus grand numéro déjà utilisé. Les prochains comptes à être créés vont continuer à partir de là.
-                // Cette méthode fait qu'il n'est pas nécessaire de valider si un numéro de compte existe déjà aavant de l'octroyer.
-                // _dernierNuméro donne une valeur directement utilisable.
+                                           // On conserve ainsi le  plus grand numéro déjà utilisé. Les prochains comptes à être créés vont continuer à partir de là.
+                                           // Cette méthode fait qu'il n'est pas nécessaire de valider si un numéro de compte existe déjà aavant de l'octroyer.
+                                           // _dernierNuméro donne une valeur directement utilisable.
             {
                 _dernierNumero = numero;
             }
@@ -62,12 +62,12 @@ namespace TPSynthese
             else
             {
                 resultat = _prenom.CompareTo(that._prenom);
-                if (resultat !=0)
+                if (resultat != 0)
                 {
                     return resultat;
                 }
                 resultat = _numeroDeCompte.CompareTo(that._numeroDeCompte);
-                return resultat;              
+                return resultat;
             }
             // On doit vérifier que l'objet donné n'est pas nul
             /*
@@ -79,13 +79,55 @@ namespace TPSynthese
         }
         #endregion
 
-        public abstract void SauvegarderCompte(Compte nouveauCompte);
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            string type;
+            switch (_type)
+            {
+                case "C":
+                    {
+                        type = "Chèques";
+                    }
+                    break;
+                case "E":
+                    {
+                        type = "Épargne";
+                    }
+                    break;
+                default: throw new Exception("Type de compte invalide");
 
-        public string Type { get { return _type; } set { } }
-        public string Prenom { get { return _prenom; } set { } }
+            }
 
-        public string Nom { get { return _nom; } set { } }
-        public double Solde { get { return _solde; } set { } }
+
+            sb.AppendFormat($"{Convert.ToString(_numeroDeCompte)}  {type}   {_nom}, {_prenom}");
+            return sb.ToString();
+        }
+
+        public virtual void Retirer(double montant)
+        {
+            if (_solde - montant < 0)
+            {
+                throw new Exception("Erreur le retrait est trop important; il y a insuffisance de fonds.");
+            }
+            else
+            {
+                _solde -= montant;
+            }
+        }
+
+        public virtual void Deposer(double montant)// On peut laisser la méthode virtuelle, mais elle n'a pas besoin d'être redéfinie, un dépôt est pareil pour tous les types de comptes
+        {
+            _solde += montant;
+        }
+
+        public abstract void Sauvegarder(StreamWriter canalEcriture);
+
+        public string Type { get { return _type; } }
+        public string Prenom { get { return _prenom; } }
+
+        public string Nom { get { return _nom; } }
+        public double Solde { get { return _solde; } }
 
         public int NumeroDeCompte { get { return _numeroDeCompte; } }// Pour que le numéro de compte soit accessible dans la banque, cette propriété est nécessaire.
 
@@ -96,12 +138,12 @@ namespace TPSynthese
         // Le mot clé readonly est similaire à const, mais la valeur n'a pas besoin d'être connue à la déclaration
         // l'initialisation se fera dans le constructeur, puis la valeur ne pourra plus être modifiée
         // Permet de protéger le code d'erreurs éventuelles en indiquant que la valeur ne devrait pas changer
-        private readonly string _type;
-        private readonly string _prenom;
-        private readonly string _nom;
-        private readonly double _solde;// Le solde du compte n'est pas conservé. Le montant initial est considéré comm un dépôt.
+        protected readonly string _type;
+        protected readonly string _prenom;
+        protected readonly string _nom;
+        protected double _solde;// Le solde du compte n'est pas conservé. Le montant initial est considéré comm un dépôt.
         // Numéro qui identifie le compte de manière unique
-        private int _numeroDeCompte;
+        protected readonly int _numeroDeCompte;
 
     }
 }

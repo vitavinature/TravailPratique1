@@ -8,17 +8,9 @@ namespace TPSynthese
 {
     abstract class Transaction
     {
-        public Transaction()
+        public Transaction(int numeroCompte, double montant)
         {
-
-        }
-        public void LimiteDeCredit(string numeroDeCompte, string typeDeCompte, string limiteDeCredit)
-        {
-
-        }
-        public void AjouterMontantALaListeDesTransactions()
-        {
-        
+            // Récupère la date actuelle
         }
 
     }

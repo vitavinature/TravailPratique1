@@ -17,15 +17,32 @@ namespace TPSynthese
         {
             _limiteCredit = limiteCredit;
         }
-        public override void SauvegarderCompte(Compte compte)
+
+        public override string ToString()
         {
-            // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
-            using (StreamWriter canalEcriture = new StreamWriter("comptes.txt", true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat($"{Convert.ToString(_numeroDeCompte)}  Crédit   {_nom}, {_prenom} Limite de crédit {_limiteCredit}");
+            return sb.ToString();
+        }
+
+        public override void Retirer(double montant)
+        {
+            if (_solde - montant < -_limiteCredit)
             {
-                canalEcriture.WriteLine($"{compte.Type};{compte.NumeroDeCompte};{compte.Prenom};{compte.Nom};{compte._limiteCredit}");
+                throw new Exception("Erreur le retrait est trop important; il y a insuffisance de crédit.");
+            }
+            else
+            {
+                _solde -= montant;
             }
         }
-        public int LimiteCredit { get { return _limiteCredit; } }// Pour que la limite de crédit soit accessible dans la banque, cette propriété est nécessaire.
+
+
+        public override void Sauvegarder(StreamWriter canalEcriture)
+        {
+            canalEcriture.WriteLine($"R;{_numeroDeCompte};{_prenom};{_nom};{_limiteCredit}");
+        }
+        //public int LimiteCredit { get { return _limiteCredit; } }// Pour que la limite de crédit soit accessible dans la banque, cette propriété est nécessaire.
 
         private int _limiteCredit;
 

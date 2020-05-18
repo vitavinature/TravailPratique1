@@ -35,65 +35,74 @@ namespace TPSynthese
 
                     while (ligne != null)
                     {
-                        List<string> donnees = new List<string>(ligne.Split(';'));
-                        if (donnees.Count >= 4)
+                        try
                         {
-                            // Extrait les valeurs individuelles de la ligne
 
-                            string type = donnees[0];
-                            string numero = donnees[1];
-
-                            string prenom = donnees[2];
-                            string nom = donnees[3];
-                            string typeComptePossible = "ECR";
-                            int limiteCredit = 0;
-
-                            if (donnees.Count < 4)
+                            List<string> donnees = new List<string>(ligne.Split(';'));
+                            if (donnees.Count >= 4)
                             {
-                                throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
-                            }
+                                // Extrait les valeurs individuelles de la ligne
 
-                            if (donnees.Count == 5)
-                            {
-                                limiteCredit = Convert.ToInt32(donnees[4]);
-                            }
-                            if (donnees.Count > 5)
-                            {
-                                throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
-                            }
+                                string type = donnees[0];
+                                string numero = donnees[1];
 
-                            if (donnees[0].Length > 1 || !typeComptePossible.Contains(donnees[0]))
-                            {
-                                throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
-                            }
-                            if (donnees[1].Length < 3)
-                            {
-                                throw new Exception("Erreur, le numéro de compte est invalide.");
-                            }
+                                string prenom = donnees[2];
+                                string nom = donnees[3];
+                                string typeComptePossible = "ECR";
+                                int limiteCredit = 0;
 
-                            numeroCompte = Convert.ToInt32(donnees[1]);
-
-                            if (numeroCompte < 101 || numeroCompte > 9999)
-                            {
-                                throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
-                            }
-
-                            foreach (Compte item in _listeDesComptes)
-                            {
-                                if (item.NumeroDeCompte == numeroCompte)
+                                if (donnees.Count < 4)
                                 {
-                                    throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de comptes identiques.");
+                                    throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
+                                }
+
+                                if (donnees.Count == 5)
+                                {
+                                    limiteCredit = Convert.ToInt32(donnees[4]);
+                                }
+                                if (donnees.Count > 5)
+                                {
+                                    throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
+                                }
+
+                                if (donnees[0].Length > 1 || !typeComptePossible.Contains(donnees[0]))
+                                {
+                                    throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
+                                }
+                                if (donnees[1].Length < 3)
+                                {
+                                    throw new Exception("Erreur, le numéro de compte est invalide.");
+                                }
+
+                                numeroCompte = Convert.ToInt32(donnees[1]);
+
+                                if (numeroCompte < 101)
+                                {
+                                    throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
+                                }
+
+                                foreach (Compte item in _listeDesComptes)
+                                {
+                                    if (item.NumeroDeCompte == numeroCompte)
+                                    {
+                                        throw new Exception("Erreur le fichier n'est pas valide, il y a deux numéro de comptes identiques.");
+                                    }
+                                }
+
+                                switch (type)
+                                {
+                                    case "C": _listeDesComptes.Add(new CompteCheque(type, prenom, nom, numeroCompte)); break;
+                                    case "E": _listeDesComptes.Add(new CompteEpargne(type, prenom, nom, numeroCompte)); break;
+                                    case "R": _listeDesComptes.Add(new CompteCredit(type, prenom, nom, limiteCredit, numeroCompte)); break;
+                                    default: throw new Exception("Type de compte invalide");
                                 }
                             }
-
-                            switch (type)
-                            {
-                                case "C": _listeDesComptes.Add(new CompteCheque(type, prenom, nom, numeroCompte)); break;
-                                case "E": _listeDesComptes.Add(new CompteEpargne(type, prenom, nom, numeroCompte)); break;
-                                case "R": _listeDesComptes.Add(new CompteCredit(type, prenom, nom, limiteCredit, numeroCompte)); break;
-                                default: throw new Exception("Type de compte invalide");
-                            }
                         }
+                        catch (Exception)
+                        {
+                            // On ignore silencieusement les erreurs, on passe à la ligne suivante
+                        }
+
                         ligne = canalRead.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
                 }
@@ -122,6 +131,7 @@ namespace TPSynthese
 
                     while (ligne != null)
                     {
+                        //TODO ajouter try/catch comme pour les comptes
                         List<string> donnees = new List<string>(ligne.Split(';')); // Extrait les valeurs individuelles de la ligne
 
                         if (donnees.Count == 4)
@@ -145,7 +155,7 @@ namespace TPSynthese
 
                             numeroCompte = Convert.ToInt32(donnees[0]);
 
-                            if (numeroCompte < 101 || numeroCompte > 9999)
+                            if (numeroCompte < 101 )
                             {
                                 throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
                             }
@@ -157,8 +167,8 @@ namespace TPSynthese
 
                             switch (type)
                             {
-                                case "D": Deposer(numeroCompte, montant); break;
-                                case "R": Retirer(numeroCompte, montant); break;
+                                case "D": Deposer(numeroCompte, montant, false); break;
+                                case "R": Retirer(numeroCompte, montant, false); break;
                                 default: throw new Exception("Type de transaction invalide");
                             }
                         }
@@ -194,7 +204,7 @@ namespace TPSynthese
                 case "E": nouveauCompte = new CompteEpargne(type, prenom, nom); break;
                 case "R":
                     {
-                        int limiteCredit = _generateurAleatoire.Next(min/multiple, max/multiple+1)* multiple;
+                        int limiteCredit = _generateurAleatoire.Next(min / multiple, max / multiple + 1) * multiple;
 
                         nouveauCompte = new CompteCredit(type, prenom, nom, limiteCredit);
                     }
@@ -202,57 +212,48 @@ namespace TPSynthese
                 default: throw new Exception("Type de compte invalide");
             }
 
+            _listeDesComptes.Add(nouveauCompte);
+
             if (montant > 0)
             {
                 // Faire une transaction de dépôt dans le compte du montant initial
-                nouveauCompte.Solde = nouveauCompte.Solde + montant;
+                Deposer(nouveauCompte.NumeroDeCompte, montant);
 
-                // Sauvegarder la transaction dans le fichier des transactions
-                string aujourDHui = DateTime.Today.ToString("yyyy'-'MM'-'dd");// Prendre la date du jour et la convertir en texte du bon format
-                SauvegarderTransaction(nouveauCompte.NumeroDeCompte, type, montant, aujourDHui);// Appel de la méthode pour sauvegarder la transaction dans le fichier des transactions.
-            }
-            _listeDesComptes.Add(nouveauCompte);
+             }
             //********************************************************************************************************************************
-            //nouveauCompte.SauvegarderCompte(ref StreamWriter fichier, ref nouveauCompte);// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
-            //nouveauCompte.SauvegarderCompte(_listeDesComptes.Last());// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
+            SauvegarderCompte(nouveauCompte);// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
 
             return nouveauCompte.NumeroDeCompte;// La propriété NumeroDeCompte est défini public dans Compte pour être accessible dans Banque
         }
         #endregion
 
         #region        private void SauvegarderCompte(Compte nouveauCompte)
-        /*   private void SauvegarderCompte(Compte nouveaucompte)
-           {
-               string fichier = "comptes.txt";
+        private void SauvegarderCompte(Compte nouveaucompte)
+        {
+            string fichier = "comptes.txt";
 
-               // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
-               using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
-               {
-
-                   if (nouveaucompte.Type == "R")
-                   {
-                       canalEcriture.WriteLine($"{nouveaucompte.Type};{nouveaucompte.NumeroDeCompte};{nouveaucompte.Prenom};{nouveaucompte.Nom};{nouveaucompte.LimiteCredit}");
-                   }
-                   else
-                   {
-                       canalEcriture.WriteLine($"{nouveaucompte.Type};{nouveaucompte.NumeroDeCompte};{nouveaucompte.Prenom};{nouveaucompte.Nom}");
-                   }
-               }
+            // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
+            using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
+            {
+                nouveaucompte.Sauvegarder(canalEcriture);
             }
-           */
+        }
+
         #endregion
 
         #region        public void SauvegarderTransaction(int numero, string type, double montant, string date)
-        public void SauvegarderTransaction(int numero, string type, double montant, string date)
+        public void SauvegarderTransaction(Transaction transaction)
         {
             string fichier = "transactions.txt";
             // Ouverture du canalEcriture pour l'écriture dans le fichier "transactions.txt"
             using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que la transaction soit ajoutée aux transactions existantes.
             {
-                string numeroTexte = Convert.ToString(numero);// Conversion des valeurs numériques en valeurs textes pour passer à l'écriture du fichier transaction.
-                string montantTexte = Convert.ToString(montant);
+                //                string numeroTexte = Convert.ToString(numero);// Conversion des valeurs numériques en valeurs textes pour passer à l'écriture du fichier transaction.
+                //                string montantTexte = Convert.ToString(montant);
 
-                canalEcriture.WriteLine($"{numeroTexte};{type};{montantTexte};{date}");
+                //                canalEcriture.WriteLine($"{numeroTexte};{type};{montantTexte};{date}");
+
+                // TODO:  transaction.Sauvegarder(canalEcriture);
             }
         }
         #endregion
@@ -297,18 +298,23 @@ namespace TPSynthese
         #endregion
 
         #region public double Deposer(int numeroCompte, double montant)
-        public double Deposer(int numeroCompte, double montant)
+        public double Deposer(int numeroCompte, double montant, bool nouvelleTransaction = true) // nouvelleTransaction est vrai pour les opérations de l'utilisateur, est faux pour la lecture du fichier
         {
-            double solde = 0;
             foreach (Compte item in _listeDesComptes)
             {
                 if (item.NumeroDeCompte == numeroCompte)
                 {
-                    item.Solde = +montant;
-                    solde = item.Solde;
+                    if (nouvelleTransaction)
+                    {
+                        // TODO
+                        //Depot d = new Depot(numeroCompte, montant);
+                        //SauvegarderTransaction(d);
+                    }
+                    item.Deposer(montant);
+                    return item.Solde;
                 }
             }
-            return solde;
+            throw new Exception("Le compte n'existe pas");
         }
         #endregion
 
@@ -318,81 +324,35 @@ namespace TPSynthese
         {
             List<string> liste = new List<string>();
 
+            _listeDesComptes.Sort();
             //TODO
             foreach (var item in _listeDesComptes)
             {
-                string type;
-                string limiteCredit;
-
-                switch (item.Type)
-                {
-                    case "C":
-                        {
-                            type = "Chèques";
-                            limiteCredit = "";
-                        }
-                        break;
-                    case "E":
-                        {
-                            type = "Épargne";
-                            limiteCredit = "";
-                        }
-                        break;
-                    case "R":
-                        {
-                            type = "Crédit";
-                            //****************************************************************************************************************
-                           // limiteCredit = $"          Limite de crédit:  {Convert.ToString(item.LimiteCredit)} $";
-                            limiteCredit = $"          Limite de crédit:  {Convert.ToString(item.Solde)} $";// Solde n'est pas ce que je veux
-                        }
-                        break;
-                    default: throw new Exception("Type de compte invalide");
-
-                }
-
-                liste.Add($"{Convert.ToString(item.NumeroDeCompte)}  {type}   {item.Nom}, {item.Prenom}{limiteCredit}");
+ 
+                 liste.Add(item.ToString());
             }
             return liste;
         }
         #endregion
 
         #region public double Retirer(int numeroCompte, double montant)
-        public double Retirer(int numeroCompte, double montant)
+        public double Retirer(int numeroCompte, double montant, bool nouvelleTransaction = true)
         {
-            double solde = 0;
             foreach (Compte item in _listeDesComptes)
             {
                 if (item.NumeroDeCompte == numeroCompte)
                 {
-                    if (item.Type == "C" || item.Type == "E")
+                    if (nouvelleTransaction)
                     {
-                        if (item.Solde + montant < 0)
-                        {
-                            throw new Exception("Erreur le retrait est trop important; il y a insuffisance de fonds.");
-                        }
-                        else
-                        {
-                            item.Solde = +montant;
-                            solde = item.Solde;
-                        }
+                        // TODO
+                        //Retrait r = new Retrait(numeroCompte, montant);
+                        //SauvegarderTransaction(r);
                     }
-//**************************************************************************************************************************
-                    if (item.Type == "R")
-                    {
-                        if (item.Solde + montant < 0 - item.LimiteCredit)
-                        {
-                            throw new Exception("Erreur le retrait est trop important; La limite de crédit ne le permet pas.");
-                        }
-                        else
-                        {
-                            item.Solde = +montant;
-                            solde = item.Solde;
-                        }
-                    }
-
+                    item.Retirer(montant);
+                    return item.Solde;
                 }
             }
-            return solde;
+            throw new Exception("Le compte n'existe pas");
         }
         #endregion
 
@@ -400,7 +360,14 @@ namespace TPSynthese
 
         public double Solde(int numeroCompte)
         {
-            return 34.23;//***************************************************************************************
+            foreach (Compte item in _listeDesComptes)
+            {
+                if (item.NumeroDeCompte == numeroCompte)
+                {
+                    return item.Solde;
+                }
+            }
+            throw new Exception("Le compte n'existe pas");
         }
         #endregion
 
