@@ -203,8 +203,8 @@ namespace TPSynthese
                 case "E": nouveauCompte = new CompteEpargne(type, prenom, nom); break;
                 case "R":
                     {
-                        int limiteCredit = limiteCreditAleatoire(min, max);
-                        limiteCredit = limiteCredit - limiteCredit % multiple;
+                        int limiteCredit = _generateurAleatoire.Next(min/multiple, max/multiple+1)* multiple;
+
                         nouveauCompte = new CompteCredit(type, prenom, nom, limiteCredit);
                     }
                     break;
@@ -218,10 +218,10 @@ namespace TPSynthese
 
                 // Sauvegarder la transaction dans le fichier des transactions
                 string aujourDHui = DateTime.Today.ToString("yyyy'-'MM'-'dd");// Prendre la date du jour et la convertir en texte du bon format
-                SauvegarderTransaction(nouveauCompte.NumeroDeCompte, type, montant, aujourDHui);
+                SauvegarderTransaction(nouveauCompte.NumeroDeCompte, type, montant, aujourDHui);// Appel de la méthode pour sauvegarder la transaction dans le fichier des transactions.
             }
             _listeDesComptes.Add(nouveauCompte);
-            nouveauCompte.SauvegarderCompte(nouveauCompte);
+            nouveauCompte.SauvegarderCompte(nouveauCompte);// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
 
             return nouveauCompte.NumeroDeCompte;// La propriété NumeroDeCompte est défini public dans Compte pour être accessible dans Banque
         }
@@ -263,6 +263,7 @@ namespace TPSynthese
            */
         #endregion
 
+        #region        public void SauvegarderTransaction(int numero, string type, double montant, string date)
         public void SauvegarderTransaction(int numero, string type, double montant, string date)
         {
             string fichier = "transactions.txt";
@@ -275,9 +276,9 @@ namespace TPSynthese
                 canalEcriture.WriteLine($"{numeroTexte};{type};{montantTexte};{date}");
             }
         }
+        #endregion
 
-
-        #region public double CalculerInterets(int numeroCompte)
+        #region         public double CalculerInterets(int numeroCompte)
         /// <summary>
         /// Cette option calcule les intérêts courants du compte. Le solde est inchangé par cette opération.
         /// Le calcul effectué dépend du type de compte. 
@@ -286,29 +287,32 @@ namespace TPSynthese
         /// <returns></returns>
         public double CalculerInterets(int numeroCompte)
         {
-            string typeDeCompte = "C"; // C = cheques , E = epargne , R = credit;
-            double interet = 0; //********************** TODO
-            double solde = 100;
-            if (typeDeCompte == "C")
+            double interet = 0;
+            foreach (Compte item in _listeDesComptes)
             {
-                interet = 0.001 * solde;
-            }
-            if (typeDeCompte == "E")
-            {
-                interet = 0.01 * solde;
-            }
-            if (typeDeCompte == "R")
-            {
-                if (solde < 0)
+                if (item.NumeroDeCompte == numeroCompte)
                 {
-                    interet = 0.045 * solde;
-                }
-                else
-                {
-                    interet = 0;
+                    if (item.Type == "C")
+                    {
+                        interet = 0.001 * item.Solde;
+                    }
+                    if (item.Type == "E")
+                    {
+                        interet = 0.01 * item.Solde;
+                    }
+                    if (item.Type == "R")
+                    {
+                        if (item.Solde < 0)
+                        {
+                            interet = 0.045 * item.Solde;
+                        }
+                        else
+                        {
+                            interet = 0;
+                        }
+                    }
                 }
             }
-
             return interet;
         }
         #endregion
@@ -317,9 +321,15 @@ namespace TPSynthese
 
         public double Deposer(int numeroCompte, double montant)
         {
-            //int oui = Compte.CompareTo();
-
-            double solde = +montant;
+            double solde = 0;
+            foreach (Compte item in _listeDesComptes)
+            {
+                if (item.NumeroDeCompte == numeroCompte)
+                {
+                    item.Solde = +montant;
+                    solde = item.Solde;
+                }
+            }
             return solde;
         }
         #endregion
@@ -328,7 +338,7 @@ namespace TPSynthese
 
         public List<string> ListeDeComptes()
         {
-            // Ici, surement une liste des numéro de compte déjà existants
+     
             List<string> liste = new List<string>();
             //TODO
             foreach (var item in _listeDesComptes)
@@ -396,5 +406,6 @@ namespace TPSynthese
                                               //                - l'objet n'a pas été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
 
         const string _creditDefaut = "0";
+        private static Random _generateurAleatoire = new Random();
     }
 }

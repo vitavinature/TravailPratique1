@@ -342,7 +342,7 @@ namespace TPSynthese
                 {
                     case "D": Deposer(numeroCompte); break;
                     case "R": Retirer(numeroCompte); break;
-                    case "I": CalculerInterets(numeroCompte); break;
+                    case "I": {CalculerInterets(numeroCompte); break;
                     case "Q": return;
                     default:
                         Pause("Choix invalide");
@@ -427,7 +427,8 @@ namespace TPSynthese
         private void CalculerInterets(int numeroCompte)
         {
             // 'CalculerInterets' retourne le montant d'intérêts calculé pour le compte
-            Console.WriteLine("\nIntérêts sur le compte: {0,12:C}", _laBanque.CalculerInterets(numeroCompte));  // TODO - Définition de la méthode 'CalculerInterets' dans la classe Banque
+            Console.WriteLine("\nIntérêts sur le compte: {0,12:C}", _laBanque.CalculerInterets(numeroCompte)); 
+            // TODO - Définition de la méthode 'CalculerInterets' dans la classe Banque
             Pause();
         }
         //********************************************** %%% ***********************************************************

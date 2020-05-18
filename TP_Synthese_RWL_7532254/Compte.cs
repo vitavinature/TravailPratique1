@@ -73,7 +73,7 @@ namespace TPSynthese
         }
         #endregion
 
-        public abstract void Sauvegarder(ref StreamWriter fichier);
+        public abstract void SauvegarderCompte(ref StreamWriter fichier);
 
         public string Type { get { return _type; } set { } }
         public string Prenom { get { return _prenom; } set { } }
