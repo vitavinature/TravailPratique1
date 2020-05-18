@@ -227,20 +227,6 @@ namespace TPSynthese
         }
         #endregion
 
-        #region        private int limiteCreditAleatoire(int min, int max)
-        private int limiteCreditAleatoire(int min, int max)
-        {
-            Random nom = new Random();
-            List<int> liste = new List<int>();
-            for (int i = 0; i < 5; i++)
-            {
-                liste.Add(nom.Next(min, max));
-            }
-
-            return liste[4];
-        }
-        #endregion
-
         #region        private void SauvegarderCompte(Compte nouveauCompte)
         /*   private void SauvegarderCompte(Compte nouveaucompte)
            {
