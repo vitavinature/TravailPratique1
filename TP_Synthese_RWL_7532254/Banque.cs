@@ -122,39 +122,41 @@ namespace TPSynthese
                 // Ouverture du canalRead pour l'accès au fichier "transactions.txt"
                 using (StreamReader canalRead = new StreamReader(fichierTransactions))
                 {
-                    // Lit la première ligne qui identifie le compte
+                    // Lit la première ligne qui identifie la transaction
                     string ligne = canalRead.ReadLine();
-                    int numeroCompte = 0;// 
+                    int numeroCompte = 0;// Déclaration et initialisation d'une variable de travail.
 
-                    while (ligne != null)
+                    while (ligne != null)// Tant que la ligne lue n'est pas nulle
                     {
                         try
                         {
                             List<string> donnees = new List<string>(ligne.Split(';')); // Extrait les valeurs individuelles de la ligne
-                            if (donnees.Count < 4)
+                            // en séparant l'information de la ligne à chaque ; et mets ces informations dans des cellules différentes de la liste.
+                            if (donnees.Count < 4)// Si le nombre d'éléments de la liste est inférieur à 4, il y a erreur.
                             {
                                 throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
                             }
-                            if (donnees.Count > 5)
+                            if (donnees.Count > 4)// Si le nombre d'éléments de la liste est supérieur à 5, il y a erreur.
                             {
                                 throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
                             }
-                            if (donnees.Count == 4)
+                            if (donnees.Count == 4)// Si le nombre d'éléments de la liste est égal à 4
+                                // Cette ligne est probablement redondante, après avoir passé les deux conditions précédentes il est implicite que cette condition est respectée.
                             {
-                                string type = donnees[1];
+                                string type = donnees[1];// Déclaration et initialisation des variables de travail.
                                 double montant = Convert.ToDouble(donnees[2]);
                                 string date = donnees[3];
                                 string typeTransactionPossible = "DR";
                                 numeroCompte = Convert.ToInt32(donnees[0]);
-                                if (numeroCompte < 101)
+                                if (numeroCompte < 101)// Le plus petit numéro de compte possible c'est 101
                                 {
                                     throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
                                 }
-                                if (type.Length > 1 || !typeTransactionPossible.Contains(type))
+                                if (type.Length > 1 || !typeTransactionPossible.Contains(type))// 
                                 {
-                                    throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
+                                    throw new Exception("Erreur le fichier n'est pas valide; le type de transaction possible n'est pas conforme.");
                                 }
-                                switch (type)
+                                switch (type)// Selon le type de transaction
                                 {
                                     case "D": Deposer(numeroCompte, montant, false); break;
                                     // nouvelleTransaction est true pour les opérations de l'utilisateur, est false pour la lecture du fichier
@@ -356,14 +358,12 @@ namespace TPSynthese
         private void SauvegarderCompte(Compte nouveaucompte)
         {
             string fichier = "comptes.txt";//Déclaration et initialisation de la variable fichier.
-
             // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
             using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
             {
                 nouveaucompte.Sauvegarder(canalEcriture);
             }
         }
-
         #endregion
 
         #region        public void SauvegarderTransaction(Transaction transaction)
