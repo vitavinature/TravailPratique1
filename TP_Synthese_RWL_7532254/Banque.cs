@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TPSynthese
 {
@@ -37,7 +38,6 @@ namespace TPSynthese
                     {
                         try
                         {
-
                             List<string> donnees = new List<string>(ligne.Split(';'));
                             if (donnees.Count >= 4)
                             {
@@ -131,48 +131,44 @@ namespace TPSynthese
 
                     while (ligne != null)
                     {
-                        //TODO ajouter try/catch comme pour les comptes
-                        List<string> donnees = new List<string>(ligne.Split(';')); // Extrait les valeurs individuelles de la ligne
-
-                        if (donnees.Count == 4)
+                        try
                         {
+                            List<string> donnees = new List<string>(ligne.Split(';')); // Extrait les valeurs individuelles de la ligne
                             if (donnees.Count < 4)
                             {
                                 throw new Exception("Erreur: Le fichier contient une ligne où il manque une information.");
                             }
-
                             if (donnees.Count > 5)
                             {
                                 throw new Exception("Erreur: Le fichier contient une ligne qui a trop d'information.");
                             }
-
-                            string type = donnees[1];
-
-                            double montant = Convert.ToDouble(donnees[2]);
-
-                            string date = donnees[3];
-                            string typeTransactionPossible = "DR";
-
-                            numeroCompte = Convert.ToInt32(donnees[0]);
-
-                            if (numeroCompte < 101 )
+                            if (donnees.Count == 4)
                             {
-                                throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
-                            }
-
-                            if (type.Length > 1 || !typeTransactionPossible.Contains(type))
-                            {
-                                throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
-                            }
-
-                            switch (type)
-                            {
-                                case "D": Deposer(numeroCompte, montant, false); break;
-                                case "R": Retirer(numeroCompte, montant, false); break;
-                                default: throw new Exception("Type de transaction invalide");
+                                string type = donnees[1];
+                                double montant = Convert.ToDouble(donnees[2]);
+                                string date = donnees[3];
+                                string typeTransactionPossible = "DR";
+                                numeroCompte = Convert.ToInt32(donnees[0]);
+                                if (numeroCompte < 101)
+                                {
+                                    throw new Exception("Erreur le fichier n'est pas valide; le numéro de compte est en erreur");
+                                }
+                                if (type.Length > 1 || !typeTransactionPossible.Contains(type))
+                                {
+                                    throw new Exception("Erreur le fichier n'est pas valide; le type de compte n'est pas conforme.");
+                                }
+                                switch (type)
+                                {
+                                    case "D": Deposer(numeroCompte, montant, false); break;
+                                    case "R": Retirer(numeroCompte, montant, false); break;
+                                    default: throw new Exception("Type de transaction invalide");
+                                }
                             }
                         }
-
+                        catch (Exception)
+                        {
+                            // On ignore silencieusement les erreurs, on passe à la ligne suivante
+                        }
                         ligne = canalRead.ReadLine(); // Lecture de la ligne suivante dans le fichier
                     }
                 }
@@ -185,7 +181,6 @@ namespace TPSynthese
                 Program.Pause();
             }
             #endregion
-            //listeDe Comptes.sort(
         }
         #endregion
 
@@ -219,8 +214,7 @@ namespace TPSynthese
                 // Faire une transaction de dépôt dans le compte du montant initial
                 Deposer(nouveauCompte.NumeroDeCompte, montant);
 
-             }
-            //********************************************************************************************************************************
+            }
             SauvegarderCompte(nouveauCompte);// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
 
             return nouveauCompte.NumeroDeCompte;// La propriété NumeroDeCompte est défini public dans Compte pour être accessible dans Banque
@@ -241,19 +235,14 @@ namespace TPSynthese
 
         #endregion
 
-        #region        public void SauvegarderTransaction(int numero, string type, double montant, string date)
+        #region        public void SauvegarderTransaction(Transaction transaction)
         public void SauvegarderTransaction(Transaction transaction)
         {
             string fichier = "transactions.txt";
             // Ouverture du canalEcriture pour l'écriture dans le fichier "transactions.txt"
             using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que la transaction soit ajoutée aux transactions existantes.
             {
-                //                string numeroTexte = Convert.ToString(numero);// Conversion des valeurs numériques en valeurs textes pour passer à l'écriture du fichier transaction.
-                //                string montantTexte = Convert.ToString(montant);
-
-                //                canalEcriture.WriteLine($"{numeroTexte};{type};{montantTexte};{date}");
-
-                // TODO:  transaction.Sauvegarder(canalEcriture);
+                transaction.Sauvegarder(canalEcriture);
             }
         }
         #endregion
@@ -328,25 +317,25 @@ namespace TPSynthese
             //TODO
             foreach (var item in _listeDesComptes)
             {
- 
-                 liste.Add(item.ToString());
+
+                liste.Add(item.ToString());
             }
             return liste;
         }
         #endregion
 
-        #region public double Retirer(int numeroCompte, double montant)
+        #region public double Retirer(int numeroCompte, double montant, bool nouvelleTransaction = true)
         public double Retirer(int numeroCompte, double montant, bool nouvelleTransaction = true)
         {
             foreach (Compte item in _listeDesComptes)
             {
                 if (item.NumeroDeCompte == numeroCompte)
                 {
-                    if (nouvelleTransaction)
+                    if (nouvelleTransaction == true)
                     {
                         // TODO
-                        //Retrait r = new Retrait(numeroCompte, montant);
-                        //SauvegarderTransaction(r);
+                        Retrait r = new Retrait(numeroCompte, montant);
+                        SauvegarderTransaction(r);
                     }
                     item.Retirer(montant);
                     return item.Solde;
@@ -375,12 +364,18 @@ namespace TPSynthese
 
         public void ValiderExistence(int numeroCompte)
         {
+            foreach (Compte item in _listeDesComptes)
+            {
+                if (item.NumeroDeCompte == numeroCompte)
+                {
 
+                }
+            }
         }
         #endregion
 
 
-        private List<Compte> _listeDesComptes;// Ici le nom de la variable (attribut) est défini. 
+        private readonly List<Compte> _listeDesComptes;// Ici le nom de la variable (attribut) est défini. 
                                               // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable.
                                               //                - l'objet n'a pas été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
 

@@ -8,6 +8,9 @@ namespace TPSynthese
 {
     class Retrait : Transaction
     {
+        public Retrait(int numeroCompte, double montant) : base (numeroCompte, montant)
+        {
 
+        }
     }
 }

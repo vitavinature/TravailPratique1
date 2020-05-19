@@ -8,7 +8,7 @@ namespace TPSynthese
 {
     class Depot : Transaction
     {
-        public Depot()
+        public Depot(int numeroCompte, double montant) : base (numeroCompte, montant)
         {
 
         }

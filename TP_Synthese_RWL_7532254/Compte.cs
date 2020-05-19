@@ -14,14 +14,19 @@ namespace TPSynthese
                                                // Il n'est pas possible de créer un simple compte: "unCompte = new Compte();"
     {
         #region        public Compte(string type, string prenom, string nom)// Constructeur qui crée un nouveau compte.
-
-        public Compte(string type, string prenom, string nom)// Constructeur qui crée un nouveau compte.
+        /// <summary>
+        /// Constructeur qui crée un nouveau compte.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="prenom"></param>
+        /// <param name="nom"></param>
+        public Compte(string type, string prenom, string nom)
         {
             _type = type;
             _prenom = prenom;
             _nom = nom;
-            _solde = 0;// Créer un nouveau compte revient à créer un compte avec un solde de zéro, ûis de faire un dépôt.
-            // Il doit donc y avoir yne transaction de dépôt de sauvegardée dans le fichier de transaction lors de la création d'un compte.
+            _solde = 0;// Créer un nouveau compte revient à créer un compte avec un solde de zéro, puis de faire un dépôt.
+            // Il doit donc y avoir une transaction de dépôt de sauvegardée dans le fichier de transaction lors de la création d'un compte.
             _numeroDeCompte = ++_dernierNumero;// Le prochain numéro (le dernier numéro attribué ou lu, incrémenté) est attribué à ce compte
             _dernierNumero = _numeroDeCompte;// _denierNumero est réinitialisé avec le dernier numéro de compte attribué
         }
@@ -69,16 +74,10 @@ namespace TPSynthese
                 resultat = _numeroDeCompte.CompareTo(that._numeroDeCompte);
                 return resultat;
             }
-            // On doit vérifier que l'objet donné n'est pas nul
-            /*
-            if (that == null)
-            {
-                return 1;// On se considère plus grand qu'un objet nul 
-            }
-            */
         }
         #endregion
 
+        #region        public override string ToString()
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -98,12 +97,12 @@ namespace TPSynthese
                 default: throw new Exception("Type de compte invalide");
 
             }
-
-
             sb.AppendFormat($"{Convert.ToString(_numeroDeCompte)}  {type}   {_nom}, {_prenom}");
             return sb.ToString();
         }
+        #endregion
 
+        #region        public virtual void Retirer(double montant)
         public virtual void Retirer(double montant)
         {
             if (_solde - montant < 0)
@@ -115,21 +114,24 @@ namespace TPSynthese
                 _solde -= montant;
             }
         }
+        #endregion
 
-        public virtual void Deposer(double montant)// On peut laisser la méthode virtuelle, mais elle n'a pas besoin d'être redéfinie, un dépôt est pareil pour tous les types de comptes
+        #region        public virtual void Deposer(double montant)
+        public virtual void Deposer(double montant)
+            // On peut laisser la méthode virtuelle, mais elle n'a pas besoin d'être redéfinie, un dépôt est pareil pour tous les types de comptes
         {
             _solde += montant;
         }
+        #endregion
 
         public abstract void Sauvegarder(StreamWriter canalEcriture);
 
         public string Type { get { return _type; } }
         public string Prenom { get { return _prenom; } }
-
         public string Nom { get { return _nom; } }
         public double Solde { get { return _solde; } }
-
-        public int NumeroDeCompte { get { return _numeroDeCompte; } }// Pour que le numéro de compte soit accessible dans la banque, cette propriété est nécessaire.
+        public int NumeroDeCompte { get { return _numeroDeCompte; } }
+        // Pour que le numéro de compte soit accessible dans la banque, cette propriété est nécessaire.
 
         // Un attribut static est dit un "attribut de classe", par opposition à un attribut d'objet pour les attributs ordinaires
         // Tous les objets de la classe partage la même variable
