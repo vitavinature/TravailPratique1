@@ -185,6 +185,14 @@ namespace TPSynthese
         #endregion
 
         #region public int AjouterCompte(string type, string prenom, string nom, double montant)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="prenom"></param>
+        /// <param name="nom"></param>
+        /// <param name="montant"></param>
+        /// <returns></returns>
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
             int min = 500;// Pour les « Comptes-Crédit », pour simuler l’enquête de crédit qu’une vraie banque ferait à l’ouverture,
@@ -361,7 +369,10 @@ namespace TPSynthese
         #endregion
 
         #region public void ValiderExistence(int numeroCompte)
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numeroCompte"></param>
         public void ValiderExistence(int numeroCompte)
         {
             foreach (Compte item in _listeDesComptes)
