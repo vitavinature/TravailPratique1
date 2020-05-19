@@ -9,6 +9,11 @@ namespace TPSynthese
 {
     abstract class Transaction
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numeroCompte"></param>
+        /// <param name="montant"></param>
         public Transaction(int numeroCompte, double montant)
         {
             _aujourDHui = DateTime.Today.ToString("yyyy'-'MM'-'dd");// Prendre la date du jour et la convertir en texte du bon format
@@ -16,6 +21,10 @@ namespace TPSynthese
             _montant = montant;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="canalEcriture"></param>
         public void Sauvegarder(StreamWriter canalEcriture)
         {
             string numero = Convert.ToString(_numeroCompte);
@@ -24,7 +33,7 @@ namespace TPSynthese
             string type = "D";//*************************************************************** À CORRIGER *********************************
 
             // Conversion des valeurs numériques en valeurs textes pour passer à l'écriture du fichier transaction.
-            canalEcriture.WriteLine($"{numero};{type};{montant};{_aujourDHui}");
+            canalEcriture.WriteLine($"{numero};{canalEcriture};{montant};{_aujourDHui}");
 // Appel de la méthode pour sauvegarder la transaction dans le fichier des transactions.
 
         }

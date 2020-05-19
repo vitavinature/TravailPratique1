@@ -352,6 +352,10 @@ namespace TPSynthese
         #endregion
 
         #region        public void SauvegarderTransaction(Transaction transaction)
+        /// <summary>
+        /// Méthode pour écrire (sauvegarder) une transaction dans le fichier transaction.txt
+        /// </summary>
+        /// <param name="transaction"></param>
         public void SauvegarderTransaction(Transaction transaction)
         {
             string fichier = "transactions.txt";
