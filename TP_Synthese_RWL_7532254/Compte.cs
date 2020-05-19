@@ -118,7 +118,7 @@ namespace TPSynthese
 
         #region        public virtual void Deposer(double montant)
         public virtual void Deposer(double montant)
-            // On peut laisser la méthode virtuelle, mais elle n'a pas besoin d'être redéfinie, un dépôt est pareil pour tous les types de comptes
+            // On peut laisser la méthode virtuelle, même si elle n'a pas besoin d'être redéfinie, un dépôt est pareil pour tous les types de comptes
         {
             _solde += montant;
         }

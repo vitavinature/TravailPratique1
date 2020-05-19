@@ -20,26 +20,27 @@ namespace TPSynthese
             _numeroCompte = numeroCompte;
             _montant = montant;
         }
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="canalEcriture"></param>
         public void Sauvegarder(StreamWriter canalEcriture)
         {
+
             string numero = Convert.ToString(_numeroCompte);
             string montant = Convert.ToString(_montant);
 
             string type = "D";//*************************************************************** À CORRIGER *********************************
 
             // Conversion des valeurs numériques en valeurs textes pour passer à l'écriture du fichier transaction.
-            canalEcriture.WriteLine($"{numero};{canalEcriture};{montant};{_aujourDHui}");
-// Appel de la méthode pour sauvegarder la transaction dans le fichier des transactions.
+            canalEcriture.WriteLine($"{numero};{"D ou R"};{montant};{_aujourDHui}");
+            // Appel de la méthode pour sauvegarder la transaction dans le fichier des transactions.
 
         }
-        private readonly string _aujourDHui;
-        private readonly int _numeroCompte;
-        private readonly double _montant;
+        
+        private protected readonly string _aujourDHui;
+        private protected readonly int _numeroCompte;
+        private protected readonly double _montant;
 
     }
   

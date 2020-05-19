@@ -124,7 +124,7 @@ namespace TPSynthese
                 {
                     // Lit la première ligne qui identifie le compte
                     string ligne = canalRead.ReadLine();
-                    int numeroCompte = 0;
+                    int numeroCompte = 0;// 
 
                     while (ligne != null)
                     {
@@ -183,7 +183,7 @@ namespace TPSynthese
 
         #region public int AjouterCompte(string type, string prenom, string nom, double montant)
         /// <summary>
-        /// Ajout de comptes banquaires de différents types: Cheques, Épargne, Crédit
+        /// Méthode pour l'ajout de comptes banquaires de différents types: Cheques, Épargne, Crédit
         /// </summary>
         /// <param name="type">type de compte: C pour CompteCheque, E pour CompteEpargne et R pour CompteCredit</param>
         /// <param name="prenom"></param>
@@ -229,8 +229,8 @@ namespace TPSynthese
 
         #region         public double CalculerInterets(int numeroCompte)
         /// <summary>
-        /// Cette méthode calcule le taux d'intérêt courant du compte. Le solde est inchangé par cette opération.
-        /// Le taux d'intérêt dépend du type de compte. 
+        /// Cette méthode calcule le montant d'intérêt courant du compte. Le solde est inchangé par cette opération.
+        /// Le taux d'intérêt dépend du type de compte. Concernant les comptes crédits, le taux varie selon le solde du compte. 
         /// </summary>
         /// <param name="numeroCompte">Seul le numéro de compte est nécessaire pour cette opération</param>
         /// <returns>Le taux d'intérêt est retourné.</returns>
@@ -243,36 +243,37 @@ namespace TPSynthese
                 {
                     if (item.Type == "C")// S'il est du type chèques 
                     {
-                        interet = 0.001 * item.Solde;// Le taux d'intérêt est de 0,1%
+                        interet = 0.001 * item.Solde;// Le taux d'intérêt est de 0,1% et le montant de l'intérêt est calculé en conséquence.
                     }
                     if (item.Type == "E")// S'il est du type épargne
                     {
-                        interet = 0.01 * item.Solde;// Le taux d'intérêt est de 1,0%
+                        interet = 0.01 * item.Solde;// Le taux d'intérêt est de 1,0% et le montant de l'intérêt est calculé en conséquence.
                     }
                     if (item.Type == "R")// S'il est du type crédit
                     {
                         if (item.Solde < 0)//Quand le solde est négatif
                         {
-                            interet = 0.045 * item.Solde;// Le taux d'intérêt est de 4,5%
+                            interet = 0.045 * item.Solde;// Le taux d'intérêt est de 4,5% et le montant de l'intérêt est calculé en conséquence.
                         }
-                        else// Sinon
+                        else//Quand le solde est positif
                         {
-                            interet = 0;// Le taux d'intérêt est de 0%
+                            interet = 0;// Le montant de l'intérêt est 0.
                         }
                     }
                 }
             }
-            return interet;
+            return interet;// Retourne le  montant de intérêt.
         }
         #endregion
 
         #region public double Deposer(int numeroCompte, double montant)
         /// <summary>
-        /// 
+        /// Méthode qui transmet l'information du dépot au constructeur de la classe Dépot
+        /// De même qu'elle transmet le dépot pour la sauvegarde dans le fichier transactions.txt, lorsqu'il s'agit d'une nouvelle transaction.
         /// </summary>
         /// <param name="numeroCompte"></param>
         /// <param name="montant"></param>
-        /// <param name="nouvelleTransaction"></param>
+        /// <param name="nouvelleTransaction">Booléen qui dirige la sauvegarde vers le fichier transactions.txt lorsque true.</param>
         /// <returns></returns>
         public double Deposer(int numeroCompte, double montant, bool nouvelleTransaction = true) 
             // nouvelleTransaction est true pour les opérations de l'utilisateur, est false pour la lecture du fichier
@@ -281,16 +282,17 @@ namespace TPSynthese
             {
                 if (item.NumeroDeCompte == numeroCompte)
                 {
-                    if (nouvelleTransaction)
+                    if (nouvelleTransaction)// S'il s'agit d'une nouvelle transaction, le constructeur Depot est appelé et la transaction sauvegardée dans le fichier des transactions.
                     {
                         Depot d = new Depot(numeroCompte, montant);
                         SauvegarderTransaction(d);
                     }
-                    item.Deposer(montant);
-                    return item.Solde;
+                    item.Deposer(montant);// Le comportement est le même pour tous les types de comptes, le montant fourni est additionné au solde actuel du compte. 
+                    return item.Solde;// Le nouveau solde est retourné.
                 }
             }
-            throw new Exception("Le compte n'existe pas");
+            throw new Exception("Le compte n'existe pas");// Si le numéro de compte n'existe pas ce message est affiché.
+            // Cette ligne n'est sûrement pas nécessaire puisque l'existence du compte a été vérifiée avant que le menu de transactions ne soit offert à l'utilisateur.
         }
         #endregion
 
@@ -317,30 +319,43 @@ namespace TPSynthese
         #endregion
 
         #region public double Retirer(int numeroCompte, double montant, bool nouvelleTransaction = true)
+        /// <summary>
+        /// Méthode qui transmet l'information du retrait au constructeur de la classe Retrait
+        /// De même qu'elle transmet le retrait pour la sauvegarde dans le fichier transactions.txt, lorsqu'il s'agit d'une nouvelle transaction.
+        /// </summary>
+        /// <param name="numeroCompte"></param>
+        /// <param name="montant"></param>
+        /// <param name="nouvelleTransaction">Booléen qui dirige la sauvegarde vers le fichier transactions.txt lorsque true.</param>
+        /// <returns></returns>
         public double Retirer(int numeroCompte, double montant, bool nouvelleTransaction = true)
         {
             foreach (Compte item in _listeDesComptes)
             {
                 if (item.NumeroDeCompte == numeroCompte)
                 {
-                    if (nouvelleTransaction == true)
+                    if (nouvelleTransaction == true)// S'il s'agit d'une nouvelle transaction, le constructeur Retrait est appelé et la transaction sauvegardée dans le fichier des transactions.
                     {
                         // TODO
                         Retrait r = new Retrait(numeroCompte, montant);
                         SauvegarderTransaction(r);
                     }
-                    item.Retirer(montant);
-                    return item.Solde;
+                    item.Retirer(montant);// Le comportement est le même pour tous les types de comptes, le montant fourni est soustrait au solde actuel du compte. 
+                    return item.Solde;// Le nouveau solde est retourné.
                 }
             }
-            throw new Exception("Le compte n'existe pas");
+            throw new Exception("Le compte n'existe pas");// Si le numéro de compte n'existe pas ce message est affiché.
+            // Cette ligne n'est sûrement pas nécessaire puisque l'existence du compte a été vérifiée avant que le menu de transactions ne soit offert à l'utilisateur.
         }
         #endregion
 
         #region        private void SauvegarderCompte(Compte nouveauCompte)
+        /// <summary>
+        /// Méthode qui appele la méthode de sauvegarde qui transmet le canal d'écriture pour l'enregistrement du nouveau compte ouvert, dans le fichier comptes.txt.
+        /// </summary>
+        /// <param name="nouveaucompte"></param>
         private void SauvegarderCompte(Compte nouveaucompte)
         {
-            string fichier = "comptes.txt";
+            string fichier = "comptes.txt";//Déclaration et initialisation de la variable fichier.
 
             // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
             using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
@@ -353,7 +368,7 @@ namespace TPSynthese
 
         #region        public void SauvegarderTransaction(Transaction transaction)
         /// <summary>
-        /// Méthode pour écrire (sauvegarder) une transaction dans le fichier transaction.txt
+        /// Méthode transmet le canal d'écriture pour l'écriture (la sauvegarder) d'une transaction dans le fichier transaction.txt
         /// </summary>
         /// <param name="transaction"></param>
         public void SauvegarderTransaction(Transaction transaction)
@@ -368,37 +383,48 @@ namespace TPSynthese
         #endregion
 
         #region public double Solde(int numeroCompte)
-
+        /// <summary>
+        /// Cette méthode retourne le solde actuel du compte. 
+        /// </summary>
+        /// <param name="numeroCompte">Seul le numéro de compte est nécessaire.</param>
+        /// <returns>Le solde du compte est retourné.</returns>
         public double Solde(int numeroCompte)
         {
-            foreach (Compte item in _listeDesComptes)
+            foreach (Compte item in _listeDesComptes)// La liste des comptes est déroulée ..
             {
-                if (item.NumeroDeCompte == numeroCompte)
+                if (item.NumeroDeCompte == numeroCompte)// jusqu'à ce que le numéro de compte désiré soit trouvé
                 {
-                    return item.Solde;
+                    return item.Solde;// Alors le solde est retourné.
                 }
             }
-            throw new Exception("Le compte n'existe pas");
+            throw new Exception("Le compte n'existe pas");// Sinon un message d'erreur est retourné.
+            // Par contre, cette ligne n'a probablement pas sa raison d'être, puisqu'avant que le menu du compte, (dont fait parti Afficher Solde,)
+            // ne soit afficher, l'existence du numéro du compte a été valider. 
         }
         #endregion
 
         #region public void ValiderExistence(int numeroCompte)
         /// <summary>
-        /// 
+        /// Pour que le programme affiche le menu du compte, il doit avant valider que le compte existe. La présente méthode vérifie que le numéro de compte existe.
+        /// Si le numéro ne fait pas parti de la liste des comptes, un message d’erreur informe l’utilisateur et le programme retourne au menu principal .
         /// </summary>
         /// <param name="numeroCompte"></param>
         public void ValiderExistence(int numeroCompte)
         {
-            foreach (Compte item in _listeDesComptes)
+            bool existe = false;
+            foreach (Compte item in _listeDesComptes)// passe la liste des comptes et compare le numéro de compte fourni
             {
                 if (item.NumeroDeCompte == numeroCompte)
                 {
-
+                    existe = true;// Oui, un numéro de la liste existe.
                 }
+            }
+            if (existe == false)// Si la valeur de existe est toujours à false, c'est qu'aucun compte du numéro dommé n'existe.
+            {
+                throw new Exception($"Erreur: Le compte numéro {numeroCompte} n'existe pas.");// Alors un message d'erreur est affiché.
             }
         }
         #endregion
-
 
         private readonly List<Compte> _listeDesComptes;// Ici le nom de la variable (attribut) est défini. 
                                               // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable.
