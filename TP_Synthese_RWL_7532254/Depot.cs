@@ -8,6 +8,11 @@ namespace TPSynthese
 {
     class Depot : Transaction
     {
+        /// <summary>
+        /// Constructeur
+        /// </summary>
+        /// <param name="numeroCompte"></param>
+        /// <param name="montant"></param>
         public Depot(int numeroCompte, double montant) : base (numeroCompte, montant)
         {
 

@@ -44,7 +44,7 @@ namespace TPSynthese
         }
         //public int LimiteCredit { get { return _limiteCredit; } }// Pour que la limite de crédit soit accessible dans la banque, cette propriété est nécessaire.
 
-        private int _limiteCredit;
+        private readonly int _limiteCredit;
 
     }
 

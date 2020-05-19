@@ -28,9 +28,9 @@ namespace TPSynthese
 // Appel de la méthode pour sauvegarder la transaction dans le fichier des transactions.
 
         }
-        private string _aujourDHui;
-        private int _numeroCompte;
-        private double _montant;
+        private readonly string _aujourDHui;
+        private readonly int _numeroCompte;
+        private readonly double _montant;
 
     }
   

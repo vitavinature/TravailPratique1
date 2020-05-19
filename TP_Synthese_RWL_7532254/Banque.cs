@@ -379,7 +379,6 @@ namespace TPSynthese
                                               // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable.
                                               //                - l'objet n'a pas été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
 
-        const string _creditDefaut = "0";
-        private static Random _generateurAleatoire = new Random();
+        private readonly static Random _generateurAleatoire = new Random();
     }
 }
