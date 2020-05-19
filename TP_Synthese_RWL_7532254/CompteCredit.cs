@@ -9,21 +9,52 @@ namespace TPSynthese
 {
     class CompteCredit : Compte
     {
-        public CompteCredit(string type, string prenom, string nom, int limiteCredit, int numero) : base(type, prenom, nom, numero)// Constructeur pour compte existant dans le fichier texte.
+        #region        public CompteCredit(string type, string prenom, string nom, int limiteCredit, int numero) : base(type, prenom, nom, numero)
+        /// <summary>
+        /// Constructeur qui hérite de la classe Compte.
+        /// Constructeur pour compte existant dans le fichier texte.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="prenom"></param>
+        /// <param name="nom"></param>
+        /// <param name="limiteCredit">limite de crédit du compte</param>
+        /// <param name="numero">numéro du compte</param>
+        public CompteCredit(string type, string prenom, string nom, int limiteCredit, int numero) : base(type, prenom, nom, numero)
         {
-            _limiteCredit = limiteCredit;
+            _limiteCredit = limiteCredit;// Seuls les comptes crédits ont une limite de crédit.
         }
-        public CompteCredit(string type, string prenom, string nom, int limiteCredit) : base(type, prenom, nom)// Constructeur qui crée un nouveau compte.
-        {
-            _limiteCredit = limiteCredit;
-        }
+        #endregion
 
+        #region        public CompteCredit(string type, string prenom, string nom, int limiteCredit) : base(type, prenom, nom)
+        /// <summary>
+        /// Constructeur qui hérite de la classe Compte.
+        /// Constructeur qui crée un nouveau compte.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="prenom"></param>
+        /// <param name="nom"></param>
+        /// <param name="limiteCredit">limite de crédit du compte</param>
+        /// <param name="numero">numéro du compte</param>
+        public CompteCredit(string type, string prenom, string nom, int limiteCredit) : base(type, prenom, nom)
+        {
+            _limiteCredit = limiteCredit;
+        }
+        #endregion
+
+        #region        public override string ToString()
+        /// <summary>
+        /// Méthode virtuelle qui est particulière aux comptes de crédits.
+        /// L'information du type de compte et la limite de crédit est ajoutée aux informations de base soit le numéro, nom et prénom.
+        /// Un string builder est utilisé pour rassembler les informations sous la forme d'une chaîne de caractères.
+        /// </summary>
+        /// <returns>Retourne la ligne à afficher lors de l'affichage de la liste des comptes</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat($"{Convert.ToString(_numeroDeCompte)}  Crédit   {_nom}, {_prenom} Limite de crédit {_limiteCredit}");
             return sb.ToString();
         }
+        #endregion
 
         public override void Retirer(double montant)
         {

@@ -9,7 +9,7 @@ namespace TPSynthese
     class Depot : Transaction
     {
         /// <summary>
-        /// Constructeur
+        /// Constructeur qui hérite de la classe parent Transaction
         /// </summary>
         /// <param name="numeroCompte"></param>
         /// <param name="montant"></param>
