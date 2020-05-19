@@ -157,6 +157,7 @@ namespace TPSynthese
                                 switch (type)
                                 {
                                     case "D": Deposer(numeroCompte, montant, false); break;
+                                    // nouvelleTransaction est true pour les opérations de l'utilisateur, est false pour la lecture du fichier
                                     case "R": Retirer(numeroCompte, montant, false); break;
                                     default: throw new Exception("Type de transaction invalide");
                                 }
@@ -228,11 +229,11 @@ namespace TPSynthese
 
         #region         public double CalculerInterets(int numeroCompte)
         /// <summary>
-        /// Cette méthode calcule les intérêts courants du compte. Le solde est inchangé par cette opération.
-        /// Le calcul effectué dépend du type de compte. 
+        /// Cette méthode calcule le taux d'intérêt courant du compte. Le solde est inchangé par cette opération.
+        /// Le taux d'intérêt dépend du type de compte. 
         /// </summary>
         /// <param name="numeroCompte">Seul le numéro de compte est nécessaire pour cette opération</param>
-        /// <returns>Le montant de l'intérêt est retourné.</returns>
+        /// <returns>Le taux d'intérêt est retourné.</returns>
         public double CalculerInterets(int numeroCompte)
         {
             double interet = 0;// Déclaration et initialisation de la variable de travail.
@@ -248,15 +249,15 @@ namespace TPSynthese
                     {
                         interet = 0.01 * item.Solde;// Le taux d'intérêt est de 1,0%
                     }
-                    if (item.Type == "R")
+                    if (item.Type == "R")// S'il est du type crédit
                     {
-                        if (item.Solde < 0)
+                        if (item.Solde < 0)//Quand le solde est négatif
                         {
-                            interet = 0.045 * item.Solde;
+                            interet = 0.045 * item.Solde;// Le taux d'intérêt est de 4,5%
                         }
-                        else
+                        else// Sinon
                         {
-                            interet = 0;
+                            interet = 0;// Le taux d'intérêt est de 0%
                         }
                     }
                 }
@@ -266,7 +267,15 @@ namespace TPSynthese
         #endregion
 
         #region public double Deposer(int numeroCompte, double montant)
-        public double Deposer(int numeroCompte, double montant, bool nouvelleTransaction = true) // nouvelleTransaction est vrai pour les opérations de l'utilisateur, est faux pour la lecture du fichier
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numeroCompte"></param>
+        /// <param name="montant"></param>
+        /// <param name="nouvelleTransaction"></param>
+        /// <returns></returns>
+        public double Deposer(int numeroCompte, double montant, bool nouvelleTransaction = true) 
+            // nouvelleTransaction est true pour les opérations de l'utilisateur, est false pour la lecture du fichier
         {
             foreach (Compte item in _listeDesComptes)
             {
@@ -286,16 +295,21 @@ namespace TPSynthese
         #endregion
 
         #region public List<string> ListeDeComptes()
-
+        /// <summary>
+        /// Cette option permet d’afficher la liste des comptes créés et gérés par la banque. 
+        /// Si aucun compte n’existe, un message en informe l’utilisateur.
+        /// </summary>
+        /// <returns>Retoure la liste qui indique le numéro du compte, son type, le nom et le prénom du propriétaire.
+        /// Dans le cas des « Comptes-Crédit », la limite de crédit est affichée.  </returns>
         public List<string> ListeDeComptes()
         {
-            List<string> liste = new List<string>();
-
+            List<string> liste = new List<string>();// Une liste de type string est déclarée et instanciée (la place en mémoire est alouée).
             _listeDesComptes.Sort();
-            //TODO
+            // La liste est triée par ordre alphabétique des noms. Pour les noms identiques, le tri est fait sur les prénoms.
+            // Si la même personne (nom et prénom) possède plus d’un compte, le tri est fait sur le numéro du compte. 
+
             foreach (var item in _listeDesComptes)
             {
-
                 liste.Add(item.ToString());
             }
             return liste;
