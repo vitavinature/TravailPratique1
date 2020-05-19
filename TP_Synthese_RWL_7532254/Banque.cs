@@ -14,15 +14,12 @@ namespace TPSynthese
                           // Il n'est pas nécessaire d'indiquer l'héritage de la classe Objet puisqu'elle est implicite.
                           // J'ai décidé de l'indiquer pour essayer de comprendre.
     {
-        #region public Banque()
-
         public Banque()
         {
 
             // TODO
             _listeDesComptes = new List<Compte>();// l'objet est créé. De la mémoire est allouée.
                                                   // À partir d'ici la variable peut être utilisée, elle existe, car elle a été créé avec l'instruction "new"
-
             #region Lecture du fichier des comptes
             try
             {
@@ -182,17 +179,16 @@ namespace TPSynthese
             }
             #endregion
         }
-        #endregion
 
         #region public int AjouterCompte(string type, string prenom, string nom, double montant)
         /// <summary>
-        /// 
+        /// Ajout de comptes banquaires de différents types: Cheques, Épargne, Crédit
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">type de compte: C pour CompteCheque, E pour CompteEpargne et R pour CompteCredit</param>
         /// <param name="prenom"></param>
         /// <param name="nom"></param>
-        /// <param name="montant"></param>
-        /// <returns></returns>
+        /// <param name="montant">montant positif initial, 0 pour les CompteCredit</param>
+        /// <returns>Retourne le numéro de compte du nouveau compte ajouté</returns>
         public int AjouterCompte(string type, string prenom, string nom, double montant)
         {
             int min = 500;// Pour les « Comptes-Crédit », pour simuler l’enquête de crédit qu’une vraie banque ferait à l’ouverture,
@@ -200,16 +196,16 @@ namespace TPSynthese
             int max = 3000;
             int multiple = 100;
 
-            Compte nouveauCompte;
-            switch (type)
+            Compte nouveauCompte;// Déclaration d'un nouvel objet Compte
+            switch (type)// Tout dépendant du type de compte, un constructeur spécifique est utilisé
             {
                 case "C": nouveauCompte = new CompteCheque(type, prenom, nom); break;
                 case "E": nouveauCompte = new CompteEpargne(type, prenom, nom); break;
                 case "R":
                     {
                         int limiteCredit = _generateurAleatoire.Next(min / multiple, max / multiple + 1) * multiple;
-
-                        nouveauCompte = new CompteCredit(type, prenom, nom, limiteCredit);
+                        // Une limite de crédit aléatoire est généré. (Voir information plus haut concernant les variables.)
+                        nouveauCompte = new CompteCredit(type, prenom, nom, limiteCredit);// Constructeur pour l'ajout d'un compte de crédit.
                     }
                     break;
                 default: throw new Exception("Type de compte invalide");
@@ -220,62 +216,37 @@ namespace TPSynthese
             if (montant > 0)
             {
                 // Faire une transaction de dépôt dans le compte du montant initial
-                Deposer(nouveauCompte.NumeroDeCompte, montant);
-
+                Deposer(nouveauCompte.NumeroDeCompte, montant);// Le montant initial entré lors de l'ouverture du compte, (0 pour les comptes de crédits)
+                // est déposé vers les transactions pour être écrit (enregistré) dans le fichier transaction.txt. 
             }
-            SauvegarderCompte(nouveauCompte);// Ici, j'hésite à mettre (ref StreamWriter fichier) en paramètre, ça ne fonctionne pas de toute façon.
+            SauvegarderCompte(nouveauCompte);// À chaque ajout d'un nouveau compte, les données du compte sont écrite(enregistré) dans le fichier comptes.txt
 
             return nouveauCompte.NumeroDeCompte;// La propriété NumeroDeCompte est défini public dans Compte pour être accessible dans Banque
-        }
-        #endregion
-
-        #region        private void SauvegarderCompte(Compte nouveauCompte)
-        private void SauvegarderCompte(Compte nouveaucompte)
-        {
-            string fichier = "comptes.txt";
-
-            // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
-            using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
-            {
-                nouveaucompte.Sauvegarder(canalEcriture);
-            }
-        }
-
-        #endregion
-
-        #region        public void SauvegarderTransaction(Transaction transaction)
-        public void SauvegarderTransaction(Transaction transaction)
-        {
-            string fichier = "transactions.txt";
-            // Ouverture du canalEcriture pour l'écriture dans le fichier "transactions.txt"
-            using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que la transaction soit ajoutée aux transactions existantes.
-            {
-                transaction.Sauvegarder(canalEcriture);
-            }
+            // La méthode retourne le numéro du nouveau compte ouvert.
         }
         #endregion
 
         #region         public double CalculerInterets(int numeroCompte)
         /// <summary>
-        /// Cette option calcule les intérêts courants du compte. Le solde est inchangé par cette opération.
+        /// Cette méthode calcule les intérêts courants du compte. Le solde est inchangé par cette opération.
         /// Le calcul effectué dépend du type de compte. 
         /// </summary>
-        /// <param name="numeroCompte"></param>
-        /// <returns></returns>
+        /// <param name="numeroCompte">Seul le numéro de compte est nécessaire pour cette opération</param>
+        /// <returns>Le montant de l'intérêt est retourné.</returns>
         public double CalculerInterets(int numeroCompte)
         {
-            double interet = 0;
-            foreach (Compte item in _listeDesComptes)
+            double interet = 0;// Déclaration et initialisation de la variable de travail.
+            foreach (Compte item in _listeDesComptes)// Pour chaque compte de la liste des comptes
             {
-                if (item.NumeroDeCompte == numeroCompte)
+                if (item.NumeroDeCompte == numeroCompte)// Si le numéro fourni est égal à un des numéros de la liste
                 {
-                    if (item.Type == "C")
+                    if (item.Type == "C")// S'il est du type chèques 
                     {
-                        interet = 0.001 * item.Solde;
+                        interet = 0.001 * item.Solde;// Le taux d'intérêt est de 0,1%
                     }
-                    if (item.Type == "E")
+                    if (item.Type == "E")// S'il est du type épargne
                     {
-                        interet = 0.01 * item.Solde;
+                        interet = 0.01 * item.Solde;// Le taux d'intérêt est de 1,0%
                     }
                     if (item.Type == "R")
                     {
@@ -303,9 +274,8 @@ namespace TPSynthese
                 {
                     if (nouvelleTransaction)
                     {
-                        // TODO
-                        //Depot d = new Depot(numeroCompte, montant);
-                        //SauvegarderTransaction(d);
+                        Depot d = new Depot(numeroCompte, montant);
+                        SauvegarderTransaction(d);
                     }
                     item.Deposer(montant);
                     return item.Solde;
@@ -350,6 +320,32 @@ namespace TPSynthese
                 }
             }
             throw new Exception("Le compte n'existe pas");
+        }
+        #endregion
+
+        #region        private void SauvegarderCompte(Compte nouveauCompte)
+        private void SauvegarderCompte(Compte nouveaucompte)
+        {
+            string fichier = "comptes.txt";
+
+            // Ouverture du canalEcriture pour l'écriture dans le fichier "comptes.txt"
+            using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que le nouveau compte soit ajouté aux comptes existants.
+            {
+                nouveaucompte.Sauvegarder(canalEcriture);
+            }
+        }
+
+        #endregion
+
+        #region        public void SauvegarderTransaction(Transaction transaction)
+        public void SauvegarderTransaction(Transaction transaction)
+        {
+            string fichier = "transactions.txt";
+            // Ouverture du canalEcriture pour l'écriture dans le fichier "transactions.txt"
+            using (StreamWriter canalEcriture = new StreamWriter(fichier, true))// true est utilisé pour que la transaction soit ajoutée aux transactions existantes.
+            {
+                transaction.Sauvegarder(canalEcriture);
+            }
         }
         #endregion
 

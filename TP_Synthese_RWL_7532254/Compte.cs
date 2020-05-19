@@ -135,7 +135,9 @@ namespace TPSynthese
 
         // Un attribut static est dit un "attribut de classe", par opposition à un attribut d'objet pour les attributs ordinaires
         // Tous les objets de la classe partage la même variable
-        private static int _dernierNumero = 100; // Les numéros de compte débutent à 101
+        private static int _dernierNumero = 100; // Les numéros de compte débutent à 101 (ici 100 puisque incrémenté dans le constructeur.
+        // Un numéro unique est assigné à chaque compte (indépendant de son type). Le premier compte créé par le programme porte le numéro 101.
+        // Chaque compte créé par la suite porte le dernier nombre assigné, incrémenté de un. 
 
         // Le mot clé readonly est similaire à const, mais la valeur n'a pas besoin d'être connue à la déclaration
         // l'initialisation se fera dans le constructeur, puis la valeur ne pourra plus être modifiée
