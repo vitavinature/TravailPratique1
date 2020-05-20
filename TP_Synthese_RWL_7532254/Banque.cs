@@ -18,8 +18,9 @@ namespace TPSynthese
         {
 
             // TODO
-            _listeDesComptes = new List<Compte>();// l'objet est créé. De la mémoire est allouée.
+            _listeDesComptes = new List<Compte>();// l'objet est créé. De la mémoire est allouée. L'instanciation est commencée.
                                                   // À partir d'ici la variable peut être utilisée, elle existe, car elle a été créé avec l'instruction "new"
+                                                  // Une fois initialisée, l'instanciation aura été complétée.
             #region Lecture du fichier des comptes
             try
             {
@@ -113,7 +114,7 @@ namespace TPSynthese
             }
             #endregion
 
-            _listeDesComptes.Sort();
+            _listeDesComptes.Sort();// Sort() ici réfère à ICompare qui est associé à la classe Compte. ICompare redéfinit la façon que le Sort() fonctionne.
 
             #region Lecture du fichier des transactions
             try
@@ -368,7 +369,8 @@ namespace TPSynthese
 
         #region        public void SauvegarderTransaction(Transaction transaction)
         /// <summary>
-        /// Méthode transmet le canal d'écriture pour l'écriture (la sauvegarder) d'une transaction dans le fichier transaction.txt
+        /// Méthode qui transmet le canal d'écriture pour l'écriture (la sauvegarder) d'une transaction dans le fichier transaction.txt
+        /// C'est l'appel de la méthode abstraite Sauvegarder.
         /// </summary>
         /// <param name="transaction"></param>
         public void SauvegarderTransaction(Transaction transaction)
@@ -408,7 +410,7 @@ namespace TPSynthese
         /// Pour que le programme affiche le menu du compte, il doit avant valider que le compte existe. La présente méthode vérifie que le numéro de compte existe.
         /// Si le numéro ne fait pas parti de la liste des comptes, un message d’erreur informe l’utilisateur et le programme retourne au menu principal .
         /// </summary>
-        /// <param name="numeroCompte"></param>
+        /// <param name="numeroCompte">Un numéro de compte doit être fourni.</param>
         public void ValiderExistence(int numeroCompte)
         {
             bool existe = false;
@@ -427,9 +429,9 @@ namespace TPSynthese
         #endregion
 
         private readonly List<Compte> _listeDesComptes;// Ici le nom de la variable (attribut) est défini. 
-                                              // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable.
-                                              //                - l'objet n'a pas été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
-
+                                              // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable. L'allocation n'a pas encore été faite.
+                                              //                - l'objet n'a pas non plus été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
+                                              
         private readonly static Random _generateurAleatoire = new Random();
     }
 }

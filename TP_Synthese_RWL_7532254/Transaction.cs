@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace TPSynthese
 {
-    abstract class Transaction
+    abstract class Transaction // La classe de base Transaction est abstraite. Elle représente des concepts abstraits desquels les classes Depot et Retrait,
+                               // dites concrètes, héritent (dérivent), mais ne peuvent pas être instanciées.
+                               // À partir du moment où une classe contient au moins une méthode abstraite, elle doit aussi être déclarée abstraite, (abstract). 
     {
         #region        public Transaction(int numeroCompte, double montant)
         /// <summary>
@@ -23,21 +25,14 @@ namespace TPSynthese
         }
         #endregion
 
-        #region        public void Sauvegarder(StreamWriter canalEcriture)
+        #region        public abstract void Sauvegarder(StreamWriter canalEcriture)
         /// <summary>
         /// Méthode pour l'écriture de la transaction dans le canal d'écriture qui dirige l'enregistrement vers transactions.txt
         /// </summary>
         /// <param name="canalEcriture"></param>
-        public void Sauvegarder(StreamWriter canalEcriture)
-        {
-            string numero = Convert.ToString(_numeroCompte);// déclaration et initialisation des variables de travail
-            string montant = Convert.ToString(_montant);
-            // Conversion des valeurs numériques en valeurs textes pour passer à l'écriture du fichier transaction.
-
-            string type = "D";//*************************************************************** À CORRIGER *********************************
-
-            canalEcriture.WriteLine($"{numero};{"D ou R"};{montant};{_aujourDHui}");// Écriture de la ligne de la transaction dans le fichier transactions.txt
-        }
+        public abstract void Sauvegarder(StreamWriter canalEcriture);// Une méthode abstraite ne contient pas de définition.
+        // Une méthode abstraite doit absolument être définie dans toutes les classes dérivées (soit Depot et Retrait).
+        // Si une classe qui hérite de « Transaction » ne définit pas la méthode « Sauvegarder», le programme ne compilera pas. 
         #endregion
 
         private protected readonly string _aujourDHui;
