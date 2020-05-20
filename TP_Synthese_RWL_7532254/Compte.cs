@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TPSynthese
 {
+    /// <summary>
+    /// La classe Compte redéfinit la méthode ToString pour retourner la description du compte afficher par la fonctionnalité « Lister les comptes » du programme.
+    /// Elle est responsable de gérer et d’assigner le numéro unique au compte lors de sa création. 
+    /// Elle implémente l’interface IComparable pour permettre d’afficher les comptes dans l’ordre demandé par la fonctionnalité « Lister les comptes » du programme.
+    /// </summary>
     abstract class Compte : IComparable<Compte>// La classe compte est une classe abstraite. Il est impossible de créer un objet de ce type.
                                                // Il est possible d'avoir une variable d'un type abstrait "Compte unCompte;"
                                                // Il n'est pas possible de créer un simple compte: "unCompte = new Compte();"
@@ -77,12 +77,61 @@ namespace TPSynthese
         }
         #endregion
 
+        #region        public virtual void Deposer(double montant)
+        /// <summary>
+        /// Cette méthode calcule le nouveau solde du compte
+        /// </summary>
+        /// <param name="montant">Seul le montant du dépôt est nécessaire.</param>
+        public virtual void Deposer(double montant)
+        // On peut laisser la méthode virtuelle, même si elle n'a pas besoin d'être redéfinie, un dépôt est pareil pour tous les types de comptes
+        {
+            _solde += montant;// Le solde précédent est augmenté du montant fourni.
+        }
+        #endregion
+
+        #region        public virtual void Retirer(double montant)
+        /// <summary>
+        /// Cette méthode calcule le nouveau solde suite à un retrait. Le montant du retrait est soustrait du solde précédent.
+        /// Cette méthode virtuelle ne s'applique qu'aux comptes chèques et épargne.
+        /// Le comportement est différent selon le type de compte.
+        /// Une méthode override redéfini Retirer dans la classe CompteCredit.
+        /// Puisque le solde peut être négatif, mais jamais moins que la valeur négative de la limite de crédit.
+        /// </summary>
+        /// <param name="montant">Seul le montant du retrait est fourni.</param>
+        public virtual void Retirer(double montant)
+        {
+            if (_solde - montant < 0)// Pour les « Comptes-Chèques » et les « Comptes d’épargne », le solde du compte ne peut jamais être négatif. 
+            {
+                throw new Exception("Erreur le retrait est trop important; il y a insuffisance de fonds.");
+            }
+            else
+            {
+                _solde -= montant;
+            }
+        }
+        #endregion
+
+        #region        public abstract void Sauvegarder(StreamWriter canalEcriture);
+        /// <summary>
+        /// La méthode abstraite n'a pas de définition.
+        /// Chaque classe qui hérite de compte doit redéfinir (override) la méthode Sauvegarder.
+        /// </summary>
+        /// <param name="canalEcriture">Seul le canal d'écriture est passé en paramètre.</param>
+        public abstract void Sauvegarder(StreamWriter canalEcriture);
+        #endregion
+
         #region        public override string ToString()
+        /// <summary>
+        /// Méthode override qui est particulière aux comptes chèques et d'épargne.
+        /// L'information du type de compte est ajoutée aux informations de base soit le numéro, nom et prénom.
+        /// Un string builder est utilisé pour rassembler les informations sous la forme d'une chaîne de caractères.
+        /// </summary>
+        /// <returns>Une chaîne de caractères est retournée.</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();// Un stringbuilder est déclaré et instancié.
             string type;
-            switch (_type)
+            switch (_type)// Selon dle type de compte, la chaîne de caractère prend une définition différente.
             {
                 case "C":
                     {
@@ -98,37 +147,15 @@ namespace TPSynthese
 
             }
             sb.AppendFormat($"{Convert.ToString(_numeroDeCompte)}  {type}   {_nom}, {_prenom}");
+            // Retourne une chaîne de format composite sous la forme d'une chaîne de caractères.
             return sb.ToString();
         }
         #endregion
 
-        #region        public virtual void Retirer(double montant)
-        public virtual void Retirer(double montant)
-        {
-            if (_solde - montant < 0)
-            {
-                throw new Exception("Erreur le retrait est trop important; il y a insuffisance de fonds.");
-            }
-            else
-            {
-                _solde -= montant;
-            }
-        }
-        #endregion
-
-        #region        public virtual void Deposer(double montant)
-        public virtual void Deposer(double montant)
-            // On peut laisser la méthode virtuelle, même si elle n'a pas besoin d'être redéfinie, un dépôt est pareil pour tous les types de comptes
-        {
-            _solde += montant;
-        }
-        #endregion
-
-        public abstract void Sauvegarder(StreamWriter canalEcriture);
-
+        /// <summary>
+        /// Les propriétés
+        /// </summary>
         public string Type { get { return _type; } }
-        public string Prenom { get { return _prenom; } }
-        public string Nom { get { return _nom; } }
         public double Solde { get { return _solde; } }
         public int NumeroDeCompte { get { return _numeroDeCompte; } }
         // Pour que le numéro de compte soit accessible dans la banque, cette propriété est nécessaire.
@@ -148,6 +175,5 @@ namespace TPSynthese
         protected double _solde;// Le solde du compte n'est pas conservé. Le montant initial est considéré comm un dépôt.
         // Numéro qui identifie le compte de manière unique
         protected readonly int _numeroDeCompte;
-
     }
 }

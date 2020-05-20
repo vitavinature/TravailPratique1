@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TPSynthese
 {
+    /// <summary>
+    /// La classe de base (parent) Transaction permet la gestion et la sauvegarde des transactions (dépots et retraits) effectuées.
+    /// </summary>
     abstract class Transaction // La classe de base Transaction est abstraite. Elle représente des concepts abstraits desquels les classes Depot et Retrait,
                                // dites concrètes, héritent (dérivent), mais ne peuvent pas être instanciées.
                                // À partir du moment où une classe contient au moins une méthode abstraite, elle doit aussi être déclarée abstraite, (abstract). 
@@ -35,10 +34,8 @@ namespace TPSynthese
         // Si une classe qui hérite de « Transaction » ne définit pas la méthode « Sauvegarder», le programme ne compilera pas. 
         #endregion
 
-        private protected readonly string _aujourDHui;
+        private protected readonly string _aujourDHui;// Les attributs de la classe Transaction
         private protected readonly int _numeroCompte;
         private protected readonly double _montant;
-
     }
-
 }

@@ -1,23 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace TPSynthese
 {
+    /// <summary>
+    /// La classe Banque c'est le système de gestion des comptes, des transactions, de la lecture et l'écriture des fichiers des comptes et transactions.
+    /// </summary>
     class Banque : Object //Classe de base de toutes les classes définies dans ce programme.
                           // Il n'est pas nécessaire d'indiquer l'héritage de la classe Objet puisqu'elle est implicite.
-                          // J'ai décidé de l'indiquer pour essayer de comprendre.
+                          // J'ai décidé de l'indiquer pour mieux comprendre.
     {
         public Banque()
         {
-
-            // TODO
             _listeDesComptes = new List<Compte>();// l'objet est créé. De la mémoire est allouée. L'instanciation est commencée.
                                                   // À partir d'ici la variable peut être utilisée, elle existe, car elle a été créé avec l'instruction "new"
                                                   // Une fois initialisée, l'instanciation aura été complétée.
@@ -432,6 +427,6 @@ namespace TPSynthese
                                               // À ce stade ci: - il n'y a pas encore de mémoire d'allouée dans l'ordinateur pour cette variable. L'allocation n'a pas encore été faite.
                                               //                - l'objet n'a pas non plus été initialisé, donc ne peut être utilisé tant que son constructeur n'est pas appelé.
                                               
-        private readonly static Random _generateurAleatoire = new Random();
+        private readonly static Random _generateurAleatoire = new Random();// Attribut utilisé pour la génération de limites de crédit aléatoires.
     }
 }

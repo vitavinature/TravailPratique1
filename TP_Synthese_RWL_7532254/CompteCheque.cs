@@ -1,24 +1,47 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace TPSynthese
 {
-    class CompteCheque : Compte
+    /// <summary>
+    /// La classe spécialisée CompteCheque de Compte utilise le polymorphisme afin de pouvoir être manipulée à travers l’interface de la classe de base Compte. 
+    /// </summary>
+    class CompteCheque : Compte// CompteCheque hérite de la classe de base Compte
     {
-        public CompteCheque(string type, string prenom, string nom, int numero) : base(type, prenom, nom, numero)// Constructeur pour compte existant dans le fichier texte.
+        #region        public CompteCheque(string type, string prenom, string nom, int numero) : base(type, prenom, nom, numero)
+        /// <summary>
+        /// Constructeur pour compte existant dans le fichier texte.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="prenom"></param>
+        /// <param name="nom"></param>
+        /// <param name="numero"></param>
+        public CompteCheque(string type, string prenom, string nom, int numero) : base(type, prenom, nom, numero)
         {
         }
-        public CompteCheque(string type, string prenom, string nom) : base(type, prenom, nom)// Constructeur qui crée un nouveau compte.
+        #endregion
+
+        #region        public CompteCheque(string type, string prenom, string nom) : base(type, prenom, nom)
+        /// <summary>
+        /// Constructeur qui crée un nouveau compte.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="prenom"></param>
+        /// <param name="nom"></param>
+        public CompteCheque(string type, string prenom, string nom) : base(type, prenom, nom)
         {
         }
-        //public abstract void Sauvegarder(ref StreamWriter fichier, Compte nouveauCompte)
+        #endregion
+
+        #region        public override void Sauvegarder(StreamWriter canalEcriture)
+        /// <summary>
+        /// Méthode override qui sauvegarde, (écrit) l'information du compte dans le fichier d'écriture, via le canal d'écriture.
+        /// Cette méthode est spécifique au CompteCheque. C'est une méthode override de la méthode abstract dans Compte.
+        /// </summary>
+        /// <param name="canalEcriture"></param>
         public override void Sauvegarder(StreamWriter canalEcriture)
         {
-                canalEcriture.WriteLine($"C;{_numeroDeCompte};{_prenom};{_nom}");
+            canalEcriture.WriteLine($"C;{_numeroDeCompte};{_prenom};{_nom}");// Les informations du compte sont écrites dans le fichier comptes.txt.
         }
+        #endregion
     }
 }

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-
-
 namespace TPSynthese
 {
     /// <summary>
-    /// Classe principale du système de gestion bancaire.
-    /// Gère les menus et l'exécution générale du programme.
+    /// La classe principale du système de gestion bancaire Program gère les menus et l'exécution générale du programme.
+    /// La classe Program est la seule à pouvoir accéder à la Console. Les autres classes ne doivent ni lire ni écrire à la console. 
     /// </summary>
     class Program
     {
@@ -63,7 +61,6 @@ namespace TPSynthese
             _laBanque = new Banque();  // TODO - Définition du constructeur de la classe Banque
         }
         #endregion
-        //*********************************************** %% **********************************************************
 
         #region        private void AfficherTitre(string titre)
         /// <summary>
@@ -156,7 +153,6 @@ namespace TPSynthese
             Pause("Le compte " + numero + " a été ajouté");
         }
         #endregion
-        //************************************************ %% *********************************************************
 
         #region        private string DemanderType()
         /// <summary>
@@ -325,7 +321,6 @@ namespace TPSynthese
             Pause();
         }
         #endregion
-        //************************************************** %% *******************************************************
 
         #region        private void EffectuerTransaction(int numeroCompte)
         /// <summary>
@@ -438,6 +433,4 @@ namespace TPSynthese
         /// </summary>
         private Banque _laBanque;  // TODO - Définition de la classe Banque
     }
-    //************************************************* %% ********************************************************
-
 }
