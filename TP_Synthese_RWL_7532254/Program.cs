@@ -96,8 +96,7 @@ namespace TPSynthese
                     case "O": OuvrirCompte(); break;
                     case "L": ListerComptes(); break;
                     case "A": DemanderCompte(); break;
-                    case "Q":
-                        return;
+                    case "Q": return;
                     default:
                         Pause("Choix invalide");
                         break;
